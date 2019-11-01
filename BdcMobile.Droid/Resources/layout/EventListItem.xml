@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/profileCircleImageView"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/logo"
+        android:layout_marginHorizontal="10dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/profileCircleImageView"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:paddingRight="10dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Maria Ozawa visited Vietnam"
+                android:textSize="14sp"
+                android:textColor="#000"
+                android:layout_weight="0.7"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="19 days ago"
+                android:textSize="12sp"
+                android:textColor="#000"
+                android:layout_weight="0.3"
+                android:gravity="right"/>
+            </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <TextView
+                android:text="At My Dinh Stadium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="#5D5C5C"
+                android:layout_weight="0.7"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Confirmed"
+                android:textSize="12sp"
+                android:textColor="#5D5C5C"
+                android:layout_weight="0.3"
+                android:gravity="right"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+		    android:layout_width="match_parent"
+		    android:layout_height="1dp"
+		    android:background="@color/colorPrimary" 
+            android:layout_below="@+id/profileCircleImageView"/>
+</RelativeLayout>
