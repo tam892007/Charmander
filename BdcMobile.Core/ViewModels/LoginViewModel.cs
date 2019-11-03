@@ -2,7 +2,9 @@
 using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
+using System;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 namespace BdcMobile.Core.ViewModels
 {
@@ -18,16 +20,63 @@ namespace BdcMobile.Core.ViewModels
         {
             _loginService = loginService;
             _navigationService = navigationService;
+            UserName = "lynt";
+            Password = "123456";
+
+            if (App.User != null && !string.IsNullOrWhiteSpace(App.User.api_token))
+            {
+                var user = _loginService.Verify(App.User.api_token);
+                if(user != null)
+                {
+
+                }
+                _navigationService.Navigate<EventListViewModel>();
+            } else
+            {
+
+            }
+
 
             LoginCommand = new MvxAsyncCommand(Login);
         }
 
-        private async Task Login()
+        public override Task Initialize()
         {
+            //var token = GetToken();
+            return base.Initialize();
+        }
+
+        public async Task<string> GetToken()
+        {
+            try
+            {
+                var oauthToken = await SecureStorage.GetAsync("oauth_token");
+                return oauthToken;
+            }
+            catch (Exception ex)
+            {
+                // Possible that device doesn't support secure storage on device.
+            }
+            return null;
+        }
+
+        private async Task Login()
+        {            
             var user = _loginService.Login(UserName, Password);
             if (user.IsAuthenticated)
             {
+                //try
+                //{
+                //    await SecureStorage.SetAsync("oauth_token", user.api_token);
+                //}
+                //catch (Exception ex)
+                //{
+                //    // Possible that device doesn't support secure storage on device.
+                //}
                 await _navigationService.Navigate<EventListViewModel>();
+            } else
+            {
+
             }
         }
     }

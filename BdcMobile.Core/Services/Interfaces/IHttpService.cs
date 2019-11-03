@@ -1,14 +1,26 @@
 ﻿using BdcMobile.Core.Models;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BdcMobile.Core.Services.Interfaces
 {
-    public interface IEventService
+    public interface IHttpService
     {
+        /// <summary>
+        /// Login function with username and password
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        User LoginAsync(User user);
+
+        /// <summary>
+        /// Verify user login by token
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        User VerifyUserAsync(string token);
+
         /// <summary>
         /// Query all event in duration
         /// </summary>

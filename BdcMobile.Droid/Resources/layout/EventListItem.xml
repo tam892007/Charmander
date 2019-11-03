@@ -30,7 +30,8 @@
                 android:text="Maria Ozawa visited Vietnam"
                 android:textSize="14sp"
                 android:textColor="#000"
-                android:layout_weight="0.7"/>
+                android:layout_weight="0.7"
+                local:MvxBind="Text PartnerName"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -38,7 +39,8 @@
                 android:textSize="12sp"
                 android:textColor="#000"
                 android:layout_weight="0.3"
-                android:gravity="right"/>
+                android:gravity="right"
+                local:MvxBind="Text TOR"/>
             </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,7 +52,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
                 android:textColor="#5D5C5C"
-                android:layout_weight="0.7"/>
+                android:layout_weight="0.7"
+                local:MvxBind="Text PlaceOfSurvey"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -58,7 +61,8 @@
                 android:textSize="12sp"
                 android:textColor="#5D5C5C"
                 android:layout_weight="0.3"
-                android:gravity="right"/>
+                android:gravity="right"
+                local:MvxBind="Text Status"/>
         </LinearLayout>
     </LinearLayout>
 

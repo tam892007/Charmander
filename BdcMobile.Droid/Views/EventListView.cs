@@ -13,5 +13,6 @@ namespace BdcMobile.Droid.Views
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.EventList);
         }
+        
     }
 }
