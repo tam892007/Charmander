@@ -1,12 +1,12 @@
 ﻿using Android.App;
 using Android.OS;
 using BdcMobile.Core.ViewModels;
-using MvvmCross.Platforms.Android.Views;
+using MvvmCross.Droid.Support.V7.AppCompat;
 
 namespace BdcMobile.Droid.Views
 {
     [Activity(Label = "Login")]
-    public class LoginView : MvxActivity<LoginViewModel>
+    public class LoginView : MvxAppCompatActivity<LoginViewModel>
     {
         protected override void OnCreate(Bundle bundle)
         {

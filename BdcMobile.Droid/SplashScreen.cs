@@ -1,5 +1,5 @@
 ﻿using Android.App;
-using MvvmCross.Platforms.Android.Views;
+using MvvmCross.Droid.Support.V7.AppCompat;
 
 namespace BdcMobile.Droid
 {
@@ -7,7 +7,7 @@ namespace BdcMobile.Droid
         MainLauncher = true,
         Theme = "@style/Theme.Splash",
         NoHistory = true)]
-    public class SplashScreen: MvxSplashScreenActivity
+    public class SplashScreen: MvxSplashScreenAppCompatActivity
     {
         public SplashScreen()
             : base(Resource.Layout.SplashScreen)
