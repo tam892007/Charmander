@@ -19,11 +19,13 @@ namespace BdcMobile.Core.ViewModels
         public EventListViewModel(IEventService eventService, IMvxNavigationService mvxNavigationService, IMvxLogProvider mvxLogProvider) : base(mvxLogProvider, mvxNavigationService)
         {
             _eventService = eventService;
-            //LoadMoreCommand = new MvxAsyncCommand(LoadMore);
+            NavigateToEventDetailsCommand = new MvxAsyncCommand<Event>(async (e) => await NavigateToEventDetails(e));
         }
 
         public ObservableCollection<Event> Events { get; set; }
 
+
+        public IMvxAsyncCommand<Event> NavigateToEventDetailsCommand { get; private set; }
 
         public override Task Initialize()
         {
@@ -80,7 +82,7 @@ namespace BdcMobile.Core.ViewModels
                 Events = new ObservableCollection<Event>();
             }
             var token = App.User.api_token;
-            var currentItemCount = Events == null? 0: Events.Count;
+            var currentItemCount = Events == null ? 0 : Events.Count;
             var nextpage = currentItemCount / RecordPerPage + 1;
             var newEvents = _eventService.QueryEvent(token, null, null, nextpage, RecordPerPage);
             if (newEvents != null)
@@ -92,6 +94,11 @@ namespace BdcMobile.Core.ViewModels
                 }
             }
             await this.RaisePropertyChanged("Events");
+        }
+        private async Task NavigateToEventDetails(Event e)
+        {
+            // Implement your logic here.
+            await NavigationService.Navigate<EventDetailsViewModel>();
         }
     }
 }

@@ -51,8 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 local:MvxItemTemplate="@layout/eventlistitem"
-                local:MvxBind="ItemsSource Events; ItemClick NavigateToEventDetailsCommand" />
-
+                local:MvxBind="ItemsSource Events" />
 
         </MvvmCross.Droid.Support.V4.MvxSwipeRefreshLayout>
         

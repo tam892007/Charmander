@@ -1,5 +1,6 @@
 ﻿using BdcMobile.Core.Services.Interfaces;
 using MvvmCross.Commands;
+using MvvmCross.Logging;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using System;
@@ -8,18 +9,17 @@ using Xamarin.Essentials;
 
 namespace BdcMobile.Core.ViewModels
 {
-    public class LoginViewModel : MvxViewModel
+    public class LoginViewModel : MvxNavigationViewModel
     {
-        private readonly IMvxNavigationService _navigationService;
         private readonly ILoginService _loginService;
         public string UserName { get; set; }
         public string Password { get; set; }
         public IMvxAsyncCommand LoginCommand { get; private set; }
 
-        public LoginViewModel(IMvxNavigationService navigationService, ILoginService loginService)
+        public LoginViewModel(ILoginService loginService, IMvxLogProvider logProvider, IMvxNavigationService navigationService) : base(logProvider, navigationService)
         {
             _loginService = loginService;
-            _navigationService = navigationService;
+
             UserName = "lynt";
             Password = "123456";
 
@@ -30,13 +30,11 @@ namespace BdcMobile.Core.ViewModels
                 {
 
                 }
-                _navigationService.Navigate<EventListViewModel>();
+                NavigationService.Navigate<EventListViewModel>();
             } else
             {
 
             }
-
-
             LoginCommand = new MvxAsyncCommand(Login);
         }
 
@@ -73,10 +71,10 @@ namespace BdcMobile.Core.ViewModels
                 //{
                 //    // Possible that device doesn't support secure storage on device.
                 //}
-                await _navigationService.Navigate<EventListViewModel>();
+                await NavigationService.Navigate<EventListViewModel>();
             } else
             {
-
+                await NavigationService.Navigate<EventListViewModel>();
             }
         }
     }
