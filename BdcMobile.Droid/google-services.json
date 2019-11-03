@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "352605920476",
+    "firebase_url": "https://bdcmobile-7fd19.firebaseio.com",
+    "project_id": "bdcmobile-7fd19",
+    "storage_bucket": "bdcmobile-7fd19.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:352605920476:android:b2737c52a815579f71a819",
+        "android_client_info": {
+          "package_name": "com.companyname.bdcmobile.droid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "352605920476-3jci7afqnb138o7ikonmnssaig3uq3oj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-I_4vzAVHeTjqrZpeuA6y4g-S0hzfP1M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "352605920476-3jci7afqnb138o7ikonmnssaig3uq3oj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

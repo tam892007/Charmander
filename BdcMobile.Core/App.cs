@@ -10,8 +10,10 @@ namespace BdcMobile.Core
     {
         public override void Initialize()
         {
+            base.Initialize();
             RegisterDependencies();
             RegisterAppStart<LoginViewModel>();
+            Mvx.IoCProvider.Resolve<ICloudMessaging>().Initialize();
         }
 
         private void RegisterDependencies()
