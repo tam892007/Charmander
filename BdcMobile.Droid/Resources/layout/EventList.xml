@@ -43,16 +43,17 @@
          <MvvmCross.Droid.Support.V4.MvxSwipeRefreshLayout                                                            
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:paddingBottom="50dp"
+            android:paddingBottom="0dp"
             local:MvxBind="Refreshing IsBusy; RefreshCommand RefreshCommand">
-            <MvvmCross.Platforms.Android.Binding.Views.MvxListView
-                android:id="@+id/event_list_view"
+            
+
+            <MvvmCross.Droid.Support.V7.RecyclerView.MvxRecyclerView
+                android:id="@+id/mvxRecyclerView1" 
                 android:scrollbars="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 local:MvxItemTemplate="@layout/eventlistitem"
-                local:MvxBind="ItemsSource Events; ItemClick NavigateToEventDetailsCommand" />
-
+                local:MvxBind="ItemsSource Events; ItemClick NavigateToEventDetailsCommand"/>
 
         </MvvmCross.Droid.Support.V4.MvxSwipeRefreshLayout>
         

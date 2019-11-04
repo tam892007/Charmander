@@ -47,6 +47,7 @@
                 android:background="@android:color/transparent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
                 local:MvxBind="Text UserName" />
 
             <!-- ICON -->
@@ -86,6 +87,7 @@
                 android:background="@android:color/transparent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
                 local:MvxBind="Text Password"/>
 
             <!-- ICON -->
@@ -100,7 +102,26 @@
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="62dp"
+            android:layout_marginTop="12.7dp"            
+            >
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBox1"
+                android:textSize="12sp"
+                android:buttonTint="@color/colorPrimary"      
+                android:textColor="@color/colorPrimary"
+                android:text="Remember Password"                 
+            />
+           
+            
 
+        </RelativeLayout>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -112,21 +133,13 @@
             android:paddingBottom="14dp"
             android:layout_marginLeft="62dp"
             android:layout_marginRight="62dp"
-            android:layout_marginTop="18.7dp"
+            android:layout_marginTop="12.7dp"
             android:text="Login"
             android:background="@drawable/blue_fill__rounded_color"
             local:MvxBind="Click LoginCommand"
             />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="10.5sp"
-            android:textColor="@color/colorPrimary"
-            android:layout_marginTop="12dp"
-            android:layout_gravity="center"
-            android:text="FORGOT PASSWORD ?"
-            />
+        
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

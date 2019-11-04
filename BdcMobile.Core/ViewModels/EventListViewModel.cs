@@ -15,23 +15,27 @@ namespace BdcMobile.Core.ViewModels
         public static int RecordPerPage { get; set; }
         private readonly IEventService _eventService;
 
-        public IMvxAsyncCommand LoadMoreCommand { get; private set; }
+
         public EventListViewModel(IEventService eventService, IMvxNavigationService mvxNavigationService, IMvxLogProvider mvxLogProvider) : base(mvxLogProvider, mvxNavigationService)
         {
             _eventService = eventService;
             NavigateToEventDetailsCommand = new MvxAsyncCommand<Event>(async (e) => await NavigateToEventDetails(e));
+            LoadMoreCommand = new MvxAsyncCommand(async () => await LoadMore());
+            RefreshCommand = new MvxAsyncCommand(async () => await ExecuteRefreshCommand());
         }
 
         public ObservableCollection<Event> Events { get; set; }
 
 
         public IMvxAsyncCommand<Event> NavigateToEventDetailsCommand { get; private set; }
-
-        public override Task Initialize()
+        public IMvxAsyncCommand LoadMoreCommand { get; private set; }
+        public IMvxAsyncCommand RefreshCommand { get; private set; }
+        public override async Task Initialize()
         {
+           
             var token = App.User.api_token;
-            RecordPerPage = 5;
-            var newEvents = _eventService.QueryEvent(token, null, null, 1, RecordPerPage);            
+            RecordPerPage = 20;
+            var newEvents = await _eventService.QueryEventAsync(token, null, null, 1, RecordPerPage);
             if (Events == null)
             {
                 Events = new ObservableCollection<Event>();
@@ -40,13 +44,11 @@ namespace BdcMobile.Core.ViewModels
             {
                 Events.Add(ev);
             }
-            return base.Initialize();
+            await RefreshCommand.ExecuteAsync();
+
+            await base.Initialize();
         }
 
-
-        private IMvxAsyncCommand _refreshCommand;
-        public IMvxAsyncCommand RefreshCommand
-            => _refreshCommand ?? (_refreshCommand = new MvxAsyncCommand(ExecuteRefreshCommand));
 
         private bool _isBusy;
         public bool IsBusy
@@ -54,14 +56,16 @@ namespace BdcMobile.Core.ViewModels
             get => _isBusy;
             set => SetProperty(ref _isBusy, value);
         }
+        
 
         private async Task ExecuteRefreshCommand()
         {
             IsBusy = true;
             // do refresh work here
             var token = App.User.api_token;
-            RecordPerPage += 5;
-            var newEvents = _eventService.QueryEvent(token, null, null, 1, RecordPerPage);
+            var currentItemCount = Events == null ? 0 : Events.Count;
+            var nextpage = currentItemCount / RecordPerPage + 1;
+            var newEvents = await _eventService.QueryEventAsync(token, null, null, nextpage, RecordPerPage);
             if (Events == null)
             {
                 Events = new ObservableCollection<Event>();
@@ -84,7 +88,7 @@ namespace BdcMobile.Core.ViewModels
             var token = App.User.api_token;
             var currentItemCount = Events == null ? 0 : Events.Count;
             var nextpage = currentItemCount / RecordPerPage + 1;
-            var newEvents = _eventService.QueryEvent(token, null, null, nextpage, RecordPerPage);
+            var newEvents = await _eventService.QueryEventAsync(token, null, null, nextpage, RecordPerPage);
             if (newEvents != null)
             {
 

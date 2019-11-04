@@ -1,7 +1,11 @@
 ﻿using Android.App;
 using Android.OS;
+using Android.Support.V7.Widget;
 using BdcMobile.Core.ViewModels;
+using BdcMobile.Droid.TemplateSelector;
 using MvvmCross.Droid.Support.V7.AppCompat;
+using MvvmCross.Droid.Support.V7.RecyclerView;
+using System;
 
 namespace BdcMobile.Droid.Views
 {
@@ -12,7 +16,20 @@ namespace BdcMobile.Droid.Views
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.EventList);
+            MvxRecyclerView recyclerView = this.FindViewById<MvxRecyclerView>(Resource.Id.mvxRecyclerView1);
+            var onScrollListener = new RecyclerViewOnScrollListener();
+            recyclerView.AddOnScrollListener(onScrollListener);
+            onScrollListener.LoadMoreEvent += async (object sender, EventArgs e) =>  {
+                //Load more stuff here
+                await this.ViewModel.LoadMoreCommand.ExecuteAsync();
+            };
+
+
+            
+
+
         }
-        
+
+
     }
 }

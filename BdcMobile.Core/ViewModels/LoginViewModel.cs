@@ -25,7 +25,7 @@ namespace BdcMobile.Core.ViewModels
 
             if (App.User != null && !string.IsNullOrWhiteSpace(App.User.api_token))
             {
-                var user = _loginService.Verify(App.User.api_token);
+                var user = _loginService.VerifyAsync(App.User.api_token);
                 if(user != null)
                 {
 
@@ -40,7 +40,7 @@ namespace BdcMobile.Core.ViewModels
 
         public override Task Initialize()
         {
-            //var token = GetToken();
+            var token = GetToken();
             return base.Initialize();
         }
 
@@ -60,17 +60,17 @@ namespace BdcMobile.Core.ViewModels
 
         private async Task Login()
         {            
-            var user = _loginService.Login(UserName, Password);
+            var user = await _loginService.LoginAsync(UserName, Password);
             if (user.IsAuthenticated)
             {
-                //try
-                //{
-                //    await SecureStorage.SetAsync("oauth_token", user.api_token);
-                //}
-                //catch (Exception ex)
-                //{
-                //    // Possible that device doesn't support secure storage on device.
-                //}
+                try
+                {
+                    await SecureStorage.SetAsync("oauth_token", user.api_token);
+                }
+                catch (Exception ex)
+                {
+                    // Possible that device doesn't support secure storage on device.
+                }
                 await NavigationService.Navigate<EventListViewModel>();
             } else
             {

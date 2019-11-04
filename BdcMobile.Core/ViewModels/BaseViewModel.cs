@@ -19,7 +19,7 @@ namespace BdcMobile.Core.ViewModels
 
             if (App.User != null && !string.IsNullOrWhiteSpace(App.User.api_token))
             {
-                var user = _loginService.Verify(App.User.api_token);
+                var user = _loginService.VerifyAsync(App.User.api_token);
                 if (user != null)
                 {
 

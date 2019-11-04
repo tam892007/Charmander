@@ -1,6 +1,6 @@
 ﻿using BdcMobile.Core.Models;
 using BdcMobile.Core.Services.Interfaces;
-using BdcMobile.Core.Utility;
+using BdcMobile.Core.Commons;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,10 +12,10 @@ namespace BdcMobile.Core.Services.Implementations
 {
     public class HttpService: IHttpService
     {        
-        public User LoginAsync(User user)
+        public async Task<User> LoginAsync(User user)
         {
             string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.UserLoginAPI, user.AccountName, user.Password);
-            var apiResponse = Common.MakeRequest(apiUrl, "POST");
+            var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "POST");
             if (apiResponse.Length > 25)
             {
                 var result = JsonConvert.DeserializeObject<LoginResponseModel>(apiResponse);
@@ -30,10 +30,10 @@ namespace BdcMobile.Core.Services.Implementations
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        public User VerifyUserAsync(string token)
+        public async Task<User> VerifyUserAsync(string token)
         {
             string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.UserVerifyAPI, token);
-            var apiResponse = Common.MakeRequest(apiUrl, "GET");
+            var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "GET");
             if (apiResponse.Length > 25)
             {
                 var result = JsonConvert.DeserializeObject<LoginResponseModel>(apiResponse);
@@ -50,13 +50,13 @@ namespace BdcMobile.Core.Services.Implementations
         /// <param name="fromdate"></param>
         /// <param name="todate"></param>
         /// <returns></returns>
-        public List<Event> QueryEvent(string token, DateTime? fromdate, DateTime? todate, int currentPage, int recpordPerPage)
+        public async Task<List<Event>> QueryEventAsync(string token, DateTime? fromdate, DateTime? todate, int currentPage, int recpordPerPage)
         {
             //var fromdatestr = fromdate == null ? string.Empty: string.Format("{0:ddMMyyyy}", fromdate);
             //var todatestr = todate == null ? string.Empty : string.Format("{0:ddMMyyyy}", todate);
 
             string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.GetItemsAPI, currentPage, recpordPerPage, token);
-            var apiResponse = Common.MakeRequest(apiUrl, "GET");
+            var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "GET");
             if (apiResponse.Length > 25)
             {
                 try

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BdcMobile.Core.Services.Interfaces
 {
@@ -12,14 +13,14 @@ namespace BdcMobile.Core.Services.Interfaces
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        User LoginAsync(User user);
+        Task<User> LoginAsync(User user);
 
         /// <summary>
         /// Verify user login by token
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        User VerifyUserAsync(string token);
+        Task<User> VerifyUserAsync(string token);
 
         /// <summary>
         /// Query all event in duration
@@ -28,6 +29,6 @@ namespace BdcMobile.Core.Services.Interfaces
         /// <param name="fromdate"></param>
         /// <param name="todate"></param>
         /// <returns></returns>
-        List<Event> QueryEvent(string token, DateTime? fromdate, DateTime? todate, int currentPage, int recpordPerPage);
+        Task<List<Event>> QueryEventAsync(string token, DateTime? fromdate, DateTime? todate, int currentPage, int recpordPerPage);
     }
 }
