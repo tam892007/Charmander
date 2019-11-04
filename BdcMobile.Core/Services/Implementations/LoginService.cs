@@ -1,5 +1,6 @@
 ﻿using BdcMobile.Core.Models;
 using BdcMobile.Core.Services.Interfaces;
+using System.Threading.Tasks;
 
 namespace BdcMobile.Core.Services.Implementations
 {
@@ -18,7 +19,7 @@ namespace BdcMobile.Core.Services.Implementations
         /// <param name="userName"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public User Login(string userName, string password)
+        public async System.Threading.Tasks.Task<User> LoginAsync(string userName, string password)
         {
             var user = new User
             {
@@ -30,7 +31,7 @@ namespace BdcMobile.Core.Services.Implementations
                 user.ErrorMessage = "Vui lòng nhập tài khoản và mật khẩu.";
                 return user;
             }
-            var result = _httpService.LoginAsync(user);
+            var result = await _httpService.LoginAsync(user);
             if (result != null)
             {
                 result.IsAuthenticated = true;
@@ -49,9 +50,9 @@ namespace BdcMobile.Core.Services.Implementations
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        public User Verify(string token)
+        public async Task<User> VerifyAsync(string token)
         {
-            var user = _httpService.VerifyUserAsync(token);
+            var user = await _httpService.VerifyUserAsync(token);
             return user;
         }
     }

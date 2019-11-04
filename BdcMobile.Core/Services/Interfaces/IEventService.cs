@@ -16,6 +16,6 @@ namespace BdcMobile.Core.Services.Interfaces
         /// <param name="fromdate"></param>
         /// <param name="todate"></param>
         /// <returns></returns>
-        List<Event> QueryEvent(string token, DateTime? fromdate, DateTime? todate, int currentPage, int recpordPerPage);
+        Task<List<Event>> QueryEventAsync(string token, DateTime? fromdate, DateTime? todate, int currentPage, int recpordPerPage);
     }
 }

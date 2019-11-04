@@ -23,9 +23,9 @@ namespace BdcMobile.Core.Services.Implementations
         /// <param name="fromdate"></param>
         /// <param name="todate"></param>
         /// <returns></returns>
-        public List<Event> QueryEvent(string token, DateTime? fromdate, DateTime? todate, int currentPage, int recpordPerPage)
+        public async Task<List<Event>> QueryEventAsync(string token, DateTime? fromdate, DateTime? todate, int currentPage, int recpordPerPage)
         {
-            var listEvents = _httpService.QueryEvent(token, fromdate, todate, currentPage, recpordPerPage);
+            var listEvents = await _httpService.QueryEventAsync(token, fromdate, todate, currentPage, recpordPerPage);
             return listEvents;
 
         }

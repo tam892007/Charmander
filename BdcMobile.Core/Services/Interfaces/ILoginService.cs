@@ -1,16 +1,17 @@
 ﻿using BdcMobile.Core.Models;
+using System.Threading.Tasks;
 
 namespace BdcMobile.Core.Services.Interfaces
 {
     public interface ILoginService
     {
-        User Login(string userName, string password);
+        Task<User> LoginAsync(string userName, string password);
 
         /// <summary>
         /// Verify user with token string
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        User Verify(string token);
+        Task<User> VerifyAsync(string token);
     }
 }

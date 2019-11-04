@@ -69,6 +69,7 @@
     <Compile Include="SplashScreen.cs" />
     <Compile Include="TemplateSelector\InternalChatTemplateSelector.cs" />
     <Compile Include="Views\EventDetailsPictureGalleryView.cs" />
+    <Compile Include="TemplateSelector\RecyclerViewOnScrollListener.cs" />
     <Compile Include="Views\EventDetailsExternalChatView.cs" />
     <Compile Include="Views\EventDetailsInternalChatView.cs" />
     <Compile Include="Views\EventDetailsView.cs" />
@@ -277,6 +278,7 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <AndroidResource Include="Resources\drawable\chatexternal.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -295,6 +297,10 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\sendchatselected.xml" />
+    <AndroidResource Include="Resources\drawable\person.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\place.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
