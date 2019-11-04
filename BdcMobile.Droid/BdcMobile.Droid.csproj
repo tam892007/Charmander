@@ -68,6 +68,7 @@
     <Compile Include="Setup.cs" />
     <Compile Include="SplashScreen.cs" />
     <Compile Include="TemplateSelector\InternalChatTemplateSelector.cs" />
+    <Compile Include="Views\EventDetailsPictureGalleryView.cs" />
     <Compile Include="Views\EventDetailsExternalChatView.cs" />
     <Compile Include="Views\EventDetailsInternalChatView.cs" />
     <Compile Include="Views\EventDetailsView.cs" />
@@ -97,6 +98,7 @@
   <ItemGroup>
     <Folder Include="Assets\" />
     <Folder Include="Resources\drawable-nodpi\" />
+    <Folder Include="Resources\menu\" />
     <Folder Include="Resources\mipmap-anydpi-v26\" />
   </ItemGroup>
   <ItemGroup>
@@ -112,7 +114,7 @@
     <PackageReference Include="Xamarin.Essentials" Version="1.3.1" />
     <PackageReference Include="Xamarin.FFImageLoading">
       <Version>2.4.11.982</Version>
-	</PackageReference>
+    </PackageReference>
     <PackageReference Include="MvvmCross.Droid.Support.V7.AppCompat">
       <Version>6.4.1</Version>
     </PackageReference>
@@ -273,6 +275,26 @@
     <AndroidResource Include="Resources\drawable\rounded_rectangle_blue.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\chatexternal.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\chatexternalselected.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\EventDetailsPictureGallery.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\picturepicker.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\picturepickerselected.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\sendchatselected.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

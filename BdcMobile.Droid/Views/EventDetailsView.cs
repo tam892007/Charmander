@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.OS;
+using Android.Runtime;
 using Android.Support.Design.Widget;
-using Android.Support.V4.View;
 using Android.Views;
 using Android.Widget;
 using BdcMobile.Core.ViewModels;
@@ -21,6 +21,13 @@ namespace BdcMobile.Droid.Views
             SetContentView(Resource.Layout.EventDetails);
             ViewModel.ShowInitialViewModelsCommand.Execute();
             SetUIForTabs();
+
+            MvvmCross.Droid.Support.V7.RecyclerView.MvxRecyclerView t = null;
+        }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
+        {
+            ///TODO: https://github.com/jamesmontemagno/PermissionsPlugin
         }
 
         private void SetUIForTabs()
@@ -32,8 +39,12 @@ namespace BdcMobile.Droid.Views
             tabLayout.GetTabAt(0).SetCustomView(tabCustomView);
 
             tabCustomView = (ImageView)LayoutInflater.Inflate(Resource.Layout.Tab, null);
-            tabCustomView.SetImageResource(Resource.Drawable.picture);
+            tabCustomView.SetImageResource(Resource.Drawable.chatexternal);
             tabLayout.GetTabAt(1).SetCustomView(tabCustomView);
+
+            tabCustomView = (ImageView)LayoutInflater.Inflate(Resource.Layout.Tab, null);
+            tabCustomView.SetImageResource(Resource.Drawable.picture);
+            tabLayout.GetTabAt(2).SetCustomView(tabCustomView);
 
             tabLayout.AddOnTabSelectedListener(this);
         }
@@ -48,7 +59,8 @@ namespace BdcMobile.Droid.Views
             switch (tab.Position)
             {
                 case 0: iconId = Resource.Drawable.chat_selected; break;
-                case 1: iconId = Resource.Drawable.picture_selected; break;
+                case 1: iconId = Resource.Drawable.chatexternalselected; break;
+                case 2: iconId = Resource.Drawable.picture_selected; break;
             }
 
             var imageView = tab.CustomView.FindViewById<ImageView>(Resource.Id.tabImg);
@@ -61,7 +73,8 @@ namespace BdcMobile.Droid.Views
             switch (tab.Position)
             {
                 case 0: iconId = Resource.Drawable.chat; break;
-                case 1: iconId = Resource.Drawable.picture; break;
+                case 1: iconId = Resource.Drawable.chatexternal; break;
+                case 2: iconId = Resource.Drawable.picture; break;
             }
 
             var imageView = tab.CustomView.FindViewById<ImageView>(Resource.Id.tabImg);

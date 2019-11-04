@@ -23,6 +23,7 @@ namespace BdcMobile.Core.ViewModels
             {
                 NavigationService.Navigate<EventDetailsInternalChatViewModel>(),
                 NavigationService.Navigate<EventDetailsExternalChatViewModel>(),
+                NavigationService.Navigate<EventDetailsPictureGalleryViewModel>(),
             });
         }
     }

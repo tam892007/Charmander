@@ -1,12 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.sendbird.chattutorial.MessageListActivity">
+    android:layout_height="match_parent">
     <MvvmCross.Droid.Support.V7.RecyclerView.MvxRecyclerView
         android:id="@+id/reyclerview_message_list"
         android:layout_width="match_parent"
@@ -51,17 +48,24 @@
             android:layout_height="wrap_content"
             android:maxLines="6"/>
 
-        <Button
-            android:id="@+id/button_chatbox_send"
-            android:text="SEND"
-            android:textSize="14dp"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:layout_width="64dp"
+        <ImageButton
+            android:src="@drawable/picturepickerselected"
+            android:id="@+id/button_chatbox_picture_picker"
+            android:layout_width="48dp"
             android:layout_height="48dp"
-            android:gravity="center"
-            android:layout_gravity="bottom" />
+            android:scaleType="fitCenter"
+            android:padding="10dp"
+            android:background="@android:color/transparent"
+            app:MvxBind="Click ChoosePictureCommand"/>
 
+        <ImageButton
+            android:src="@drawable/sendchatselected"
+            android:id="@+id/button_chatbox_send"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="fitCenter"
+            android:padding="10dp"
+            android:background="@android:color/transparent"/>
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

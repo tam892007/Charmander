@@ -13,5 +13,10 @@ namespace BdcMobile.Droid
             : base(javaReference, transfer)
         {
         }
+
+        public override void OnCreate()
+        {
+            base.OnCreate();
+        }
     }
 }
