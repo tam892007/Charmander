@@ -278,7 +278,6 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <AndroidResource Include="Resources\drawable\chatexternal.xml" />
   </ItemGroup>
   <ItemGroup>
