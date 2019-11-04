@@ -73,4 +73,6 @@
 		    android:layout_height="1dp"
 		    android:background="@color/colorPrimary" 
             android:layout_below="@+id/profileCircleImageView"/>
+    
+     
 </RelativeLayout>

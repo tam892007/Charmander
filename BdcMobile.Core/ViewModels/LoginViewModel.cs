@@ -20,8 +20,8 @@ namespace BdcMobile.Core.ViewModels
         {
             _loginService = loginService;
 
-            UserName = "lynt";
-            Password = "123456";
+            //UserName = "lynt";
+            //Password = "123456";
 
             if (App.User != null && !string.IsNullOrWhiteSpace(App.User.api_token))
             {
@@ -40,7 +40,7 @@ namespace BdcMobile.Core.ViewModels
 
         public override Task Initialize()
         {
-            var token = GetToken();
+            //var token = GetToken();
             return base.Initialize();
         }
 

@@ -56,7 +56,13 @@
                 local:MvxBind="ItemsSource Events; ItemClick NavigateToEventDetailsCommand"/>
 
         </MvvmCross.Droid.Support.V4.MvxSwipeRefreshLayout>
-        
+        <android.support.v4.widget.ContentLoadingProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+         android:layout_gravity="bottom"
+         android:layout_weight="1"
+        android:id="@+id/contentLoadingProgressBar1" 
+        android:visibility="visible"/>
     </LinearLayout>
     
 </RelativeLayout>
