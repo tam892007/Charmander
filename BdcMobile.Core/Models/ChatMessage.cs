@@ -16,7 +16,8 @@ namespace BdcMobile.Core.Models
         public string Content { get; set; }
         public int BelongingTo { get; set; }
         public int FileIndex { get; set; }
-        public int Type { get; set; }        
+        public int Type { get; set; }
+        public ChatType CType { get; set; }
         public string Func { get; set; }
         public string target { get; set; }
         public string CreateTime { get; set; }

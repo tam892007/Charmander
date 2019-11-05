@@ -18,7 +18,6 @@ namespace BdcMobile.Core.ViewModels
         private readonly IMvxPictureChooserTask _pictureChooserTask;
         public MvxObservableCollection<ChatMessage> ChatMessages { get; set; }
         private readonly IHttpService _networkService;
-        public ObservableCollection<ChatMessage> ChatMessages { get; set; }
         public int EventId { get; set; }
 
 
@@ -31,7 +30,7 @@ namespace BdcMobile.Core.ViewModels
 
         public override async Task Initialize()
         {
-            ChatMessages = new ObservableCollection<ChatMessage>();
+            ChatMessages = new MvxObservableCollection<ChatMessage>();
             var listChat = await _networkService.QueryChatAsync(App.User.api_token, EventId, Constants.ChatType.InternalChat);
             if(listChat != null && listChat.Count > 0)
             {
@@ -87,7 +86,7 @@ namespace BdcMobile.Core.ViewModels
         {
             var memoryStream = new MemoryStream();
             pictureStream.CopyTo(memoryStream);
-            ChatMessages.Add(new ChatMessage { PictureContent = memoryStream.ToArray(), IsFromMe = true, Type = ChatType.Picture });
+            ChatMessages.Add(new ChatMessage { PictureContent = memoryStream.ToArray(), IsFromMe = true, CType = ChatType.Picture });
 
             RaisePropertyChanged("ChatMessages");
         }
@@ -104,7 +103,7 @@ namespace BdcMobile.Core.ViewModels
 
         private async Task SendText()
         {
-            ChatMessages.Add(new ChatMessage { TextContent = "Hello It's Me!", IsFromMe = true, Type = ChatType.Text });
+            ChatMessages.Add(new ChatMessage { TextContent = "Hello It's Me!", IsFromMe = true, CType = ChatType.Text });
             await RaisePropertyChanged("ChatMessages");
         }
 
