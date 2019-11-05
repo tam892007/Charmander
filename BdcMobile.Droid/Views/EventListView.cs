@@ -1,8 +1,7 @@
 ﻿using Android.App;
 using Android.OS;
-using Android.Support.V7.Widget;
 using BdcMobile.Core.ViewModels;
-using BdcMobile.Droid.TemplateSelector;
+using BdcMobile.Droid.UIListenner;
 using MvvmCross.Droid.Support.V7.AppCompat;
 using MvvmCross.Droid.Support.V7.RecyclerView;
 using System;
@@ -23,13 +22,6 @@ namespace BdcMobile.Droid.Views
                 //Load more stuff here
                 await this.ViewModel.LoadMoreCommand.ExecuteAsync();
             };
-
-
-            
-
-
         }
-
-
     }
 }

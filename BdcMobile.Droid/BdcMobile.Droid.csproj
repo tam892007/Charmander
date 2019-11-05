@@ -69,7 +69,7 @@
     <Compile Include="SplashScreen.cs" />
     <Compile Include="TemplateSelector\InternalChatTemplateSelector.cs" />
     <Compile Include="Views\EventDetailsPictureGalleryView.cs" />
-    <Compile Include="TemplateSelector\RecyclerViewOnScrollListener.cs" />
+    <Compile Include="UIListenner\RecyclerViewOnScrollListener.cs" />
     <Compile Include="Views\EventDetailsExternalChatView.cs" />
     <Compile Include="Views\EventDetailsInternalChatView.cs" />
     <Compile Include="Views\EventDetailsView.cs" />
@@ -98,7 +98,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\" />
-    <Folder Include="Resources\drawable-nodpi\" />
     <Folder Include="Resources\menu\" />
     <Folder Include="Resources\mipmap-anydpi-v26\" />
   </ItemGroup>
@@ -300,6 +299,17 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-nodpi\place.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\chatCamerapicker.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\chatCameraPickerSelected.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\PictureMessageSent.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

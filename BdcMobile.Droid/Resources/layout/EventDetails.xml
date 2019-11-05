@@ -1,123 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/maincontent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:id="@+id/header"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:id="@+id/header"
+    <RelativeLayout
+        android:id="@+id/top"
+        android:paddingVertical="12dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <RelativeLayout
-            android:id="@+id/top"
-            android:paddingVertical="12dp"
-            android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary">
-            <ImageButton
-                android:id="@+id/btnBack"
+            android:src="@drawable/abc_ic_ab_back_material"
+            android:layout_centerVertical="true"
+            android:tint="#fff"
+            android:background="@android:color/transparent"
+            android:paddingHorizontal="18dp"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/btnBack"
+            android:orientation="vertical">
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/abc_ic_ab_back_material"
-                android:layout_centerVertical="true"
-                android:tint="#fff"
-                android:background="@android:color/transparent"
-                android:paddingHorizontal="18dp"/>
-            <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/btnBack"
-                    android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="19/09/2019/HCM/HN"
-                    android:textColor="#fff" 
-                    android:textSize="14sp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Maria Ozawa visitted Vietnam"
-                    android:textColor="#fff"
-                    android:textSize="14sp"/>
-            </LinearLayout>   
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/logo"
-                android:layout_alignParentRight="true"
-                android:layout_marginHorizontal="10dp"
+                android:text="19/09/2019/HCM/HN"
+                android:textColor="#fff"
+                android:textSize="14sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nam Phát 01 - Tổn thất sắt thép xây dựng"
+                android:textColor="#fff"
+                android:textSize="14sp"/>
+        </LinearLayout>
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/logo"
+            android:layout_alignParentRight="true"
+            android:layout_marginHorizontal="10dp"
                 />
-        </RelativeLayout>
+    </RelativeLayout>
 
-        <LinearLayout
-            android:id="@+id/body1"
-            android:paddingHorizontal="10dp"
-            android:background="@color/colorPrimary"
-            android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/body1"
+        android:paddingHorizontal="10dp"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Maria Ozawa visitted Vietnam"
-                android:textColor="#fff"
-                android:textSize="12sp"
-                android:layout_weight="0.6"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Created at 19/09/2019"
-                android:textColor="#fff"
-                android:textSize="12sp"
-                android:layout_weight="0.4"
-                android:gravity="right"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/body2"
-            android:paddingHorizontal="10dp"
-            android:paddingBottom="3dp"
-            android:background="@color/colorPrimary"
-            android:layout_width="match_parent"
+            android:text="GĐV: Nguyễn Văn A"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            android:layout_weight="0.6"/>
+        <TextView
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Jav Goddess"
-                android:textColor="#fff"
-                android:textSize="12sp"
-                android:layout_weight="0.6"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Pending"
-                android:textColor="#fff"
-                android:textSize="12sp"
-                android:layout_weight="0.4"
-                android:gravity="right"/>
-        </LinearLayout>
-
-        <android.support.v4.view.ViewPager
-                android:id="@+id/viewpager"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        </android.support.v4.view.ViewPager>
-        <android.support.design.widget.TabLayout
-                    android:id="@+id/tabs"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:tabIndicatorHeight="0dp"
-                    app:layout_scrollFlags="enterAlways"
-                    app:tabGravity="fill"
-                    app:tabMaxWidth="0dp"/>
+            android:text="Khởi tạo 19/09/2019"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            android:layout_weight="0.4"
+            android:gravity="right"/>
     </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+
+    <LinearLayout
+        android:id="@+id/body2"
+        android:paddingHorizontal="10dp"
+        android:paddingBottom="5dp"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="NYC: Công ty Bảo Việt - Hải Phòng"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            android:layout_weight="0.6"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Đang GĐHT"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            android:layout_weight="0.4"
+            android:gravity="right"/>
+    </LinearLayout>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <android.support.v4.view.ViewPager
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:id="@+id/viewpager"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        </android.support.v4.view.ViewPager>
+     </android.support.design.widget.CoordinatorLayout>
+    
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabIndicatorHeight="0dp"
+        app:layout_scrollFlags="enterAlways"
+        app:tabGravity="fill"
+        app:tabMaxWidth="0dp"/>
+</LinearLayout>

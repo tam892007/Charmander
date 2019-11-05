@@ -15,9 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Mono.Android">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\MonoAndroid\v9.0\Mono.Android.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Essentials">
       <HintPath>..\..\..\..\..\..\..\Microsoft\Xamarin\NuGet\xamarin.essentials\1.2.0\lib\monoandroid90\Xamarin.Essentials.dll</HintPath>
     </Reference>

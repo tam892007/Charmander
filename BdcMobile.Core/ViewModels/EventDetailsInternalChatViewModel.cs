@@ -13,7 +13,7 @@ namespace BdcMobile.Core.ViewModels
     public class EventDetailsInternalChatViewModel : MvxNavigationViewModel
     {
         private readonly IMvxPictureChooserTask _pictureChooserTask;
-        public List<ChatMessage> ChatMessages { get; set; }
+        public MvxObservableCollection<ChatMessage> ChatMessages { get; set; }
         public EventDetailsInternalChatViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService, IMvxPictureChooserTask mvxPictureChooserTask) : base(logProvider, navigationService)
         {
             _pictureChooserTask = mvxPictureChooserTask;
@@ -21,11 +21,11 @@ namespace BdcMobile.Core.ViewModels
 
         public override Task Initialize()
         {
-            ChatMessages = new List<ChatMessage>
-            {
-                new ChatMessage { Content = "Hello!", IsFromMe=true },
-                new ChatMessage { Content = "Hello!", IsFromMe=false },
-                new ChatMessage { Content = "Hello!", IsFromMe=true },
+            ChatMessages = new MvxObservableCollection<ChatMessage>
+            { 
+                new ChatMessage { TextContent = "Hello!", IsFromMe = true, Type = ChatType.Text },
+                new ChatMessage { TextContent = "Hello!", IsFromMe = false, Type = ChatType.Text },
+                new ChatMessage { TextContent = "Hello!", IsFromMe = true, Type = ChatType.Text},
             };
 
             return base.Initialize();
@@ -75,7 +75,25 @@ namespace BdcMobile.Core.ViewModels
         {
             var memoryStream = new MemoryStream();
             pictureStream.CopyTo(memoryStream);
-            Bytes = memoryStream.ToArray();
+            ChatMessages.Add(new ChatMessage { PictureContent = memoryStream.ToArray(), IsFromMe = true, Type = ChatType.Picture });
+
+            RaisePropertyChanged("ChatMessages");
+        }
+
+        private MvxAsyncCommand _sendTextCommand;
+        public MvxAsyncCommand SendTextCommand
+        {
+            get
+            {
+                _sendTextCommand = _sendTextCommand ?? new MvxAsyncCommand(SendText);
+                return _sendTextCommand;
+            }
+        }
+
+        private async Task SendText()
+        {
+            ChatMessages.Add(new ChatMessage { TextContent = "Hello It's Me!", IsFromMe = true, Type = ChatType.Text });
+            await RaisePropertyChanged("ChatMessages");
         }
     }
 }

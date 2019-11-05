@@ -6,7 +6,15 @@ namespace BdcMobile.Core.Models
 {
     public class ChatMessage
     {
-        public string Content { get; set; }
+        public string TextContent { get; set; }
+        public byte [] PictureContent { get; set; }
         public bool IsFromMe { get; set; }
+        public ChatType Type { get; set; }
+    }
+
+    public enum ChatType
+    {
+        Text,
+        Picture,
     }
 }

@@ -9,22 +9,31 @@ namespace BdcMobile.Droid.TemplateSelector
 
         public int GetItemViewType(object item)
         {
-            if (item is ChatMessage) 
+            var msg = item as ChatMessage;
+            if (msg == null)
             {
-                return (item as ChatMessage).IsFromMe ? 1 : 2;
+                return -1;
             }
 
-            return -1;
+            switch (msg.Type)
+            {
+                case ChatType.Text: return msg.IsFromMe ? 1 : 2;
+                case ChatType.Picture: return msg.IsFromMe ? 3 : 4;
+
+                default: return -1;
+            }
         }
 
         public int GetItemLayoutId(int viewType)
         {
-            if (viewType == 1)
-                return Resource.Layout.ItemMessageSent;
-            if (viewType == 2)
-                return Resource.Layout.ItemMessageReceived;
+            switch(viewType)
+            {
+                case 1: return Resource.Layout.ItemMessageSent;
+                case 2: return Resource.Layout.ItemMessageReceived;
+                case 3: return Resource.Layout.PictureMessageSent;
 
-            return ItemTemplateId;
+                default: return -1;
+            }
         }
     }
 }
