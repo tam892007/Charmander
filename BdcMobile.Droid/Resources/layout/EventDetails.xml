@@ -22,7 +22,8 @@
             android:layout_centerVertical="true"
             android:tint="#fff"
             android:background="@android:color/transparent"
-            android:paddingHorizontal="18dp"/>
+            android:paddingHorizontal="18dp"
+            app:MvxBind="Click GoBackCommand"/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -33,21 +34,24 @@
                 android:layout_height="wrap_content"
                 android:text="19/09/2019/HCM/HN"
                 android:textColor="#fff"
-                android:textSize="14sp"/>
+                android:textSize="14sp"
+                app:MvxBind="Text SurveyNo"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nam Phát 01 - Tổn thất sắt thép xây dựng"
                 android:textColor="#fff"
-                android:textSize="14sp"/>
+                android:textSize="14sp"
+                app:MvxBind="Text SurveyDescription"/>
         </LinearLayout>
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/logo"
+        
+        <ffimageloading.cross.MvxCachedImageView
+            android:id="@+id/profileCircleImageView"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_alignParentRight="true"
-            android:layout_marginHorizontal="10dp"
-                />
+            android:padding="10dp"
+            app:MvxBind="LoadingPlaceholderImagePath 'res:place.jpg'; ErrorPlaceholderImagePath 'res:place.jpg'; Transformations CircleTransformation; DownsampleWidth DownsampleWidth;ImagePath ImageURL" />
     </RelativeLayout>
 
     <LinearLayout
@@ -63,7 +67,8 @@
             android:text="GĐV: Nguyễn Văn A"
             android:textColor="#fff"
             android:textSize="12sp"
-            android:layout_weight="0.6"/>
+            android:layout_weight="0.6"
+            app:MvxBind="Text PartnerName"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -71,7 +76,8 @@
             android:textColor="#fff"
             android:textSize="12sp"
             android:layout_weight="0.4"
-            android:gravity="right"/>
+            android:gravity="right"
+            app:MvxBind="Text TOR"/>
     </LinearLayout>
 
     <LinearLayout
@@ -88,7 +94,8 @@
             android:text="NYC: Công ty Bảo Việt - Hải Phòng"
             android:textColor="#fff"
             android:textSize="12sp"
-            android:layout_weight="0.6"/>
+            android:layout_weight="0.6"
+            app:MvxBind="Text PlaceOfSurvey"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -96,7 +103,8 @@
             android:textColor="#fff"
             android:textSize="12sp"
             android:layout_weight="0.4"
-            android:gravity="right"/>
+            android:gravity="right"
+            app:MvxBind="Text Status"/>
     </LinearLayout>
 
     <android.support.design.widget.CoordinatorLayout
