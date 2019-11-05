@@ -7,7 +7,7 @@ namespace BdcMobile.Core.Models
 {
     public class Event
     {
-        public string SurveyID { get; set; }
+        public int SurveyID { get; set; }
 
         private string _surveyNo { get; set; }
         public string SurveyNo
@@ -37,6 +37,7 @@ namespace BdcMobile.Core.Models
             {
                 if (string.IsNullOrWhiteSpace(InspectorImage))
                 {
+                    // TODO: Remove later
                     return "http://103.47.192.239:81/public/Uploads/HR/EMPLOYEE_IMAGE/6_MR_2019-04-03_07-54-10.jpg";
                 }
                 else

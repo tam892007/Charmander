@@ -116,7 +116,8 @@
                 android:textSize="12sp"
                 android:buttonTint="@color/colorPrimary"      
                 android:textColor="@color/colorPrimary"
-                android:text="Remember Password"                 
+                android:text="Remember Password"  
+                local:MvxBind="Checked IsChecked"
             />
            
             

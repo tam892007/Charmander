@@ -72,5 +72,38 @@ namespace BdcMobile.Core.Services.Implementations
             }
             return null;
         }
+
+        /// <summary>
+        /// Query all Chat in of a event
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="eventID"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public async Task<List<ChatMessage>> QueryChatAsync(string token, int eventID, int type)
+        {
+            //var fromdatestr = fromdate == null ? string.Empty: string.Format("{0:ddMMyyyy}", fromdate);
+            //var todatestr = todate == null ? string.Empty : string.Format("{0:ddMMyyyy}", todate);
+
+            string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.GetChatAPI, token, eventID, type);
+            var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "GET");
+            if (apiResponse.Length > 25)
+            {
+                try
+                {
+                    var r = JsonConvert.DeserializeObject(apiResponse);
+                    var result = JsonConvert.DeserializeObject<ListChatMessageResponseModel>(apiResponse);
+                    return result.data;
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+            return null;
+        }
+
+
+
     }
 }

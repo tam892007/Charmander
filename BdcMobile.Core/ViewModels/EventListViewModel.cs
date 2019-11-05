@@ -13,6 +13,7 @@ namespace BdcMobile.Core.ViewModels
     public class EventListViewModel : MvxNavigationViewModel
     {
         public static int RecordPerPage { get; set; }
+
         private readonly IEventService _eventService;
 
 
@@ -97,7 +98,7 @@ namespace BdcMobile.Core.ViewModels
         private async Task NavigateToEventDetails(Event e)
         {
             // Implement your logic here.
-            await NavigationService.Navigate<EventDetailsViewModel>();
+            await NavigationService.Navigate<EventDetailsViewModel, Event>(e);
         }
     }
 }

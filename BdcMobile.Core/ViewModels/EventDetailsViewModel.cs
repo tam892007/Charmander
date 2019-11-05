@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace BdcMobile.Core.ViewModels
 {
-    public class EventDetailsViewModel : MvxNavigationViewModel
+    public class EventDetailsViewModel : MvxNavigationViewModel<Event>
     {
+        public int EventId { get; set; }
         public IMvxAsyncCommand ShowInitialViewModelsCommand { get; private set; }
 
         public EventDetailsViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService) : base(logProvider, navigationService)
@@ -21,10 +22,15 @@ namespace BdcMobile.Core.ViewModels
         {
             await Task.WhenAll(new List<Task>
             {
-                NavigationService.Navigate<EventDetailsInternalChatViewModel>(),
+                NavigationService.Navigate<EventDetailsInternalChatViewModel, int>(EventId),
                 NavigationService.Navigate<EventDetailsExternalChatViewModel>(),
                 NavigationService.Navigate<EventDetailsPictureGalleryViewModel>(),
             });
+        }
+
+        public override void Prepare(Event parameter)
+        {
+            EventId = parameter.SurveyID;
         }
     }
 }

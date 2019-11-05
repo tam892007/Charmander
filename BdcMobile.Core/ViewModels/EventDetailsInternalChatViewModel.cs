@@ -1,34 +1,46 @@
-﻿using BdcMobile.Core.Models;
+﻿using BdcMobile.Core.Commons;
+using BdcMobile.Core.Models;
+using BdcMobile.Core.Services.Interfaces;
 using MvvmCross.Commands;
 using MvvmCross.Logging;
 using MvvmCross.Navigation;
 using MvvmCross.Plugin.PictureChooser;
 using MvvmCross.ViewModels;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 
 namespace BdcMobile.Core.ViewModels
 {
-    public class EventDetailsInternalChatViewModel : MvxNavigationViewModel
+    public class EventDetailsInternalChatViewModel : MvxNavigationViewModel<int>
     {
         private readonly IMvxPictureChooserTask _pictureChooserTask;
         public MvxObservableCollection<ChatMessage> ChatMessages { get; set; }
-        public EventDetailsInternalChatViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService, IMvxPictureChooserTask mvxPictureChooserTask) : base(logProvider, navigationService)
+        private readonly IHttpService _networkService;
+        public ObservableCollection<ChatMessage> ChatMessages { get; set; }
+        public int EventId { get; set; }
+
+
+        public EventDetailsInternalChatViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService, IMvxPictureChooserTask mvxPictureChooserTask, IHttpService networkService) 
+            : base(logProvider, navigationService)
         {
             _pictureChooserTask = mvxPictureChooserTask;
+            _networkService = networkService;
         }
 
-        public override Task Initialize()
+        public override async Task Initialize()
         {
-            ChatMessages = new MvxObservableCollection<ChatMessage>
-            { 
-                new ChatMessage { TextContent = "Hello!", IsFromMe = true, Type = ChatType.Text },
-                new ChatMessage { TextContent = "Hello!", IsFromMe = false, Type = ChatType.Text },
-                new ChatMessage { TextContent = "Hello!", IsFromMe = true, Type = ChatType.Text},
-            };
-
-            return base.Initialize();
+            ChatMessages = new ObservableCollection<ChatMessage>();
+            var listChat = await _networkService.QueryChatAsync(App.User.api_token, EventId, Constants.ChatType.InternalChat);
+            if(listChat != null && listChat.Count > 0)
+            {
+                foreach(var chat in listChat)
+                {
+                    ChatMessages.Add(chat);
+                }
+            }
+            await base.Initialize();
         }
 
         private MvxCommand _takePictureCommand;
@@ -94,6 +106,11 @@ namespace BdcMobile.Core.ViewModels
         {
             ChatMessages.Add(new ChatMessage { TextContent = "Hello It's Me!", IsFromMe = true, Type = ChatType.Text });
             await RaisePropertyChanged("ChatMessages");
+        }
+
+        public override void Prepare(int parameter)
+        {
+            EventId = parameter;
         }
     }
 }

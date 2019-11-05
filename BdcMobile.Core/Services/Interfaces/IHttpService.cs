@@ -30,5 +30,14 @@ namespace BdcMobile.Core.Services.Interfaces
         /// <param name="todate"></param>
         /// <returns></returns>
         Task<List<Event>> QueryEventAsync(string token, DateTime? fromdate, DateTime? todate, int currentPage, int recpordPerPage);
+
+        /// <summary>
+        /// Query all Chat in of a event
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="eventID"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        Task<List<ChatMessage>> QueryChatAsync(string token, int eventID, int type);
     }
 }
