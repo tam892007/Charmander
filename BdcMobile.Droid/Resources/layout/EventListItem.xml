@@ -4,14 +4,14 @@
     xmlns:local="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <ffimageloading.cross.MvxCachedImageView
+    <ffimageloading.cross.MvxSvgCachedImageView
             android:id="@+id/profileCircleImageView"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_centerVertical="true"
-            android:src = "res:place.jpg"
-            android:padding="10dp"
-            local:MvxBind="LoadingPlaceholderImagePath 'res:place.jpg'; ErrorPlaceholderImagePath 'res:boss.svg'; Transformations CircleTransformation; DownsampleWidth DownsampleWidth;ImagePath ImageURL" />
+            android:src="@drawable/boss"
+            android:padding="7dp"
+            local:MvxBind="LoadingPlaceholderImagePath 'boss.svg'; ErrorPlaceholderImagePath 'boss.svg'; Transformations CircleTransformation; DownsampleWidth DownsampleWidth;ImagePath ImageURL" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

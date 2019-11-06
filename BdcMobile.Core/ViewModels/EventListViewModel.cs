@@ -36,15 +36,15 @@ namespace BdcMobile.Core.ViewModels
            
             var token = App.User.api_token;
             RecordPerPage = 20;
-            var newEvents = await _eventService.QueryEventAsync(token, null, null, 1, RecordPerPage);
-            if (Events == null)
-            {
-                Events = new ObservableCollection<Event>();
-            }
-            foreach (var ev in newEvents)
-            {
-                Events.Add(ev);
-            }
+            //var newEvents = await _eventService.QueryEventAsync(token, null, null, 1, RecordPerPage);
+            //if (Events == null)
+            //{
+            //    Events = new ObservableCollection<Event>();
+            //}
+            //foreach (var ev in newEvents)
+            //{
+            //    Events.Add(ev);
+            //}
             await RefreshCommand.ExecuteAsync();
 
             await base.Initialize();
