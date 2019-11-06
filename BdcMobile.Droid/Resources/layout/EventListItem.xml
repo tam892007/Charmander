@@ -9,8 +9,9 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_centerVertical="true"
+            android:src = "res:place.jpg"
             android:padding="10dp"
-            local:MvxBind="LoadingPlaceholderImagePath 'res:place.jpg'; ErrorPlaceholderImagePath 'res:place.jpg'; Transformations CircleTransformation; DownsampleWidth DownsampleWidth;ImagePath ImageURL" />
+            local:MvxBind="LoadingPlaceholderImagePath 'res:place.jpg'; ErrorPlaceholderImagePath 'res:boss.svg'; Transformations CircleTransformation; DownsampleWidth DownsampleWidth;ImagePath ImageURL" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

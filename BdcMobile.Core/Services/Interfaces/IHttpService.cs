@@ -39,5 +39,34 @@ namespace BdcMobile.Core.Services.Interfaces
         /// <param name="type"></param>
         /// <returns></returns>
         Task<List<ChatMessage>> QueryChatAsync(string token, int eventID, int type);
+
+        /// <summary>
+        /// send chat message to server
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="eventID"></param>
+        /// <param name="type"></param>
+        /// <param name="message"></param>
+        /// <param name="chat"></param>
+        /// <param name="belongingTo"></param>
+        /// <returns></returns>
+        Task SendChatAsync(string token, int eventID, int type, string message, int chat, int belongingTo);
+
+        /// <summary>
+        /// Get All file of Event
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="eventID"></param>
+        /// <returns></returns>
+        Task QueryAllFilesAsync(string token, int eventID);
+
+        /// <summary>
+        /// Get Notifications
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="page"></param>
+        /// <param name="recordPerPage"></param>
+        /// <returns></returns>
+        Task<List<Notification>> QueryNotificationAsync(string token, int page, int recordPerPage);
     }
 }

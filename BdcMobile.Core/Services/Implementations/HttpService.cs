@@ -12,6 +12,11 @@ namespace BdcMobile.Core.Services.Implementations
 {
     public class HttpService: IHttpService
     {        
+        /// <summary>
+        /// Login function
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public async Task<User> LoginAsync(User user)
         {
             string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.UserLoginAPI, user.AccountName, user.Password);
@@ -103,7 +108,19 @@ namespace BdcMobile.Core.Services.Implementations
             return null;
         }
 
+        public Task SendChatAsync(string token, int eventID, int type, string message, int chat, int belongingTo)
+        {
+            throw new NotImplementedException();
+        }
 
+        public Task QueryAllFilesAsync(string token, int eventID)
+        {
+            throw new NotImplementedException();
+        }
 
+        public Task<List<Notification>> QueryNotificationAsync(string token, int page, int recordPerPage)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
