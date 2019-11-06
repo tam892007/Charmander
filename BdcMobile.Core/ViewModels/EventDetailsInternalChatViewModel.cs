@@ -6,6 +6,7 @@ using MvvmCross.Logging;
 using MvvmCross.Navigation;
 using MvvmCross.Plugin.PictureChooser;
 using MvvmCross.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -19,6 +20,7 @@ namespace BdcMobile.Core.ViewModels
         public MvxObservableCollection<ChatMessage> ChatMessages { get; set; }
         private readonly IHttpService _networkService;
         public int EventId { get; set; }
+        public string Message { get; set; }
 
 
         public EventDetailsInternalChatViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService, IMvxPictureChooserTask mvxPictureChooserTask, IHttpService networkService) 
@@ -31,14 +33,17 @@ namespace BdcMobile.Core.ViewModels
         public override async Task Initialize()
         {
             ChatMessages = new MvxObservableCollection<ChatMessage>();
-            var listChat = await _networkService.QueryChatAsync(App.User.api_token, EventId, Constants.ChatType.InternalChat);
-            if(listChat != null && listChat.Count > 0)
-            {
-                foreach(var chat in listChat)
-                {
-                    ChatMessages.Add(chat);
-                }
-            }
+            await LoadChatMessages();
+            //var listChat = _networkService.QueryChat(App.User.api_token, EventId, Constants.ChatType.InternalChat);
+            //if(listChat != null && listChat.Count > 0)
+            //{
+            //    foreach(var chat in listChat)
+            //    {
+            //        chat.IsFromMe = chat.UserID == App.User.ID;
+            //        ChatMessages.Add(chat);
+            //    }
+            //}
+
             await base.Initialize();
         }
 
@@ -96,14 +101,43 @@ namespace BdcMobile.Core.ViewModels
         {
             get
             {
-                _sendTextCommand = _sendTextCommand ?? new MvxAsyncCommand(SendText);
+                _sendTextCommand = _sendTextCommand ?? new MvxAsyncCommand(async () => await SendText());
                 return _sendTextCommand;
             }
-        }
+        }        
 
         private async Task SendText()
         {
-            ChatMessages.Add(new ChatMessage { TextContent = "Hello It's Me!", IsFromMe = true, CType = ChatType.Text });
+            try
+            {
+                var token = App.User.api_token;
+                var chatmessage = new ChatMessage { Content = Message, IsFromMe = true, CType = ChatType.Text };
+                ChatMessages.Add(chatmessage);
+                Message = string.Empty;
+                await RaisePropertyChanged("Message");
+                await RaisePropertyChanged("ChatMessages");
+                var chatId = await _networkService.SendChatAsync(token, EventId, Constants.ChatType.InternalChat, chatmessage.Content, 0, App.User.ID);
+                chatmessage.ChatID = chatId;
+                //chatmessage.Content += " sent";
+                await RaisePropertyChanged("ChatMessages");
+            }
+            catch(Exception ex)
+            {
+
+            }
+        }
+
+        private async Task LoadChatMessages()
+        {
+            var listChat = await _networkService.QueryChatAsync(App.User.api_token, EventId, Constants.ChatType.InternalChat);
+            if (listChat != null && listChat.Count > 0)
+            {
+                foreach (var chat in listChat)
+                {
+                    chat.IsFromMe = chat.UserID == App.User.ID;
+                    ChatMessages.Add(chat);                   
+                }
+            }
             await RaisePropertyChanged("ChatMessages");
         }
 

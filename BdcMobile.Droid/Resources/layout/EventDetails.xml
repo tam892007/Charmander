@@ -24,6 +24,7 @@
             android:background="@android:color/transparent"
             android:paddingHorizontal="18dp"
             app:MvxBind="Click GoBackCommand"/>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -44,14 +45,15 @@
                 android:textSize="14sp"
                 app:MvxBind="Text SurveyDescription"/>
         </LinearLayout>
-        
-        <ffimageloading.cross.MvxCachedImageView
+        <ffimageloading.cross.MvxSvgCachedImageView
             android:id="@+id/profileCircleImageView"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_alignParentRight="true"
-            android:padding="10dp"
-            app:MvxBind="LoadingPlaceholderImagePath 'res:place.jpg'; ErrorPlaceholderImagePath 'res:place.jpg'; Transformations CircleTransformation; DownsampleWidth DownsampleWidth;ImagePath ImageURL" />
+            android:src="@drawable/boss"
+            android:padding="7dp"
+            app:MvxBind="LoadingPlaceholderImagePath 'boss.svg'; ErrorPlaceholderImagePath 'boss.svg'; Transformations CircleTransformation; DownsampleWidth DownsampleWidth;ImagePath ImageURL" />
+        
     </RelativeLayout>
 
     <LinearLayout

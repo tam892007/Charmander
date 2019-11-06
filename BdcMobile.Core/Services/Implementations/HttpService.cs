@@ -108,9 +108,49 @@ namespace BdcMobile.Core.Services.Implementations
             return null;
         }
 
-        public Task SendChatAsync(string token, int eventID, int type, string message, int chat, int belongingTo)
+        /// <summary>
+        /// Query all Chat in of a event
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="eventID"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public List<ChatMessage> QueryChat(string token, int eventID, int type)
         {
-            throw new NotImplementedException();
+            string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.GetChatAPI, token, eventID, type);
+            var apiResponse = NetWorkUtility.MakeRequestSync(apiUrl, "GET");
+            if (apiResponse.Length > 25)
+            {
+                try
+                {
+                    var r = JsonConvert.DeserializeObject(apiResponse);
+                    var result = JsonConvert.DeserializeObject<ListChatMessageResponseModel>(apiResponse);
+                    return result.data;
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// "api/send-chat?api_token={0}&surveyID={1}&&type={2}&content={3}&file=&belongingTo={4}"
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="eventID"></param>
+        /// <param name="type"></param>
+        /// <param name="message"></param>
+        /// <param name="chat"></param>
+        /// <param name="belongingTo"></param>
+        /// <returns></returns>
+        public async Task<int> SendChatAsync(string token, int eventID, int type, string message, int chat, int belongingTo)
+        {
+            string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.SendChatAPI, token, eventID, type, message, 0);
+            var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "POST");
+
+            return 1;
         }
 
         public Task QueryAllFilesAsync(string token, int eventID)

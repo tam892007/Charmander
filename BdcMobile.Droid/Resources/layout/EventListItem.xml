@@ -10,7 +10,7 @@
             android:layout_height="60dp"
             android:layout_centerVertical="true"
             android:src="@drawable/boss"
-            android:padding="7dp"
+            android:padding="10dp"
             local:MvxBind="LoadingPlaceholderImagePath 'boss.svg'; ErrorPlaceholderImagePath 'boss.svg'; Transformations CircleTransformation; DownsampleWidth DownsampleWidth;ImagePath ImageURL" />
     <LinearLayout
         android:layout_width="match_parent"

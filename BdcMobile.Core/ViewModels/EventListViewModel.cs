@@ -25,7 +25,7 @@ namespace BdcMobile.Core.ViewModels
             RefreshCommand = new MvxAsyncCommand(async () => await ExecuteRefreshCommand());
         }
 
-        public ObservableCollection<Event> Events { get; set; }
+        public MvxObservableCollection<Event> Events { get; set; }
 
 
         public IMvxAsyncCommand<Event> NavigateToEventDetailsCommand { get; private set; }
@@ -65,21 +65,21 @@ namespace BdcMobile.Core.ViewModels
             // do refresh work here
             var token = App.User.api_token;
             var newEvents = await _eventService.QueryEventAsync(token, null, null, 1, RecordPerPage);            
-            Events = new ObservableCollection<Event>();            
+            Events = new MvxObservableCollection<Event>();            
             foreach(var ev in newEvents)
             {
                 Events.Add(ev);
             }
-            
-            _ = this.RaisePropertyChanged("Events");
+            await this.RaisePropertyChanged("Events");
             IsBusy = false;
         }
 
         private async Task LoadMore()
         {
+            IsBusy = true;
             if (Events == null)
             {
-                Events = new ObservableCollection<Event>();
+                Events = new MvxObservableCollection<Event>();
             }
             var token = App.User.api_token;
             var currentItemCount = Events == null ? 0 : Events.Count;
@@ -91,9 +91,10 @@ namespace BdcMobile.Core.ViewModels
                 foreach (var ev in newEvents)
                 {
                     Events.Add(ev);
+                    await this.RaisePropertyChanged("Events");
                 }
             }
-            await this.RaisePropertyChanged("Events");
+            IsBusy = false;
         }
         private async Task NavigateToEventDetails(Event e)
         {

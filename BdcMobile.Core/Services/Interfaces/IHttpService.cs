@@ -32,13 +32,22 @@ namespace BdcMobile.Core.Services.Interfaces
         Task<List<Event>> QueryEventAsync(string token, DateTime? fromdate, DateTime? todate, int currentPage, int recpordPerPage);
 
         /// <summary>
-        /// Query all Chat in of a event
+        /// Query all Chat in of a event Synchronize
         /// </summary>
         /// <param name="token"></param>
         /// <param name="eventID"></param>
         /// <param name="type"></param>
         /// <returns></returns>
         Task<List<ChatMessage>> QueryChatAsync(string token, int eventID, int type);
+
+        /// <summary>
+        /// Query all Chat in of a event
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="eventID"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        List<ChatMessage> QueryChat(string token, int eventID, int type);
 
         /// <summary>
         /// send chat message to server
@@ -50,7 +59,7 @@ namespace BdcMobile.Core.Services.Interfaces
         /// <param name="chat"></param>
         /// <param name="belongingTo"></param>
         /// <returns></returns>
-        Task SendChatAsync(string token, int eventID, int type, string message, int chat, int belongingTo);
+        Task<int> SendChatAsync(string token, int eventID, int type, string message, int chat, int belongingTo);
 
         /// <summary>
         /// Get All file of Event
