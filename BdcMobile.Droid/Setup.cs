@@ -11,7 +11,7 @@ namespace BdcMobile.Core
         protected override void InitializeFirstChance()
         {
             base.InitializeFirstChance();
-            Mvx.IoCProvider.RegisterType<ICloudMessaging>(() => new FirebaseCloudMessaging(ApplicationContext));
+            Mvx.IoCProvider.RegisterType<ICloudMessaging>(() => new FirebaseCloudMessaging());
         }
     }
 }

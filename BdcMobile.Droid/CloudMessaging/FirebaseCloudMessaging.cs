@@ -7,9 +7,11 @@ using Android.Support.V4.App;
 using BdcMobile.Core.Commons;
 using BdcMobile.Core.Models;
 using BdcMobile.Core.Services.Interfaces;
+using BdcMobile.Droid.Views;
 using Firebase.Messaging;
 using MvvmCross;
 using MvvmCross.Plugin.Messenger;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Notification = BdcMobile.Core.Models.Notification;
@@ -20,8 +22,6 @@ namespace BdcMobile.Droid.CloudMessaging
     [IntentFilter(new[] { "com.google.firebase.MESSAGING_EVENT" })]
     public class FirebaseCloudMessaging : FirebaseMessagingService, ICloudMessaging
     {
-        private Context _context;
-
         private static IMvxMessenger _messenger;
 
         private static Dictionary<Guid, MvxSubscriptionToken> _subscriptionToken;
@@ -29,11 +29,6 @@ namespace BdcMobile.Droid.CloudMessaging
         public FirebaseCloudMessaging() : base()
         {
             
-        }
-
-        public FirebaseCloudMessaging(Context context) : base()
-        {
-            _context = context;
         }
 
         public void Initialize()
@@ -54,7 +49,7 @@ namespace BdcMobile.Droid.CloudMessaging
                 Description = Constants.AppConfig.FCMChannelDesc
             };
 
-            var notificationManager = (NotificationManager)_context.GetSystemService(NotificationService);
+            var notificationManager = (NotificationManager)Application.Context.GetSystemService(NotificationService);
             notificationManager.CreateNotificationChannel(channel);
 
             _messenger = _messenger ?? Mvx.IoCProvider.Resolve<IMvxMessenger>();
@@ -78,8 +73,9 @@ namespace BdcMobile.Droid.CloudMessaging
                 .SetContentText(notification.Content)
                 .SetSmallIcon(Resource.Drawable.ic_stat_bdc)
                 .SetLargeIcon(BitmapFactory.DecodeResource(Resources, Resource.Mipmap.ic_launcher))
-                //.SetContentIntent()
+                .SetContentIntent(GetPendingIntent(notification))
                 .SetPriority(NotificationCompat.PriorityHigh)
+                .SetAutoCancel(true)
                 .Build();
 
             var notificationManager = NotificationManagerCompat.From(Application.Context);
@@ -96,6 +92,23 @@ namespace BdcMobile.Droid.CloudMessaging
                 Content = message.Data["content"],
                 Type = Enum.Parse<NotificationType>(message.Data["type"]),
             };
+        }
+
+        private PendingIntent GetPendingIntent(Notification notification)
+        {
+            Intent intent = null;
+            switch (notification.Type)
+            {
+                case NotificationType.NewChat:
+                    intent = new Intent(Application.Context, typeof(SplashScreen));
+                    intent.AddFlags(ActivityFlags.SingleTop);
+                    intent.PutExtra(Constants.AppConfig.FCMExtraName, JsonConvert.SerializeObject(notification));
+                    return PendingIntent.GetActivity(Application.Context, 0, intent, PendingIntentFlags.UpdateCurrent);
+                default:
+                    intent = new Intent(Intent.ActionView);
+                    intent.SetData(Android.Net.Uri.Parse("http://google.com"));
+                    return PendingIntent.GetActivity(Application.Context, 0, intent, PendingIntentFlags.UpdateCurrent);
+            }
         }
 
         public void Publish(Notification notification)

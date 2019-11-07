@@ -22,7 +22,7 @@ namespace BdcMobile.Core.ViewModels
         public void OnReceiveNotification(Notification notification)
         {
             Notifications.Add(notification);
-            RaisePropertyChanged("Notifications");
+            RaisePropertyChanged(nameof(Notifications));
         }
     }
 }

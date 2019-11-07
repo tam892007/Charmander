@@ -67,11 +67,12 @@ namespace BdcMobile.Core.ViewModels
             // do refresh work here
             var token = App.User.api_token;
             var newEvents = await _eventService.QueryEventAsync(token, null, null, 1, RecordPerPage);            
-            Events = new MvxObservableCollection<Event>();            
-            foreach(var ev in newEvents)
+            Events = new MvxObservableCollection<Event>();
+            if (newEvents != null)
             {
-                Events.Add(ev);
+                Events.AddRange(newEvents);
             }
+
             await this.RaisePropertyChanged("Events");
             IsBusy = false;
         }
