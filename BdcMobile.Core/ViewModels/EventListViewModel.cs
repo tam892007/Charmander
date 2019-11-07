@@ -22,12 +22,14 @@ namespace BdcMobile.Core.ViewModels
             NavigateToEventDetailsCommand = new MvxAsyncCommand<Event>(async (e) => await NavigateToEventDetails(e));
             LoadMoreCommand = new MvxAsyncCommand(async () => await LoadMore());
             RefreshCommand = new MvxAsyncCommand(async () => await ExecuteRefreshCommand());
+            NavigateToNotificationListCommand = new MvxAsyncCommand(async (e) => await NavigateToNotificationList());
         }
 
         public ObservableCollection<Event> Events { get; set; }
 
 
         public IMvxAsyncCommand<Event> NavigateToEventDetailsCommand { get; private set; }
+        public IMvxAsyncCommand NavigateToNotificationListCommand { get; private set; }
         public IMvxAsyncCommand LoadMoreCommand { get; private set; }
         public IMvxAsyncCommand RefreshCommand { get; private set; }
         public override async Task Initialize()
@@ -98,6 +100,12 @@ namespace BdcMobile.Core.ViewModels
         {
             // Implement your logic here.
             await NavigationService.Navigate<EventDetailsViewModel>();
+        }
+
+        private async Task NavigateToNotificationList()
+        {
+            // Implement your logic here.
+            await NavigationService.Navigate<NotificationListViewModel>();
         }
     }
 }

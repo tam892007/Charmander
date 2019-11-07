@@ -1,0 +1,45 @@
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ffimageloading.cross.MvxCachedImageView
+            android:id="@+id/profileCircleImageView"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="10dp"
+            android:src="@drawable/logo"/>
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:layout_toRightOf="@+id/profileCircleImageView">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="#000"
+            local:MvxBind="Text Title"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+            local:MvxBind="Text Content"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="11/06/2019 20:12"
+                android:textSize="8sp"
+                android:layout_gravity="right"
+        />
+    </LinearLayout>
+    <View
+		    android:layout_width="match_parent"
+		    android:layout_height="1dp"
+		    android:background="@color/lighter_gray" 
+            android:layout_below="@+id/content"/>
+</RelativeLayout>

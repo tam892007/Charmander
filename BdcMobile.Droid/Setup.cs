@@ -1,7 +1,8 @@
 using BdcMobile.Core.Services.Interfaces;
-using BdcMobile.Droid;
+using BdcMobile.Droid.CloudMessaging;
 using MvvmCross;
 using MvvmCross.Droid.Support.V7.AppCompat;
+using MvvmCross.Plugin.Messenger;
 
 namespace BdcMobile.Core
 {
@@ -10,7 +11,7 @@ namespace BdcMobile.Core
         protected override void InitializeFirstChance()
         {
             base.InitializeFirstChance();
-            Mvx.IoCProvider.RegisterSingleton<ICloudMessaging>(new FirebaseCloudMessaging(ApplicationContext));
+            Mvx.IoCProvider.RegisterType<ICloudMessaging>(() => new FirebaseCloudMessaging(ApplicationContext));
         }
     }
 }
