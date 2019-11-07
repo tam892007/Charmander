@@ -2,7 +2,7 @@
 {
     public class User
     {
-        public string ID { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string AccountName { get; set; }
@@ -13,7 +13,11 @@
         public string CreateTime { get; set; }
         public bool IsAuthenticated { get; set; }
         public string ErrorMessage { get; set; }
-            
+
+       
+
+        
+
     }
 
     public class LoginResponseModel

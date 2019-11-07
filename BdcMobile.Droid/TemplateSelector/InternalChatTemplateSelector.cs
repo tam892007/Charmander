@@ -15,7 +15,7 @@ namespace BdcMobile.Droid.TemplateSelector
                 return -1;
             }
 
-            switch (msg.Type)
+            switch (msg.CType)
             {
                 case ChatType.Text: return msg.IsFromMe ? 1 : 2;
                 case ChatType.Picture: return msg.IsFromMe ? 3 : 4;
