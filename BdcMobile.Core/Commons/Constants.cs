@@ -31,6 +31,7 @@ namespace BdcMobile.Core.Commons
         {
             public static string Username = "Username";
             public static string Password = "Password";
+            public static string OAuthToken = "oauth_token";
         }
 
         public static class ChatType

@@ -9,6 +9,7 @@ namespace BdcMobile.Core
 {
     public class App: MvxApplication
     {
+        private static User _user;
         public static User User
         {
             get
@@ -21,8 +22,6 @@ namespace BdcMobile.Core
                 _user = value;
             }
         }
-        private static User _user;
-
         
         public override void Initialize()
         {

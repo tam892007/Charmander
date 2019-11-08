@@ -61,6 +61,7 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bindings\DroidVisibilityBinding.cs" />
     <Compile Include="CloudMessaging\FirebaseCloudMessaging.cs" />
     <Compile Include="CloudMessaging\NotificationMessage.cs" />
     <Compile Include="MainApplication.cs" />
@@ -80,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <GoogleServicesJson Include="google-services.json" />
+    <AndroidAsset Include="Assets\loading.json" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
@@ -99,11 +101,13 @@
     <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher_round.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Assets\" />
     <Folder Include="Resources\menu\" />
     <Folder Include="Resources\mipmap-anydpi-v26\" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Com.Airbnb.Android.Lottie">
+      <Version>3.0.5</Version>
+    </PackageReference>
     <PackageReference Include="MvvmCross">
       <Version>6.4.1</Version>
     </PackageReference>
