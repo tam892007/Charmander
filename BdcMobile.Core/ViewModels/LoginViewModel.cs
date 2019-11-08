@@ -1,4 +1,6 @@
-﻿using BdcMobile.Core.Commons;
+﻿using Android.Content;
+using Android.Views.InputMethods;
+using BdcMobile.Core.Commons;
 using BdcMobile.Core.Services.Interfaces;
 using MvvmCross.Commands;
 using MvvmCross.Logging;
