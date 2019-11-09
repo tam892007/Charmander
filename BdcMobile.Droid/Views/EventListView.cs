@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using Android.OS;
+using Android.Widget;
 using BdcMobile.Core.ViewModels;
 using BdcMobile.Droid.UIListenner;
 using MvvmCross.Droid.Support.V7.AppCompat;
@@ -22,6 +23,8 @@ namespace BdcMobile.Droid.Views
                 //Load more stuff here
                 await this.ViewModel.LoadMoreCommand.ExecuteAsync();
             };
+
+
         }
     }
 }

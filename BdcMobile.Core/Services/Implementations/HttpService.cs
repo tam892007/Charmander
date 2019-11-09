@@ -78,6 +78,35 @@ namespace BdcMobile.Core.Services.Implementations
             return null;
         }
 
+
+        /// <summary>
+        /// Search vu viec
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="keyword"></param>
+        /// <param name="page"></param>
+        /// <param name="record"></param>
+        /// <returns></returns>
+        public async Task<List<Event>> SearchEventAsync(string token, string keyword, int page, int record)
+        {
+            string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.SearchItemsAPI, token, keyword, page, record);
+            var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "GET");
+            if (apiResponse.Length > 25)
+            {
+                try
+                {
+                    var r = JsonConvert.DeserializeObject(apiResponse);
+                    var result = JsonConvert.DeserializeObject<EventResponseModel>(apiResponse);
+                    return result.data;
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+            return null;
+        }
+
         /// <summary>
         /// Query all Chat in of a event
         /// </summary>

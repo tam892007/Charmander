@@ -5,6 +5,7 @@ using Android.Support.Design.Widget;
 using Android.Views;
 using Android.Widget;
 using BdcMobile.Core.ViewModels;
+using BdcMobile.Droid.UIListenner;
 using MvvmCross.Droid.Support.V7.AppCompat;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 using static Android.Support.Design.Widget.TabLayout;
@@ -23,6 +24,15 @@ namespace BdcMobile.Droid.Views
             SetUIForTabs();
 
             MvvmCross.Droid.Support.V7.RecyclerView.MvxRecyclerView t = null;
+
+
+            ImageButton relativeclic1 = (ImageButton)FindViewById(Resource.Id.btnBack);
+            var onclickListener = new OnTouchListener();
+            relativeclic1.SetOnTouchListener(onclickListener);
+            onclickListener.OnClick += () =>
+            {
+                OnBackPressed();
+            };
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)

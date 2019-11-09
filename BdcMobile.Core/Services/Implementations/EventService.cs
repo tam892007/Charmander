@@ -30,5 +30,19 @@ namespace BdcMobile.Core.Services.Implementations
 
         }
 
+        /// <summary>
+        /// Search vu viec
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="keyword"></param>
+        /// <param name="page"></param>
+        /// <param name="record"></param>
+        /// <returns></returns>
+        public async Task<List<Event>> SearchEventAsync(string token, string keyword, int page, int record)
+        {
+            var listEvents = await _httpService.SearchEventAsync(token, keyword, page, record);
+            return listEvents;
+        }
+
     }
 }

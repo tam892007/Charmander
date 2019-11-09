@@ -33,6 +33,7 @@ namespace BdcMobile.Core.ViewModels
         public IMvxAsyncCommand NavigateToNotificationListCommand { get; private set; }
         public IMvxAsyncCommand LoadMoreCommand { get; private set; }
         public IMvxAsyncCommand RefreshCommand { get; private set; }
+
         public override async Task Initialize()
         {
            
@@ -66,7 +67,7 @@ namespace BdcMobile.Core.ViewModels
             IsBusy = true;
             // do refresh work here
             var token = App.User.api_token;
-            var newEvents = await _eventService.QueryEventAsync(token, null, null, 1, RecordPerPage);            
+            var newEvents = await _eventService.SearchEventAsync(token, string.Empty, 1, RecordPerPage);            
             Events = new MvxObservableCollection<Event>();
             if (newEvents != null)
             {
@@ -110,5 +111,7 @@ namespace BdcMobile.Core.ViewModels
             // Implement your logic here.
             await NavigationService.Navigate<NotificationListViewModel>();
         }
+
+        
     }
 }

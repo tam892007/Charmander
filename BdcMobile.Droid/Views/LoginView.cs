@@ -12,6 +12,7 @@ using Android.Widget;
 using BdcMobile.Core.ViewModels;
 using MvvmCross.Droid.Support.V7.AppCompat;
 using static Android.Views.View;
+using BdcMobile.Droid.UIListenner;
 
 namespace BdcMobile.Droid.Views
 {
@@ -23,17 +24,13 @@ namespace BdcMobile.Droid.Views
             base.SetTheme(Resource.Style.AppTheme);
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.Login);
-            //RelativeLayout relativeclic1 = (RelativeLayout)FindViewById(Resource.Id.formid);
-            //var onclickListener = new LayoutOnClickListener();
-            //relativeclic1.SetOnTouchListener(onclickListener);
-            //onclickListener.HideKeyboardEvent += () =>
-            //{
-            //    //Load more stuff here
-            //    var parentContainer = FindViewById<LinearLayout>(Resource.Id.linearLayoutid);
-            //    parentContainer.RequestFocus();
-            //};
+
+
+
 
         }
+
+
         //public override bool OnTouchEvent(MotionEvent e)
         //{
         //    var Etusername = FindViewById(Resource.Id.username_input);
@@ -69,20 +66,6 @@ namespace BdcMobile.Droid.Views
             
             return base.DispatchTouchEvent(ev);
         }
-
-        //public class LayoutOnClickListener : Java.Lang.Object, View.IOnTouchListener
-        //{
-
-        //    public delegate void HideKeyboardEventHandler();
-        //    public event HideKeyboardEventHandler HideKeyboardEvent;
-
-
-        //    public bool OnTouch(View v, MotionEvent e)
-        //    {
-        //        HideKeyboardEvent();
-        //        return true;
-        //    }
-        //}
 
     }
 }

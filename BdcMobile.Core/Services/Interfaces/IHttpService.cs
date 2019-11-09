@@ -32,6 +32,18 @@ namespace BdcMobile.Core.Services.Interfaces
         Task<List<Event>> QueryEventAsync(string token, DateTime? fromdate, DateTime? todate, int currentPage, int recpordPerPage);
 
         /// <summary>
+        /// Search vu viec
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="keyword"></param>
+        /// <param name="page"></param>
+        /// <param name="record"></param>
+        /// <returns></returns>
+        Task<List<Event>> SearchEventAsync(string token, string keyword, int page, int record);
+
+
+
+        /// <summary>
         /// Query all Chat in of a event Synchronize
         /// </summary>
         /// <param name="token"></param>
