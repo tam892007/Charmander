@@ -14,14 +14,12 @@ namespace BdcMobile.Droid.UIListenner
 {
     class OnClickListener : Java.Lang.Object, View.IOnClickListener
     {
-
-        public delegate void HideKeyboardEventHandler();
-        public event HideKeyboardEventHandler OnClick;
+        public delegate void BtnClickEventHandler();
+        public event BtnClickEventHandler OnClick;
 
         void View.IOnClickListener.OnClick(View v)
         {
             OnClick();
-            return true;
         }
     }
 }

@@ -27,8 +27,8 @@ namespace BdcMobile.Droid.Views
 
 
             ImageButton relativeclic1 = (ImageButton)FindViewById(Resource.Id.btnBack);
-            var onclickListener = new OnTouchListener();
-            relativeclic1.SetOnTouchListener(onclickListener);
+            var onclickListener = new OnClickListener();
+            relativeclic1.SetOnClickListener(onclickListener);
             onclickListener.OnClick += () =>
             {
                 OnBackPressed();

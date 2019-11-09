@@ -1,8 +1,10 @@
+using Android.Views;
 using BdcMobile.Core.Services.Interfaces;
+using BdcMobile.Droid.Bindings;
 using BdcMobile.Droid.CloudMessaging;
 using MvvmCross;
+using MvvmCross.Binding.Bindings.Target.Construction;
 using MvvmCross.Droid.Support.V7.AppCompat;
-using MvvmCross.Plugin.Messenger;
 
 namespace BdcMobile.Core
 {
@@ -12,6 +14,15 @@ namespace BdcMobile.Core
         {
             base.InitializeFirstChance();
             Mvx.IoCProvider.RegisterType<ICloudMessaging>(() => new FirebaseCloudMessaging());
+        }
+
+        protected override void FillTargetFactories(IMvxTargetBindingFactoryRegistry registry)
+        {
+            base.FillTargetFactories(registry);
+
+            registry.RegisterPropertyInfoBindingFactory(
+                typeof(DroidVisibilityBinding),
+                typeof(View), "Visibility");
         }
     }
 }

@@ -23,13 +23,11 @@ namespace BdcMobile.Core.ViewModels
         public List<ITransformation> CircleTransformation => new List<ITransformation> { new CircleTransformation() };
 
         public IMvxAsyncCommand ShowInitialViewModelsCommand { get; private set; }
-        public IMvxAsyncCommand GoBackCommand { get; private set; }
         
 
         public EventDetailsViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService) : base(logProvider, navigationService)
         {
             ShowInitialViewModelsCommand = new MvxAsyncCommand(ShowInitialViewModels);
-            //GoBackCommand = new MvxAsyncCommand(GoBackCommand);
         }
 
         private async Task ShowInitialViewModels()
@@ -54,6 +52,5 @@ namespace BdcMobile.Core.ViewModels
             ImageURL = parameter.ImageURL;
         }
 
-        
     }
 }

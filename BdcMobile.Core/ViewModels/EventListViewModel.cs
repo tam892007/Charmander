@@ -88,10 +88,9 @@ namespace BdcMobile.Core.ViewModels
             var token = App.User.api_token;
             var currentItemCount = Events == null ? 0 : Events.Count;
             var nextpage = currentItemCount / RecordPerPage + 1;
-            var newEvents = await _eventService.QueryEventAsync(token, null, null, nextpage, RecordPerPage);
+            var newEvents = await _eventService.SearchEventAsync(token, string.Empty, nextpage, RecordPerPage);
             if (newEvents != null)
             {
-
                 foreach (var ev in newEvents)
                 {
                     Events.Add(ev);

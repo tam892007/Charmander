@@ -13,11 +13,6 @@
         public string CreateTime { get; set; }
         public bool IsAuthenticated { get; set; }
         public string ErrorMessage { get; set; }
-
-       
-
-        
-
     }
 
     public class LoginResponseModel
