@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/colorPrimary"
+        android:gravity="center_vertical"
+        android:paddingVertical="12dp">
+        <ImageButton
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@drawable/abc_ic_ab_back_material"
+            android:background="@android:color/transparent"
+            android:paddingHorizontal="18dp"
+            android:tint="#fff"/>
+        <EditText
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:inputType="text"
+            android:textSize="18sp"
+            android:textColor="#fff"
+            android:background="@android:color/transparent"
+            android:hint="Notifications"
+            android:textColorHint="#fff"/>
+    </LinearLayout>
+    <MvvmCross.Droid.Support.V4.MvxSwipeRefreshLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:paddingBottom="0dp"
+        android:layout_below="@+id/header">
+
+        <MvvmCross.Droid.Support.V7.RecyclerView.MvxRecyclerView
+            android:id="@+id/lstNotification"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            local:MvxItemTemplate="@layout/notificationlistitem"
+            local:MvxBind="ItemsSource Notifications"/>
+
+    </MvvmCross.Droid.Support.V4.MvxSwipeRefreshLayout>
+</RelativeLayout>

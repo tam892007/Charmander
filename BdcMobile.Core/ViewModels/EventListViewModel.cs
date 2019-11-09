@@ -23,12 +23,14 @@ namespace BdcMobile.Core.ViewModels
             NavigateToEventDetailsCommand = new MvxAsyncCommand<Event>(async (e) => await NavigateToEventDetails(e));
             LoadMoreCommand = new MvxAsyncCommand(async () => await LoadMore());
             RefreshCommand = new MvxAsyncCommand(async () => await ExecuteRefreshCommand());
+            NavigateToNotificationListCommand = new MvxAsyncCommand(async (e) => await NavigateToNotificationList());
         }
 
         public MvxObservableCollection<Event> Events { get; set; }
 
 
         public IMvxAsyncCommand<Event> NavigateToEventDetailsCommand { get; private set; }
+        public IMvxAsyncCommand NavigateToNotificationListCommand { get; private set; }
         public IMvxAsyncCommand LoadMoreCommand { get; private set; }
         public IMvxAsyncCommand RefreshCommand { get; private set; }
         public override async Task Initialize()
@@ -65,11 +67,12 @@ namespace BdcMobile.Core.ViewModels
             // do refresh work here
             var token = App.User.api_token;
             var newEvents = await _eventService.QueryEventAsync(token, null, null, 1, RecordPerPage);            
-            Events = new MvxObservableCollection<Event>();            
-            foreach(var ev in newEvents)
+            Events = new MvxObservableCollection<Event>();
+            if (newEvents != null)
             {
-                Events.Add(ev);
+                Events.AddRange(newEvents);
             }
+
             await this.RaisePropertyChanged("Events");
             IsBusy = false;
         }
@@ -100,6 +103,12 @@ namespace BdcMobile.Core.ViewModels
         {
             // Implement your logic here.
             await NavigationService.Navigate<EventDetailsViewModel, Event>(e);
+        }
+
+        private async Task NavigateToNotificationList()
+        {
+            // Implement your logic here.
+            await NavigationService.Navigate<NotificationListViewModel>();
         }
     }
 }

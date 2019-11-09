@@ -61,7 +61,8 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FirebaseCloudMessaging.cs" />
+    <Compile Include="CloudMessaging\FirebaseCloudMessaging.cs" />
+    <Compile Include="CloudMessaging\NotificationMessage.cs" />
     <Compile Include="MainApplication.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Views\EventDetailsExternalChatView.cs" />
     <Compile Include="Views\EventDetailsInternalChatView.cs" />
     <Compile Include="Views\EventDetailsView.cs" />
+    <Compile Include="Views\NotificationListView.cs" />
     <Compile Include="Views\LoginView.cs" />
     <Compile Include="Views\EventListView.cs" />
   </ItemGroup>
@@ -106,6 +108,9 @@
       <Version>6.4.1</Version>
     </PackageReference>
     <PackageReference Include="MvvmCross.Droid.Support.Core.UI">
+      <Version>6.4.1</Version>
+    </PackageReference>
+    <PackageReference Include="MvvmCross.Plugin.Messenger">
       <Version>6.4.1</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.Design" Version="28.0.0.3" />
@@ -313,6 +318,37 @@
     <AndroidResource Include="Resources\layout\PictureMessageSent.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\NotificationList.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\NotificationListItem.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\ic_app.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_stat_bdc.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_stat_bdc.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_stat_bdc.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_stat_bdc.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_stat_bdc.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\ic_stat_bdc.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\boss.xml" />

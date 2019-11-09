@@ -2,6 +2,7 @@
 using Android.App;
 using Android.Content;
 using Android.Graphics;
+using Android.Content.PM;
 using Android.OS;
 using Android.Support.V7.Widget;
 using Android.Util;
@@ -14,11 +15,12 @@ using static Android.Views.View;
 
 namespace BdcMobile.Droid.Views
 {
-    [Activity(Label = "Login")]
+    [Activity(Label = "Login", LaunchMode = LaunchMode.SingleTask, Theme = "@style/Theme.Splash")]
     public class LoginView : MvxAppCompatActivity<LoginViewModel>
     {
         protected override void OnCreate(Bundle bundle)
         {
+            base.SetTheme(Resource.Style.AppTheme);
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.Login);
             //RelativeLayout relativeclic1 = (RelativeLayout)FindViewById(Resource.Id.formid);

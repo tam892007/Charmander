@@ -11,7 +11,7 @@ namespace BdcMobile.Core.Commons
             public static string FCMChannelID = "BDC_Notification_Channel";
             public static string FCMChannelName = "BDC Notification Channel";
             public static string FCMChannelDesc = "Channel to send notification for BDC App";
-            //TODO: 
+            public static string FCMExtraName = "BDC_Notification";
         }
 
         public static class AppAPI

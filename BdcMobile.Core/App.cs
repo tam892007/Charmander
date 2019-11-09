@@ -28,7 +28,7 @@ namespace BdcMobile.Core
         {
             base.Initialize();
             RegisterDependencies();
-            RegisterAppStart<LoginViewModel>();
+            RegisterCustomAppStart<AppStart>();
             Mvx.IoCProvider.Resolve<ICloudMessaging>().Initialize();
         }
 
@@ -38,7 +38,6 @@ namespace BdcMobile.Core
             Mvx.IoCProvider.RegisterType<ILoginService, LoginService>();
             Mvx.IoCProvider.RegisterType<IHttpService, HttpService>();
             Mvx.IoCProvider.RegisterType<IEventService, EventService>();
-            
         }
     }
 }
