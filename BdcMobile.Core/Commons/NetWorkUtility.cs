@@ -1,9 +1,6 @@
-﻿using Android.Util;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BdcMobile.Core.Commons
@@ -31,8 +28,8 @@ namespace BdcMobile.Core.Commons
             }
             catch (Exception ex)
             {
-                Log.Error("BdcMobile", ex.ToString());
-                Log.Error("BdcMobile", method + ": " + url);
+                //Log.Error("BdcMobile", ex.ToString());
+                //Log.Error("BdcMobile", method + ": " + url);
             }
             return content;
         }
@@ -57,8 +54,8 @@ namespace BdcMobile.Core.Commons
             }
             catch (Exception ex)
             {
-                Log.Error("BdcMobile", ex.ToString());
-                Log.Error("BdcMobile", method + ": " + url);
+                //Log.Error("BdcMobile", ex.ToString());
+                //Log.Error("BdcMobile", method + ": " + url);
             }
             return content;
         }

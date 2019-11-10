@@ -93,7 +93,7 @@ namespace BdcMobile.Core.ViewModels
             pictureStream.CopyTo(memoryStream);
             ChatMessages.Add(new ChatMessage { PictureContent = memoryStream.ToArray(), IsFromMe = true, CType = ChatType.Picture });
 
-            RaisePropertyChanged("ChatMessages");
+            RaisePropertyChanged(nameof(ChatMessages));
         }
 
         private MvxAsyncCommand _sendTextCommand;

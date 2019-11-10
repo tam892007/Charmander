@@ -1,5 +1,5 @@
 
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -57,6 +57,7 @@
 
     <LinearLayout
         android:id="@+id/body1"
+        android:layout_below="@+id/top"
         android:paddingHorizontal="10dp"
         android:background="@color/colorPrimary"
         android:layout_width="match_parent"
@@ -83,6 +84,7 @@
 
     <LinearLayout
         android:id="@+id/body2"
+        android:layout_below="@+id/body1"
         android:paddingHorizontal="10dp"
         android:paddingBottom="5dp"
         android:background="@color/colorPrimary"
@@ -108,24 +110,22 @@
             app:MvxBind="Text Status"/>
     </LinearLayout>
 
-    <android.support.design.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-        <android.support.v4.view.ViewPager
+    <android.support.v4.view.ViewPager
             android:layout_height="match_parent"
             android:layout_width="match_parent"
+            android:layout_above="@+id/tabs"
+            android:layout_below="@+id/body2"
             android:id="@+id/viewpager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
         </android.support.v4.view.ViewPager>
-     </android.support.design.widget.CoordinatorLayout>
     
     <android.support.design.widget.TabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         app:tabIndicatorHeight="0dp"
         app:layout_scrollFlags="enterAlways"
         app:tabGravity="fill"
         app:tabMaxWidth="0dp"/>
-</LinearLayout>
+</RelativeLayout>

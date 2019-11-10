@@ -51,6 +51,5 @@ namespace BdcMobile.Core.ViewModels
             PlaceOfSurvey = parameter.PlaceOfSurvey;
             ImageURL = parameter.ImageURL;
         }
-
     }
 }

@@ -64,12 +64,14 @@
     <Compile Include="Bindings\DroidVisibilityBinding.cs" />
     <Compile Include="CloudMessaging\FirebaseCloudMessaging.cs" />
     <Compile Include="CloudMessaging\NotificationMessage.cs" />
+    <Compile Include="Extensions\MvxRecyclerViewExtensions.cs" />
     <Compile Include="MainApplication.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Setup.cs" />
     <Compile Include="SplashScreen.cs" />
     <Compile Include="TemplateSelector\InternalChatTemplateSelector.cs" />
+    <Compile Include="UIControl\ToEndSmoothScroller.cs" />
     <Compile Include="UIListenner\OnClickListener.cs" />
     <Compile Include="UIListenner\OnTouchListener.cs" />
     <Compile Include="Views\EventDetailsPictureGalleryView.cs" />
@@ -77,6 +79,7 @@
     <Compile Include="Views\EventDetailsExternalChatView.cs" />
     <Compile Include="Views\EventDetailsInternalChatView.cs" />
     <Compile Include="Views\EventDetailsView.cs" />
+    <Compile Include="Views\MenuView.cs" />
     <Compile Include="Views\NotificationListView.cs" />
     <Compile Include="Views\LoginView.cs" />
     <Compile Include="Views\EventListView.cs" />
@@ -103,7 +106,6 @@
     <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher_round.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\menu\" />
     <Folder Include="Resources\mipmap-anydpi-v26\" />
   </ItemGroup>
   <ItemGroup>
@@ -367,6 +369,23 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-nodpi\boss.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\MenuView.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\menu\navigation_drawer.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\NavigationHeader.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\menu.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\sign_out.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

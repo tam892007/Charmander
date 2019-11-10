@@ -21,9 +21,15 @@ namespace BdcMobile.Core.ViewModels
         {
             _eventService = eventService;
             NavigateToEventDetailsCommand = new MvxAsyncCommand<Event>(async (e) => await NavigateToEventDetails(e));
-            LoadMoreCommand = new MvxAsyncCommand(async () => await LoadMore());
+            LoadMoreCommand = new MvxCommand(
+                () =>
+                {
+                    LoadMoreTask = MvxNotifyTask.Create(LoadMore);
+                    RaisePropertyChanged(() => LoadMoreTask);
+                });
             RefreshCommand = new MvxAsyncCommand(async () => await ExecuteRefreshCommand());
             NavigateToNotificationListCommand = new MvxAsyncCommand(async (e) => await NavigateToNotificationList());
+            ShowMenuViewModelCommand = new MvxAsyncCommand(async () => await NavigationService.Navigate<MenuViewModel>());
         }
 
         public MvxObservableCollection<Event> Events { get; set; }
@@ -31,8 +37,11 @@ namespace BdcMobile.Core.ViewModels
 
         public IMvxAsyncCommand<Event> NavigateToEventDetailsCommand { get; private set; }
         public IMvxAsyncCommand NavigateToNotificationListCommand { get; private set; }
-        public IMvxAsyncCommand LoadMoreCommand { get; private set; }
+        public IMvxCommand LoadMoreCommand { get; private set; }
         public IMvxAsyncCommand RefreshCommand { get; private set; }
+        public IMvxAsyncCommand ShowMenuViewModelCommand { get; private set; }
+
+        public MvxNotifyTask LoadMoreTask { get; private set; }
 
         public override async Task Initialize()
         {
@@ -67,7 +76,7 @@ namespace BdcMobile.Core.ViewModels
             IsBusy = true;
             // do refresh work here
             var token = App.User.api_token;
-            var newEvents = await _eventService.SearchEventAsync(token, string.Empty, 1, RecordPerPage);            
+            var newEvents = await _eventService.QueryEventAsync(token, null, null, 1, RecordPerPage);            
             Events = new MvxObservableCollection<Event>();
             if (newEvents != null)
             {
@@ -88,7 +97,7 @@ namespace BdcMobile.Core.ViewModels
             var token = App.User.api_token;
             var currentItemCount = Events == null ? 0 : Events.Count;
             var nextpage = currentItemCount / RecordPerPage + 1;
-            var newEvents = await _eventService.SearchEventAsync(token, string.Empty, nextpage, RecordPerPage);
+            var newEvents = await _eventService.QueryEventAsync(token, null, null, nextpage, RecordPerPage);
             if (newEvents != null)
             {
                 foreach (var ev in newEvents)

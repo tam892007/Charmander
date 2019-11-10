@@ -1,29 +1,40 @@
 ﻿using Android.Support.V7.Widget;
-using MvvmCross.Droid.Support.V7.RecyclerView;
 using System;
-using static Android.Support.V7.Widget.RecyclerView;
 
 namespace BdcMobile.Droid.UIListenner
 {
-    class RecyclerViewOnScrollListener : OnScrollListener
+    public class RecyclerViewOnScrollListener : RecyclerView.OnScrollListener
     {
         public delegate void LoadMoreEventHandler(object sender, EventArgs e);
+
+        public int RemainingItemsToTriggerFetch { get; set; } = 3;
+
         public event LoadMoreEventHandler LoadMoreEvent;
+
+        private LinearLayoutManager LayoutManager;
+
+        public RecyclerViewOnScrollListener(LinearLayoutManager layoutManager)
+        {
+            LayoutManager = layoutManager;
+        }
 
         public override void OnScrolled(RecyclerView recyclerView, int dx, int dy)
         {
             base.OnScrolled(recyclerView, dx, dy);
-            var mvxRecyclerView = recyclerView as MvxRecyclerView;
-            var  mLayoutManager = recyclerView.GetLayoutManager() as LinearLayoutManager;
-            if (dy > 0) //check for scroll down
+
+            var visibleItemCount = recyclerView.ChildCount;
+            var totalItemCount = recyclerView.GetAdapter().ItemCount;
+            var pastVisiblesItems = LayoutManager.FindFirstVisibleItemPosition();
+
+            if (totalItemCount != 0
+                //&& pastVisiblesItems > 0
+                &&
+                (
+                    RemainingItemsToTriggerFetch >= totalItemCount
+                    || (visibleItemCount + pastVisiblesItems + RemainingItemsToTriggerFetch) >= totalItemCount
+                ))
             {
-                var visibleItemCount = recyclerView.ChildCount;
-                var pastVisiblesItems = mLayoutManager.FindFirstVisibleItemPosition();
-                var totalItemCount = recyclerView.GetAdapter().ItemCount;
-                if ((visibleItemCount + pastVisiblesItems) >= totalItemCount - 1)
-                {
-                    LoadMoreEvent(this, null);
-                }
+                LoadMoreEvent?.Invoke(this, null);
             }
         }
     }

@@ -12,7 +12,7 @@ using static Android.Support.Design.Widget.TabLayout;
 
 namespace BdcMobile.Droid.Views
 {
-    [Activity(Label = "Event Details")]
+    [Activity(Label = "Event Details", WindowSoftInputMode = SoftInput.AdjustPan)]
     [MvxActivityPresentation]
     public class EventDetailsView: MvxAppCompatActivity<EventDetailsViewModel>, IOnTabSelectedListener
     {
