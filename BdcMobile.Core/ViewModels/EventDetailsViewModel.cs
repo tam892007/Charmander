@@ -35,8 +35,8 @@ namespace BdcMobile.Core.ViewModels
             await Task.WhenAll(new List<Task>
             {
                 NavigationService.Navigate<EventDetailsInternalChatViewModel, int>(SurveyID),
-                NavigationService.Navigate<EventDetailsExternalChatViewModel>(),
-                NavigationService.Navigate<EventDetailsPictureGalleryViewModel>(),
+                NavigationService.Navigate<EventDetailsExternalChatViewModel, int>(SurveyID),
+                NavigationService.Navigate<EventDetailsPictureGalleryViewModel, int>(SurveyID),
             });
         }
 

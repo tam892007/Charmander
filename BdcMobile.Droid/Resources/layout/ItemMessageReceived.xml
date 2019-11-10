@@ -49,6 +49,7 @@
     android:textSize="10sp"
     android:layout_toRightOf="@+id/text_message_body"
     android:layout_marginLeft="4dp"
-    android:layout_alignBottom="@+id/text_message_body" />
+    android:layout_alignBottom="@+id/text_message_body" 
+    app:MvxBind="Text Time"/>
 
 </RelativeLayout>

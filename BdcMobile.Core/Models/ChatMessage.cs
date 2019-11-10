@@ -19,7 +19,20 @@ namespace BdcMobile.Core.Models
         public ChatType CType { get; set; }
         public string Func { get; set; }
         public string target { get; set; }
-        public string CreateTime { get; set; }
+
+        public DateTime? CreateTime { get; set; }
+
+        public string Time
+        {
+            get
+            {
+                if (CreateTime != null)
+                {
+                    return string.Format("{0:HH mm}", CreateTime);
+                }
+                return string.Empty;
+            }
+        }
 
         public bool IsFromMe { get; set; }
         public bool IsSent

@@ -33,7 +33,7 @@ namespace BdcMobile.Core.ViewModels
         public override async Task Initialize()
         {
             ChatMessages = new MvxObservableCollection<ChatMessage>();
-            await LoadChatMessages();
+            await LoadChatMessages(DateTime.Now);
             //var listChat = _networkService.QueryChat(App.User.api_token, EventId, Constants.ChatType.InternalChat);
             //if(listChat != null && listChat.Count > 0)
             //{
@@ -63,20 +63,21 @@ namespace BdcMobile.Core.ViewModels
             _pictureChooserTask.TakePicture(400, 95, OnPicture, () => { });
         }
 
-        private MvxCommand _choosePictureCommand;
+        private MvxAsyncCommand _choosePictureCommand;
 
-        public System.Windows.Input.ICommand ChoosePictureCommand
+        public MvxAsyncCommand ChoosePictureCommand
         {
             get
             {
-                _choosePictureCommand = _choosePictureCommand ?? new MvxCommand(DoChoosePicture);
+                _choosePictureCommand = _choosePictureCommand
+                                        ?? new MvxAsyncCommand(async () => await DoChoosePictureAsync());
                 return _choosePictureCommand;
             }
         }
 
-        private void DoChoosePicture()
+        private async Task DoChoosePictureAsync()
         {
-            _pictureChooserTask.ChoosePictureFromLibrary(400, 95, OnPicture, () => { });
+            Stream x = await _pictureChooserTask.ChoosePictureFromLibraryAsync(400, 95);
         }
 
         private byte[] _bytes;
@@ -91,9 +92,23 @@ namespace BdcMobile.Core.ViewModels
         {
             var memoryStream = new MemoryStream();
             pictureStream.CopyTo(memoryStream);
-            ChatMessages.Add(new ChatMessage { PictureContent = memoryStream.ToArray(), IsFromMe = true, CType = ChatType.Picture });
+
+            var data = memoryStream.ToArray();
+            ChatMessages.Add(new ChatMessage { PictureContent = data, IsFromMe = true, CType = ChatType.Picture });
+            
 
             RaisePropertyChanged("ChatMessages");
+        }
+        private async Task OnPictureAsync(Stream pictureStream)
+        {
+            var memoryStream = new MemoryStream();
+            pictureStream.CopyTo(memoryStream);
+
+            var data = memoryStream.ToArray();
+            ChatMessages.Add(new ChatMessage { PictureContent = data, IsFromMe = true, CType = ChatType.Picture });
+            await SendFile(data);
+
+            await RaisePropertyChanged("ChatMessages");
         }
 
         private MvxAsyncCommand _sendTextCommand;
@@ -123,13 +138,38 @@ namespace BdcMobile.Core.ViewModels
             }
             catch(Exception ex)
             {
-
+                Log.Error(Constants.AppConfig.LogTag, ex.ToString());
+                Log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
             }
         }
 
-        private async Task LoadChatMessages()
+        private async Task SendFile(byte[] data)
         {
+            try
+            {
+                var token = App.User.api_token;
+                var chatmessage = new ChatMessage { Content = Message, IsFromMe = true, CType = ChatType.Text };
+                ChatMessages.Add(chatmessage);
+                Message = string.Empty;
+                await RaisePropertyChanged("Message");
+                await RaisePropertyChanged("ChatMessages");
+                var chatId = await _networkService.SendChatFileAsync(token, EventId, Constants.ChatType.InternalChat, chatmessage.Content, data, 0, App.User.ID);
+                chatmessage.ChatID = chatId;
+                //chatmessage.Content += " sent";
+                await RaisePropertyChanged("ChatMessages");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(Constants.AppConfig.LogTag, ex.ToString());
+                Log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
+            }
+        }
+
+        private async Task LoadChatMessages(DateTime datetime)
+        {
+            //var listChat = await _networkService.QueryChatAsync(App.User.api_token, EventId, Constants.ChatType.InternalChat, false, datetime);
             var listChat = await _networkService.QueryChatAsync(App.User.api_token, EventId, Constants.ChatType.InternalChat);
+
             if (listChat != null && listChat.Count > 0)
             {
                 foreach (var chat in listChat)

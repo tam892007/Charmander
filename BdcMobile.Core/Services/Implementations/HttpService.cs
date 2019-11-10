@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
-
+using Android.Util;
 
 namespace BdcMobile.Core.Services.Implementations
 {
@@ -72,7 +72,8 @@ namespace BdcMobile.Core.Services.Implementations
                 }
                 catch(Exception ex)
                 {
-
+                    Log.Error(Constants.AppConfig.LogTag, ex.ToString());
+                    Log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
                 }
             }
             return null;
@@ -101,7 +102,8 @@ namespace BdcMobile.Core.Services.Implementations
                 }
                 catch (Exception ex)
                 {
-
+                    Log.Error(Constants.AppConfig.LogTag, ex.ToString());
+                    Log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
                 }
             }
             return null;
@@ -116,9 +118,6 @@ namespace BdcMobile.Core.Services.Implementations
         /// <returns></returns>
         public async Task<List<ChatMessage>> QueryChatAsync(string token, int eventID, int type)
         {
-            //var fromdatestr = fromdate == null ? string.Empty: string.Format("{0:ddMMyyyy}", fromdate);
-            //var todatestr = todate == null ? string.Empty : string.Format("{0:ddMMyyyy}", todate);
-
             string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.GetChatAPI, token, eventID, type);
             var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "GET");
             if (apiResponse.Length > 25)
@@ -131,7 +130,32 @@ namespace BdcMobile.Core.Services.Implementations
                 }
                 catch (Exception ex)
                 {
+                    Log.Error(Constants.AppConfig.LogTag, ex.ToString());
+                    Log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
+                }
+            }
+            return null;
+        }
 
+        public async Task<List<ChatMessage>> QueryChatAsync(string token, int eventID, int type, bool isNewQuery, DateTime createTime)
+        {
+            var createTimestr = string.Format("{0:yyyy/mm/dd hh:mm:ii}", createTime);
+            var api = isNewQuery ? Constants.AppAPI.GetNewChatAPI : Constants.AppAPI.GetOldChatAPI;
+
+            string apiUrl = Constants.AppAPI.IPAPI + string.Format(api, token, eventID, type, createTimestr);
+            var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "GET");
+            if (apiResponse.Length > 25)
+            {
+                try
+                {
+                    var r = JsonConvert.DeserializeObject(apiResponse);
+                    var result = JsonConvert.DeserializeObject<ListChatMessageResponseModel>(apiResponse);
+                    return result.data;
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(Constants.AppConfig.LogTag, ex.ToString());
+                    Log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
                 }
             }
             return null;
@@ -158,7 +182,39 @@ namespace BdcMobile.Core.Services.Implementations
                 }
                 catch (Exception ex)
                 {
+                    Log.Error(Constants.AppConfig.LogTag, ex.ToString());
+                    Log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
+                }
+            }
+            return null;
+        }
 
+        /// <summary>
+        /// Query Chat in of a event by date
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="eventID"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public List<ChatMessage> QueryChat(string token, int eventID, int type, bool isNewQuery, DateTime createTime)
+        {
+            var createTimestr = string.Format("{0:yyyy/mm/dd hh:mm:ss}", createTime);
+            var api = isNewQuery ? Constants.AppAPI.GetNewChatAPI : Constants.AppAPI.GetOldChatAPI;
+
+            string apiUrl =  Constants.AppAPI.IPAPI + string.Format(api, token, eventID, type, createTimestr);
+            var apiResponse = NetWorkUtility.MakeRequestSync(apiUrl, "GET");
+            if (apiResponse.Length > 25)
+            {
+                try
+                {
+                    var r = JsonConvert.DeserializeObject(apiResponse);
+                    var result = JsonConvert.DeserializeObject<ListChatMessageResponseModel>(apiResponse);
+                    return result.data;
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(Constants.AppConfig.LogTag, ex.ToString());
+                    Log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
                 }
             }
             return null;
@@ -182,14 +238,51 @@ namespace BdcMobile.Core.Services.Implementations
             return 1;
         }
 
-        public Task QueryAllFilesAsync(string token, int eventID)
+        /// <summary>
+        /// "api/send-chat?api_token={0}&surveyID={1}&&type={2}&content={3}&file=&belongingTo={4}"
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="eventID"></param>
+        /// <param name="type"></param>
+        /// <param name="message"></param>
+        /// <param name="chat"></param>
+        /// <param name="belongingTo"></param>
+        /// <returns></returns>
+        public async Task<int> SendChatFileAsync(string token, int eventID, int type, string message, byte[] data, int chat, int belongingTo)
         {
-            throw new NotImplementedException();
+            string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.SendChatAPI, token, eventID, type, message, 0);
+            var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "POST");
+
+            return 1;
+        }
+
+        public async Task<List<File>> QueryAllFilesAsync(string token, int eventID)
+        {
+
+            string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.GetListFileAPI, token, eventID);
+            var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "GET");
+            if (apiResponse.Length > 25)
+            {
+                try
+                {
+                    var r = JsonConvert.DeserializeObject(apiResponse);
+                    var result = JsonConvert.DeserializeObject<ListFileResponseModel>(apiResponse);
+                    return result.data;
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(Constants.AppConfig.LogTag, ex.ToString());
+                    Log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
+                }
+            }
+            return null;
         }
 
         public Task<List<Notification>> QueryNotificationAsync(string token, int page, int recordPerPage)
         {
             throw new NotImplementedException();
         }
+
+        
     }
 }

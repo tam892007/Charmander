@@ -20,7 +20,7 @@ namespace BdcMobile.Droid.UIListenner
                 var visibleItemCount = recyclerView.ChildCount;
                 var pastVisiblesItems = mLayoutManager.FindFirstVisibleItemPosition();
                 var totalItemCount = recyclerView.GetAdapter().ItemCount;
-                if ((visibleItemCount + pastVisiblesItems) >= totalItemCount - 1)
+                if ((visibleItemCount + pastVisiblesItems) >= totalItemCount)
                 {
                     LoadMoreEvent(this, null);
                 }

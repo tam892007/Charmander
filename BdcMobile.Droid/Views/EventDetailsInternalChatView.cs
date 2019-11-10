@@ -14,6 +14,8 @@ namespace BdcMobile.Droid.Views
     {
         public override void OnCreate(Bundle savedInstanceState)
         {
+            
+            
             base.OnCreate(savedInstanceState);
         }
 
@@ -23,5 +25,7 @@ namespace BdcMobile.Droid.Views
             var view = this.BindingInflate(Resource.Layout.EventDetailsInternalChat, null);
             return view;
         }
+
+        
     }
 }

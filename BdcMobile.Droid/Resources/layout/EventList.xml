@@ -23,16 +23,18 @@
                 android:background="@android:color/transparent"
                 android:paddingHorizontal="18dp"/>
             <EditText
+                android:id="@+id/searchtextbox"
+                android:inputType="textNoSuggestions"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:maxLines="1"
-                android:inputType="text"
                 android:textSize="12sp"
                 android:textColor="#fff"
                 android:background="@android:color/transparent"
                 android:hint="Search for events"
-                android:textColorHint="#fff"/>
+                android:textColorHint="#fff"
+                local:MvxBind="Text SearchText"/>
             <ImageButton
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
@@ -41,29 +43,67 @@
                 android:paddingHorizontal="18dp"
                 local:MvxBind="Click NavigateToNotificationListCommand"/>
         </LinearLayout>
-         <MvvmCross.Droid.Support.V4.MvxSwipeRefreshLayout                                                            
+        <MvvmCross.Droid.Support.V4.MvxSwipeRefreshLayout  
+            android:id="@+id/refreshlayout"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:paddingBottom="0dp"
+            android:layout_marginBottom="0dp"
             local:MvxBind="Refreshing IsBusy; RefreshCommand RefreshCommand">
             
+            <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <MvvmCross.Droid.Support.V7.RecyclerView.MvxRecyclerView
-                android:id="@+id/mvxRecyclerView1" 
-                android:scrollbars="vertical"
+                <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                local:MvxItemTemplate="@layout/eventlistitem"
-                local:MvxBind="ItemsSource Events; ItemClick NavigateToEventDetailsCommand"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="0dp">
 
+                    <MvvmCross.Droid.Support.V7.RecyclerView.MvxRecyclerView
+                    android:id="@+id/mvxRecyclerView1" 
+                    android:scrollbars="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    local:MvxItemTemplate="@layout/eventlistitem"
+                    local:MvxBind="ItemsSource Events; ItemClick NavigateToEventDetailsCommand"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" 
+                    android:orientation="vertical"
+                    android:gravity="bottom"
+                    android:layout_gravity="bottom"
+                    >
+
+                    <RelativeLayout
+                        local:MvxBind="Visibility IsLoadingMore"
+                        android:id="@+id/loginLoading"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@color/material_grey_50">
+
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/animation_view"
+                            android:scaleType="center"
+                            local:lottie_scale="0.5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            local:lottie_fileName="loading01.json"
+                            local:lottie_loop="true"
+                            local:lottie_autoPlay="true"
+                            android:layout_centerInParent="true"/>                        
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </FrameLayout>     
+            
         </MvvmCross.Droid.Support.V4.MvxSwipeRefreshLayout>
-        <android.support.v4.widget.ContentLoadingProgressBar
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-         android:layout_gravity="bottom"
-         android:layout_weight="1"
-        android:id="@+id/contentLoadingProgressBar1" 
-        android:visibility="visible"/>
+        
     </LinearLayout>
     
 </RelativeLayout>
