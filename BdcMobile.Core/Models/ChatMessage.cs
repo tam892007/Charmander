@@ -16,7 +16,7 @@ namespace BdcMobile.Core.Models
         public string UserName { get; set; }
         public string Content { get; set; }
         public int BelongingTo { get; set; }
-        public int? FileIndex { get; set; }
+        public string FileIndex { get; set; }
         public int Type { get; set; }
         public ChatType CType { get; set; }
         public string Func { get; set; }
@@ -24,7 +24,7 @@ namespace BdcMobile.Core.Models
 
         public DateTime? CreateTime { get; set; }
 
-        public string Time
+        public string Time 
         {
             get
             {
@@ -67,6 +67,14 @@ namespace BdcMobile.Core.Models
     {
         public List<ChatMessage> data { get; set; }
     }
+
+    public class ChatSentResponse
+    {
+
+        public int lastID { get; set; }
+        public string fileIndex { get; set; }
+    }
+
 
     public enum ChatType
     {

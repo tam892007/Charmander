@@ -1,8 +1,10 @@
 ﻿using MvvmCross;
 using MvvmCross.Logging;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,7 +24,6 @@ namespace BdcMobile.Core.Commons
             {
                 var request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = method;
-                
                 var response = await request.GetResponseAsync();
 
                 using (var stream = response.GetResponseStream())
@@ -31,7 +32,8 @@ namespace BdcMobile.Core.Commons
                     {
                         content = sr.ReadToEnd();
                     }
-                }                
+                }
+                log.Info("Finish: " + method + ": " + url);
             }
             catch (Exception ex)
             {
@@ -65,6 +67,7 @@ namespace BdcMobile.Core.Commons
                         content = sr.ReadToEnd();
                     }
                 }
+                log.Info("Finish: " + method + ": " + url);
             }
             catch (Exception ex)
             {
@@ -76,7 +79,7 @@ namespace BdcMobile.Core.Commons
             return content;
         }
 
-        public static async Task<string> SendFile(string url, MemoryStream memStream)
+        public static async Task<string> SendFile(string url, byte[] data, string filename)
         {
             var ilog = Mvx.IoCProvider.Resolve<IMvxLogProvider>();
             var log = ilog.GetLogFor(Constants.AppConfig.LogTag);
@@ -84,18 +87,10 @@ namespace BdcMobile.Core.Commons
             var content = string.Empty;
             try
             {
-                var request = (HttpWebRequest)WebRequest.Create(url);
-                request.Method = "POST";
-                using (Stream requestStream = request.GetRequestStream())
-                {
-                    memStream.Position = 0;
-                    byte[] tempBuffer = new byte[memStream.Length];
-                    memStream.Read(tempBuffer, 0, tempBuffer.Length);
-                    memStream.Close();
-                    requestStream.Write(tempBuffer, 0, tempBuffer.Length);
-                }
-
-                var response = await request.GetResponseAsync();
+                Dictionary<string, object> dict = new Dictionary<string, object>();
+                FileParameter fileParameter = new FileParameter(data, filename);
+                dict.Add("file[0]", fileParameter);
+                var response = await FormUpload.MultipartFormDataPost(url, string.Empty, dict);
 
                 using (var stream = response.GetResponseStream())
                 {
@@ -104,6 +99,7 @@ namespace BdcMobile.Core.Commons
                         content = sr.ReadToEnd();
                     }
                 }
+                log.Info("Finish: POST: " + url);
             }
             catch (Exception ex)
             {

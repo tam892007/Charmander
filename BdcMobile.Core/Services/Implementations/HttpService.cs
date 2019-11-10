@@ -76,7 +76,6 @@ namespace BdcMobile.Core.Services.Implementations
             {
                 try
                 {
-                    var r = JsonConvert.DeserializeObject(apiResponse);
                     var result = JsonConvert.DeserializeObject<EventResponseModel>(apiResponse);
                     return result.data;
                 }
@@ -100,7 +99,6 @@ namespace BdcMobile.Core.Services.Implementations
             {
                 try
                 {
-                    var r = JsonConvert.DeserializeObject(apiResponse);
                     var result = JsonConvert.DeserializeObject<EventResponseModel>(apiResponse);
                     return result.data;
                 }
@@ -129,7 +127,6 @@ namespace BdcMobile.Core.Services.Implementations
             {
                 try
                 {
-                    var r = JsonConvert.DeserializeObject(apiResponse);
                     var result = JsonConvert.DeserializeObject<EventResponseModel>(apiResponse);
                     return result.data;
                 }
@@ -157,7 +154,6 @@ namespace BdcMobile.Core.Services.Implementations
             {
                 try
                 {
-                    var r = JsonConvert.DeserializeObject(apiResponse);
                     var result = JsonConvert.DeserializeObject<ListChatMessageResponseModel>(apiResponse);
                     return result.data;
                 }
@@ -172,7 +168,7 @@ namespace BdcMobile.Core.Services.Implementations
 
         public async Task<List<ChatMessage>> QueryChatAsync(string token, int eventID, int type, bool isNewQuery, DateTime createTime)
         {
-            var createTimestr = string.Format("{0:yyyy/mm/dd hh:mm:ii}", createTime);
+            var createTimestr = string.Format("{0:yyyy/dd/MM}", createTime);
             var api = isNewQuery ? Constants.AppAPI.GetNewChatAPI : Constants.AppAPI.GetOldChatAPI;
 
             string apiUrl = Constants.AppAPI.IPAPI + string.Format(api, token, eventID, type, createTimestr);
@@ -181,7 +177,6 @@ namespace BdcMobile.Core.Services.Implementations
             {
                 try
                 {
-                    var r = JsonConvert.DeserializeObject(apiResponse);
                     var result = JsonConvert.DeserializeObject<ListChatMessageResponseModel>(apiResponse);
                     return result.data;
                 }
@@ -209,7 +204,6 @@ namespace BdcMobile.Core.Services.Implementations
             {
                 try
                 {
-                    var r = JsonConvert.DeserializeObject(apiResponse);
                     var result = JsonConvert.DeserializeObject<ListChatMessageResponseModel>(apiResponse);
                     return result.data;
                 }
@@ -240,7 +234,6 @@ namespace BdcMobile.Core.Services.Implementations
             {
                 try
                 {
-                    var r = JsonConvert.DeserializeObject(apiResponse);
                     var result = JsonConvert.DeserializeObject<ListChatMessageResponseModel>(apiResponse);
                     return result.data;
                 }
@@ -263,12 +256,24 @@ namespace BdcMobile.Core.Services.Implementations
         /// <param name="chat"></param>
         /// <param name="belongingTo"></param>
         /// <returns></returns>
-        public async Task<int> SendChatAsync(string token, int eventID, int type, string message, int chat, int belongingTo)
+        public async Task<ChatSentResponse> SendChatAsync(string token, int eventID, int type, string message, int chat, int belongingTo)
         {
             string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.SendChatAPI, token, eventID, type, message, 0, string.Empty);
             var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "POST");
-
-            return 1;
+            if (apiResponse.Length > 25)
+            {
+                try
+                {
+                    var result = JsonConvert.DeserializeObject<ChatSentResponse>(apiResponse);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    mvxLog.Error(ex.ToString());
+                    mvxLog.Error(ex.StackTrace);
+                }
+            }
+            return null;
         }
 
         /// <summary>
@@ -281,12 +286,24 @@ namespace BdcMobile.Core.Services.Implementations
         /// <param name="chat"></param>
         /// <param name="belongingTo"></param>
         /// <returns></returns>
-        public async Task<int> SendChatFileAsync(string token, int eventID, int type, string message, byte[] data, int chat, int belongingTo)
+        public async Task<ChatSentResponse> SendChatFileAsync(string token, int eventID, int type, string message, byte[] data, int chat, int belongingTo, string filename)
         {
-            string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.SendChatAPI, token, eventID, type, message, 0, data);
-            var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "POST");
-
-            return 1;
+            string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.SendChatAPI, token, eventID, type, message, 0, string.Empty);
+            var apiResponse = await NetWorkUtility.SendFile(apiUrl, data, filename);
+            if (apiResponse.Length > 25)
+            {
+                try
+                {
+                    var result = JsonConvert.DeserializeObject<ChatSentResponse>(apiResponse);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    mvxLog.Error(ex.ToString());
+                    mvxLog.Error(ex.StackTrace);
+                }
+            }
+            return null;
         }
 
         public async Task<List<File>> QueryAllFilesAsync(string token, int eventID)
@@ -298,7 +315,6 @@ namespace BdcMobile.Core.Services.Implementations
             {
                 try
                 {
-                    var r = JsonConvert.DeserializeObject(apiResponse);
                     var result = JsonConvert.DeserializeObject<ListFileResponseModel>(apiResponse);
                     return result.data;
                 }

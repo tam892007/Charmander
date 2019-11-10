@@ -33,7 +33,7 @@ namespace BdcMobile.Core.Commons
             public static string SendChatAPI = "api/send-chat?api_token={0}&surveyID={1}&&type={2}&content={3}&belongingTo={4}&file={5}";
             
 
-            public static string GetListFileAPI = "api/file-list? api_token={0}&surveyID={1}";
+            public static string GetListFileAPI = "api/file-list?api_token={0}&surveyID={1}";
             public static string GetNotification = "api/get-notification?api_token={0}&page={1}&record={2}";
         }
 

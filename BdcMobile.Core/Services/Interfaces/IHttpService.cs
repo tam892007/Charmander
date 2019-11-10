@@ -82,7 +82,7 @@ namespace BdcMobile.Core.Services.Interfaces
         /// <param name="chat"></param>
         /// <param name="belongingTo"></param>
         /// <returns></returns>
-        Task<int> SendChatAsync(string token, int eventID, int type, string message, int chat, int belongingTo);
+        Task<ChatSentResponse> SendChatAsync(string token, int eventID, int type, string message, int chat, int belongingTo);
 
         /// <summary>
         /// send chat message to server
@@ -94,7 +94,7 @@ namespace BdcMobile.Core.Services.Interfaces
         /// <param name="chat"></param>
         /// <param name="belongingTo"></param>
         /// <returns></returns>
-        Task<int> SendChatFileAsync(string token, int eventID, int type, string message, byte[] data, int chat, int belongingTo);
+        Task<ChatSentResponse> SendChatFileAsync(string token, int eventID, int type, string message, byte[] data, int chat, int belongingTo, string filename);
 
         /// <summary>
         /// Get All file of Event
