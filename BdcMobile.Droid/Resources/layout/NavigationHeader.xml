@@ -13,13 +13,13 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/boss"
             android:layout_marginBottom="8dp"
-		    android:scaleType="centerCrop"/>
+		    android:scaleType="centerCrop"
+            local:MvxBind="LoadingPlaceholderImagePath 'boss.svg'; ErrorPlaceholderImagePath 'boss.svg'; Transformations CircleTransformation; DownsampleWidth DownsampleWidth; ImagePath UserAvatar"/>
 	<TextView
 		android:id="@+id/username"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:text="Tam dep trai"
+		local:MvxBind= "Text UserDisplayName"
         android:textColor="@android:color/white"/>
 </LinearLayout>

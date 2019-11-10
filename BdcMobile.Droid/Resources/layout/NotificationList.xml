@@ -19,18 +19,16 @@
             android:src="@drawable/abc_ic_ab_back_material"
             android:background="@android:color/transparent"
             android:paddingHorizontal="18dp"
-            android:tint="#fff"/>
-        <EditText
+            android:tint="#fff"
+            local:MvxBind="Click BackCommand"/>
+        <TextView
             android:layout_height="match_parent"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:maxLines="1"
-            android:inputType="text"
             android:textSize="18sp"
             android:textColor="#fff"
             android:background="@android:color/transparent"
-            android:hint="Notifications"
-            android:textColorHint="#fff"/>
+            android:text="Thông báo"/>
     </LinearLayout>
     <MvvmCross.Droid.Support.V4.MvxSwipeRefreshLayout
         android:layout_height="wrap_content"

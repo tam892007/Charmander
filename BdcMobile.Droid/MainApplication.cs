@@ -2,6 +2,7 @@
 using Android.Runtime;
 using BdcMobile.Core;
 using MvvmCross.Droid.Support.V7.AppCompat;
+using Plugin.CurrentActivity;
 using System;
 
 namespace BdcMobile.Droid
@@ -12,6 +13,12 @@ namespace BdcMobile.Droid
         public MainApplication(IntPtr javaReference, JniHandleOwnership transfer)
             : base(javaReference, transfer)
         {
+        }
+
+        public override void OnCreate()
+        {
+            base.OnCreate();
+            CrossCurrentActivity.Current.Init(this);
         }
     }
 }

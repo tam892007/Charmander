@@ -1,4 +1,5 @@
 ﻿using BdcMobile.Core.Commons;
+using BdcMobile.Core.Models;
 using BdcMobile.Core.Services.Interfaces;
 using MvvmCross.Commands;
 using MvvmCross.Logging;
@@ -10,8 +11,9 @@ using Xamarin.Essentials;
 
 namespace BdcMobile.Core.ViewModels
 {
-    public class LoginViewModel : MvxNavigationViewModel
+    public class LoginViewModel : BaseViewModel<Notification>
     {
+        private Notification _notification; 
         private readonly ILoginService _loginService;
         public string UserName { get; set; }
         public string Password { get; set; }
@@ -28,49 +30,23 @@ namespace BdcMobile.Core.ViewModels
         public LoginViewModel(ILoginService loginService, IMvxLogProvider logProvider, IMvxNavigationService navigationService) : base(logProvider, navigationService)
         {
             _loginService = loginService;
-
-            if (App.User != null && !string.IsNullOrWhiteSpace(App.User.api_token))
-            {
-                var user = _loginService.VerifyAsync(App.User.api_token);
-                if (user != null)
-                {
-
-                }
-                NavigationService.Navigate<EventListViewModel>();
-            }
-            else
-            {
-
-            }
-
             LoginCommand = new MvxAsyncCommand(Login);
         }
 
         public override async Task Initialize()
         {
-            UserName = await SecureStorage.GetAsync(Constants.SecureStorageKey.Username);
-            Password = await SecureStorage.GetAsync(Constants.SecureStorageKey.Password);
-            if (!string.IsNullOrWhiteSpace(UserName) && !string.IsNullOrWhiteSpace(Password))
+            ///Auto login if not authenticated yet
+            if (!AppContext.IsUserAuthenticated)
             {
-                LoginCommand.Execute();
+                UserName = await SecureStorage.GetAsync(Constants.SecureStorageKey.Username);
+                Password = await SecureStorage.GetAsync(Constants.SecureStorageKey.Password);
+                if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
+                {
+                    LoginCommand.Execute();
+                }
             }
 
             await base.Initialize();
-        }
-
-        public async Task<string> GetToken()
-        {
-            try
-            {
-                var oauthToken = await SecureStorage.GetAsync(Constants.SecureStorageKey.OAuthToken);
-                return oauthToken;
-            }
-            catch
-            {
-                // Possible that device doesn't support secure storage on device.
-            }
-
-            return string.Empty;
         }
 
         private async Task Login()
@@ -90,13 +66,22 @@ namespace BdcMobile.Core.ViewModels
                     await SecureStorage.SetAsync(Constants.SecureStorageKey.OAuthToken, user.api_token);
                     await SecureStorage.SetAsync(Constants.SecureStorageKey.Username, UserName);
                     await SecureStorage.SetAsync(Constants.SecureStorageKey.Password, Password);
+                    SyncContextFromUser(user);
                 }
                 catch
                 {
                     // Possible that device doesn't support secure storage on device.
                 }
 
-                await NavigationService.Navigate<EventListViewModel>();
+                if (_notification == null)
+                {
+                    await NavigationService.Navigate<EventListViewModel>();
+                }
+                else
+                {
+                    await NavigationService.Navigate<EventListViewModel, Event>(new Event { SurveyID = _notification.SurveyID });
+                    _notification = null;
+                }
             } 
             else
             {
@@ -106,9 +91,9 @@ namespace BdcMobile.Core.ViewModels
             IsCallingLogin = false;
         }
 
-        private void OnLoginFailed(Exception exception)
+        public override void Prepare(Notification notification)
         {
-            // log the handled exception!
+            _notification = notification;
         }
     }
 }

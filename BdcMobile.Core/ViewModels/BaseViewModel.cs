@@ -1,36 +1,36 @@
-﻿using BdcMobile.Core.Services.Interfaces;
+﻿using BdcMobile.Core.Models;
+using BdcMobile.Core.Services.Interfaces;
+using MvvmCross;
+using MvvmCross.Commands;
+using MvvmCross.Logging;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BdcMobile.Core.ViewModels
 {
-    public class BaseViewModel : MvxViewModel
+    public abstract class BaseViewModel<T> : MvxNavigationViewModel<T>
     {
-        private readonly IMvxNavigationService _navigationService;
-        private readonly ILoginService _loginService;
+        public IAppContext AppContext { get; set; }
 
-        public BaseViewModel(IMvxNavigationService navigationService, ILoginService loginService)
+        public BaseViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService) : base(logProvider, navigationService)
         {
-            _loginService = loginService;
-            _navigationService = navigationService;
+            AppContext = Mvx.IoCProvider.Resolve<IAppContext>();
 
-            if (App.User != null && !string.IsNullOrWhiteSpace(App.User.api_token))
-            {
-                var user = _loginService.VerifyAsync(App.User.api_token);
-                if (user != null)
-                {
-
-                }
-                _navigationService.Navigate<EventListViewModel>();
-            } else
-            {
-                _navigationService.Navigate<LoginViewModel>();
-            }
-
+            BackCommand = new MvxAsyncCommand(async () => await NavigationService.Close(this));
         }
 
+        protected virtual void SyncContextFromUser(User user)
+        {
+            AppContext.UserDisplayName = user.Name;
+            AppContext.UserLoginName = user.AccountName;
+            AppContext.IsUserAuthenticated = user.IsAuthenticated;
+            AppContext.AvatarUrl = user.Image;
+            AppContext.ApiToken = user.api_token;
+        }
+
+        public IMvxAsyncCommand BackCommand { get; private set; }
+
+        public abstract override void Prepare(T parameter);
+        
     }
 }

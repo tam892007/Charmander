@@ -15,6 +15,7 @@ using BdcMobile.Droid.UIListenner;
 using Java.Lang;
 using MvvmCross.Droid.Support.V7.AppCompat;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
+using Plugin.Permissions;
 using static Android.Support.Design.Widget.TabLayout;
 
 namespace BdcMobile.Droid.Views
@@ -29,22 +30,6 @@ namespace BdcMobile.Droid.Views
             SetContentView(Resource.Layout.EventDetails);
             ViewModel.ShowInitialViewModelsCommand.Execute();
             SetUIForTabs();
-
-            MvvmCross.Droid.Support.V7.RecyclerView.MvxRecyclerView t = null;
-
-
-            ImageButton relativeclic1 = (ImageButton)FindViewById(Resource.Id.btnBack);
-            var onclickListener = new OnClickListener();
-            relativeclic1.SetOnClickListener(onclickListener);
-            onclickListener.OnClick += () =>
-            {
-                OnBackPressed();
-            };
-        }
-
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
-        {
-            ///TODO: https://github.com/jamesmontemagno/PermissionsPlugin
         }
 
         private void SetUIForTabs()
@@ -96,6 +81,12 @@ namespace BdcMobile.Droid.Views
 
             var imageView = tab.CustomView.FindViewById<ImageView>(Resource.Id.tabImg);
             imageView.SetImageResource(iconId);
+        }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
+        {
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
         public override bool DispatchTouchEvent(MotionEvent ev)

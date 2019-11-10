@@ -78,7 +78,7 @@ namespace BdcMobile.Droid.Views
                     ViewModel.ShowDebugCommand.Execute(null);
                     break;
                 case Resource.Id.nav_logout:
-                    ViewModel.DoLogoutCommand.Execute(null);
+                    await ViewModel.DoLogoutCommand.ExecuteAsync(null);
                     break;
             }
         }

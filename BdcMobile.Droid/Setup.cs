@@ -2,6 +2,7 @@ using Android.Views;
 using BdcMobile.Core.Services.Interfaces;
 using BdcMobile.Droid.Bindings;
 using BdcMobile.Droid.CloudMessaging;
+using BdcMobile.Droid.Services;
 using MvvmCross;
 using MvvmCross.Binding.Bindings.Target.Construction;
 using MvvmCross.Droid.Support.V7.AppCompat;
@@ -14,6 +15,7 @@ namespace BdcMobile.Core
         {
             base.InitializeFirstChance();
             Mvx.IoCProvider.RegisterType<ICloudMessaging>(() => new FirebaseCloudMessaging());
+            Mvx.IoCProvider.RegisterType<IMediaService>(() => new MediaService());
         }
 
         protected override void FillTargetFactories(IMvxTargetBindingFactoryRegistry registry)

@@ -19,7 +19,7 @@ namespace BdcMobile.Core
             if (hint is Notification)
             {
                 var e = new Event { SurveyID = (hint as Notification).SurveyID };
-                await NavigationService.Navigate(typeof(EventDetailsViewModel), e);
+                await NavigationService.Navigate(typeof(LoginViewModel), e);
             }
             else
             {
