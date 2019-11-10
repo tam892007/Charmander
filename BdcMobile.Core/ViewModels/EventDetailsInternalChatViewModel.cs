@@ -97,7 +97,7 @@ namespace BdcMobile.Core.ViewModels
             ChatMessages.Add(new ChatMessage { PictureContent = data, IsFromMe = true, CType = ChatType.Picture });
             
 
-            RaisePropertyChanged("ChatMessages");
+            RaisePropertyChanged(nameof(ChatMessages));
         }
         private async Task OnPictureAsync(Stream pictureStream)
         {

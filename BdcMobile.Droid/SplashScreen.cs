@@ -6,6 +6,7 @@ using BdcMobile.Core.ViewModels;
 using MvvmCross;
 using MvvmCross.Droid.Support.V7.AppCompat;
 using MvvmCross.Navigation;
+using MvvmCross.Platforms.Android.Presenters.Attributes;
 using MvvmCross.ViewModels;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace BdcMobile.Droid
         Theme = "@style/Theme.Splash",
         NoHistory = true,
         LaunchMode = Android.Content.PM.LaunchMode.SingleTask)]
+    [MvxActivityPresentation]
     public class SplashScreen: MvxSplashScreenAppCompatActivity
     {
         public SplashScreen()

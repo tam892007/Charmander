@@ -7,6 +7,8 @@
         public string Content { get; set; }
 
         public NotificationType Type { get; set; }
+
+        public int SurveyID { get; set; }
     }
 
     public enum NotificationType
