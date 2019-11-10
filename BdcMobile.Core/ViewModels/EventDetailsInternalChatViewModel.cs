@@ -4,11 +4,8 @@ using BdcMobile.Core.Services.Interfaces;
 using MvvmCross.Commands;
 using MvvmCross.Logging;
 using MvvmCross.Navigation;
-using MvvmCross.Plugin.PictureChooser;
 using MvvmCross.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -16,14 +13,15 @@ namespace BdcMobile.Core.ViewModels
 {
     public class EventDetailsInternalChatViewModel : MvxNavigationViewModel<int>
     {
-        private readonly IMvxPictureChooserTask _pictureChooserTask;
+        private readonly IMediaService _pictureChooserTask;
         public MvxObservableCollection<ChatMessage> ChatMessages { get; set; }
         private readonly IHttpService _networkService;
         public int EventId { get; set; }
         public string Message { get; set; }
 
 
-        public EventDetailsInternalChatViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService, IMvxPictureChooserTask mvxPictureChooserTask, IHttpService networkService) 
+        public EventDetailsInternalChatViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService,
+            IMediaService mvxPictureChooserTask, IHttpService networkService) 
             : base(logProvider, navigationService)
         {
             _pictureChooserTask = mvxPictureChooserTask;
@@ -34,49 +32,41 @@ namespace BdcMobile.Core.ViewModels
         {
             ChatMessages = new MvxObservableCollection<ChatMessage>();
             await LoadChatMessages();
-            //var listChat = _networkService.QueryChat(App.User.api_token, EventId, Constants.ChatType.InternalChat);
-            //if(listChat != null && listChat.Count > 0)
-            //{
-            //    foreach(var chat in listChat)
-            //    {
-            //        chat.IsFromMe = chat.UserID == App.User.ID;
-            //        ChatMessages.Add(chat);
-            //    }
-            //}
-
             await base.Initialize();
         }
 
-        private MvxCommand _takePictureCommand;
+        private IMvxAsyncCommand _takePictureCommand;
 
-        public System.Windows.Input.ICommand TakePictureCommand
+        public IMvxAsyncCommand TakePictureCommand
         {
             get
             {
-                _takePictureCommand = _takePictureCommand ?? new MvxCommand(DoTakePicture);
+                _takePictureCommand = _takePictureCommand ?? new MvxAsyncCommand(DoTakePicture);
                 return _takePictureCommand;
             }
         }
 
-        private void DoTakePicture()
+        private async Task DoTakePicture()
         {
-            _pictureChooserTask.TakePicture(400, 95, OnPicture, () => { });
+            var path = await _pictureChooserTask.TakePhotoAsync();
+            OnPicture(path);
         }
 
-        private MvxCommand _choosePictureCommand;
+        private IMvxAsyncCommand _choosePictureCommand;
 
-        public System.Windows.Input.ICommand ChoosePictureCommand
+        public IMvxAsyncCommand ChoosePictureCommand
         {
             get
             {
-                _choosePictureCommand = _choosePictureCommand ?? new MvxCommand(DoChoosePicture);
+                _choosePictureCommand = _choosePictureCommand ?? new MvxAsyncCommand(DoChoosePicture);
                 return _choosePictureCommand;
             }
         }
 
-        private void DoChoosePicture()
+        private async Task DoChoosePicture()
         {
-            _pictureChooserTask.ChoosePictureFromLibrary(400, 95, OnPicture, () => { });
+            var path = await _pictureChooserTask.PickPhotoAsync();
+            OnPicture(path);
         }
 
         private byte[] _bytes;
@@ -87,12 +77,10 @@ namespace BdcMobile.Core.ViewModels
             set { _bytes = value; RaisePropertyChanged(() => Bytes); }
         }
 
-        private void OnPicture(Stream pictureStream)
+        private void OnPicture(string path)
         {
-            var memoryStream = new MemoryStream();
-            pictureStream.CopyTo(memoryStream);
-            ChatMessages.Add(new ChatMessage { PictureContent = memoryStream.ToArray(), IsFromMe = true, CType = ChatType.Picture });
-
+            if (string.IsNullOrEmpty(path)) return;
+            ChatMessages.Add(new ChatMessage { PicturePath = path, IsFromMe = true, CType = ChatType.Picture });
             RaisePropertyChanged(nameof(ChatMessages));
         }
 

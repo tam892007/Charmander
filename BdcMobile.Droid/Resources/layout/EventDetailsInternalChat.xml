@@ -65,7 +65,7 @@
 
         <ImageButton
             android:src="@drawable/chatcamerapicker"
-            android:id="@+id/button_chatbox_picture_picker"
+            android:id="@+id/button_chatbox_camera_picker"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="top"

@@ -8,6 +8,8 @@ namespace BdcMobile.Core.Models
     public class ChatMessage
     {
         public byte [] PictureContent { get; set; }
+
+        public string PicturePath { get; set; }
         public int ChatID { get; set; }
         public int SurID { get; set; }
         public int UserID { get; set; }

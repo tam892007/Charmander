@@ -8,6 +8,7 @@ using BdcMobile.Core.ViewModels;
 using BdcMobile.Droid.UIListenner;
 using MvvmCross.Droid.Support.V7.AppCompat;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
+using Plugin.Permissions;
 using static Android.Support.Design.Widget.TabLayout;
 
 namespace BdcMobile.Droid.Views
@@ -33,11 +34,6 @@ namespace BdcMobile.Droid.Views
             {
                 OnBackPressed();
             };
-        }
-
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
-        {
-            ///TODO: https://github.com/jamesmontemagno/PermissionsPlugin
         }
 
         private void SetUIForTabs()
@@ -89,6 +85,12 @@ namespace BdcMobile.Droid.Views
 
             var imageView = tab.CustomView.FindViewById<ImageView>(Resource.Id.tabImg);
             imageView.SetImageResource(iconId);
+        }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
+        {
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 }
