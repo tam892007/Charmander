@@ -22,7 +22,8 @@
             android:layout_centerVertical="true"
             android:tint="#fff"
             android:background="@android:color/transparent"
-            android:paddingHorizontal="18dp"/>
+            android:paddingHorizontal="18dp"
+            app:MvxBind="Click BackCommand"/>
 
         <LinearLayout
             android:layout_width="wrap_content"

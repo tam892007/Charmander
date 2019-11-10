@@ -6,7 +6,7 @@ using MvvmCross.ViewModels;
 
 namespace BdcMobile.Core.ViewModels
 {
-    public class NotificationListViewModel : MvxNavigationViewModel
+    public class NotificationListViewModel : BaseViewModel<object>
     {
         ICloudMessaging _cloudMessaging;
         public NotificationListViewModel(IMvxNavigationService mvxNavigationService, IMvxLogProvider mvxLogProvider, ICloudMessaging cloudMessaging) : base(mvxLogProvider, mvxNavigationService)
@@ -23,6 +23,11 @@ namespace BdcMobile.Core.ViewModels
         {
             Notifications.Add(notification);
             RaisePropertyChanged(nameof(Notifications));
+        }
+
+        public override void Prepare(object parameter)
+        {
+            
         }
     }
 }

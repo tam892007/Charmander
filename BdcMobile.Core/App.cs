@@ -37,6 +37,7 @@ namespace BdcMobile.Core
             Mvx.IoCProvider.RegisterType<ILoginService, LoginService>();
             Mvx.IoCProvider.RegisterType<IHttpService, HttpService>();
             Mvx.IoCProvider.RegisterType<IEventService, EventService>();
+            Mvx.IoCProvider.RegisterSingleton<IAppContext>(new AppContext());
         }
     }
 }

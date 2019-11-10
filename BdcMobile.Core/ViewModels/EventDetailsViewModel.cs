@@ -4,13 +4,12 @@ using FFImageLoading.Work;
 using MvvmCross.Commands;
 using MvvmCross.Logging;
 using MvvmCross.Navigation;
-using MvvmCross.ViewModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BdcMobile.Core.ViewModels
 {
-    public class EventDetailsViewModel : MvxNavigationViewModel<Event>
+    public class EventDetailsViewModel : BaseViewModel<Event>
     {
         public int SurveyID { get; set; }
         public string SurveyNo { get; set; }

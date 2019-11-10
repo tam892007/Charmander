@@ -23,17 +23,6 @@ namespace BdcMobile.Droid.Views
             SetContentView(Resource.Layout.EventDetails);
             ViewModel.ShowInitialViewModelsCommand.Execute();
             SetUIForTabs();
-
-            MvvmCross.Droid.Support.V7.RecyclerView.MvxRecyclerView t = null;
-
-
-            ImageButton relativeclic1 = (ImageButton)FindViewById(Resource.Id.btnBack);
-            var onclickListener = new OnClickListener();
-            relativeclic1.SetOnClickListener(onclickListener);
-            onclickListener.OnClick += () =>
-            {
-                OnBackPressed();
-            };
         }
 
         private void SetUIForTabs()

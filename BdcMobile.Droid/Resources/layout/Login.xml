@@ -1,4 +1,4 @@
-
+﻿
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res-auto"
@@ -47,13 +47,13 @@
                     <EditText
                         android:id="@+id/username_input"
                         android:layout_toRightOf="@+id/username_icon"
-                        android:hint="Email"
+                        android:hint="Tên đăng nhập"
                         android:textSize="12sp"
                         android:paddingLeft="17dp"
                         android:paddingTop="15dp"
                         android:paddingBottom="15dp"
                         android:maxLines="1"
-                        android:inputType="textEmailAddress"
+                        android:inputType="textPersonName"
                         android:textCursorDrawable="@drawable/cursor_color"
                         android:background="@android:color/transparent"
                         android:layout_width="match_parent"
@@ -64,7 +64,7 @@
                     <!-- ICON -->
                     <ImageView
                         android:id="@+id/username_icon"
-                        android:src="@drawable/email"
+                        android:src="@drawable/ic_user"
                         android:layout_width="14.7dp"
                         android:layout_height="10.3dp"
                         android:layout_marginLeft="17dp"
@@ -85,7 +85,7 @@
                     <EditText
                         android:id="@+id/pass"
                         android:layout_toRightOf="@+id/icon"
-                        android:hint="Password"
+                        android:hint="Mật khẩu"
                         android:textSize="12sp"
                         android:paddingLeft="17dp"
                         android:paddingTop="15dp"
@@ -134,7 +134,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:translationY="20dp"
-                    android:text="Logging in..."
+                    android:text="Đang xử lý..."
                     android:textSize="12sp"
                     android:layout_centerInParent="true"/>
             </RelativeLayout>
@@ -152,7 +152,7 @@
             android:layout_marginLeft="62dp"
             android:layout_marginRight="62dp"
             android:layout_marginTop="12.7dp"
-            android:text="Login"
+            android:text="Đăng nhập"
             android:background="@drawable/blue_fill__rounded_color"
             local:MvxBind="Click LoginCommand"
             />

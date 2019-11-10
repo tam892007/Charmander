@@ -10,8 +10,9 @@ using System.Threading.Tasks;
 
 namespace BdcMobile.Core.ViewModels
 {
-    public class EventListViewModel : MvxNavigationViewModel
+    public class EventListViewModel : BaseViewModel<Event>
     {
+        private Event _event;
         public static int RecordPerPage { get; set; }
 
         private readonly IEventService _eventService;
@@ -45,21 +46,15 @@ namespace BdcMobile.Core.ViewModels
 
         public override async Task Initialize()
         {
-           
-            var token = App.User.api_token;
             RecordPerPage = 20;
-            //var newEvents = await _eventService.QueryEventAsync(token, null, null, 1, RecordPerPage);
-            //if (Events == null)
-            //{
-            //    Events = new ObservableCollection<Event>();
-            //}
-            //foreach (var ev in newEvents)
-            //{
-            //    Events.Add(ev);
-            //}
             await RefreshCommand.ExecuteAsync();
-
             await base.Initialize();
+
+            if (_event != null)
+            {
+                await NavigationService.Navigate<EventDetailsViewModel, Event>(_event);
+                _event = null;
+            }
         }
 
 
@@ -120,6 +115,9 @@ namespace BdcMobile.Core.ViewModels
             await NavigationService.Navigate<NotificationListViewModel>();
         }
 
-        
+        public override void Prepare(Event e)
+        {
+            _event = e;
+        }
     }
 }
