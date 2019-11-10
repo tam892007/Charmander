@@ -19,6 +19,8 @@ using Java.Lang;
 using MvvmCross.Droid.Support.V7.AppCompat;
 using MvvmCross.Droid.Support.V7.RecyclerView;
 using System;
+using Exception = System.Exception;
+using System.Threading;
 
 namespace BdcMobile.Droid.Views
 {
@@ -40,33 +42,22 @@ namespace BdcMobile.Droid.Views
                 recyclerView.SetLayoutManager(layoutManager);
                 recyclerView.AddOnScrollFetchItemsListener(layoutManager, () => ViewModel.LoadMoreTask, () => ViewModel.LoadMoreCommand);
             }
-
-            DrawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
-
-
             var editText = this.FindViewById<EditText>(Resource.Id.searchtextbox);
-            //var listView = this.FindViewById<ListView>(Resource.Id.listView1);
 
-            //listView.Adapter = new ArrayAdapter(this, Resource.Layout.ListItem, countries);
-
-            //editText.AfterTextChanged += async (sender, e) =>
-            //{
-            //    if(e.Editable.Length() > 1)
-            //    {
-            //        await ViewModel.SearchCommand.ExecuteAsync(editText.Text);
-            //    } else 
-            //    {
-            //        Log.Info(Constants.AppConfig.LogTag, e.Editable.Length() + "");
-            //    }
-                
-            //};
-            var customTextWatcher = new CustomTextWatcher();
-            editText.AddTextChangedListener(customTextWatcher);
-
-            customTextWatcher.TextChange += async () =>
+            if(editText != null)
             {
-                await this.ViewModel.SearchCommand.ExecuteAsync();
-            };
+                editText.OnTextChangeListener(() => ViewModel.SearchTask, () => ViewModel.SearchCommand, ViewModel.cts);
+            }
+            
+            
+            //var customTextWatcher = new CustomTextWatcher();
+            //editText.AddTextChangedListener(customTextWatcher);
+
+            //customTextWatcher.TextChange += async () =>
+            //{
+            //    Log.Info(Constants.AppConfig.LogTag, "TextChange:");
+            //    await this.ViewModel.SearchCommand.ExecuteAsync();
+            //};
 
         }
 
@@ -100,34 +91,5 @@ namespace BdcMobile.Droid.Views
         }
     }
 
-    public class CustomTextWatcher : Java.Lang.Object, ITextWatcher
-    {
-        public delegate void AfterTextChangeEventHandler();
-        public event AfterTextChangeEventHandler TextChange;
-        bool considerChange = false;
-       
-        public void AfterTextChanged(IEditable s)
-        {
-            if (considerChange)
-            {
-                TextChange();
-            }
-            considerChange = !considerChange; //see that boolean value is being changed after if loop
-        }
-
-        public void BeforeTextChanged(ICharSequence s, int start, int count, int after)
-        {
-            
-        }
-
-        public new void Dispose()
-        {
-            base.Dispose();
-        }
-
-        public void OnTextChanged(ICharSequence s, int start, int before, int count)
-        {
-            
-        }
-    }
+    
 }

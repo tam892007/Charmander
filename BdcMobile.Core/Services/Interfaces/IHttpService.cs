@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BdcMobile.Core.Services.Interfaces
@@ -30,7 +31,7 @@ namespace BdcMobile.Core.Services.Interfaces
         /// <param name="todate"></param>
         /// <returns></returns>
         Task<List<Event>> QueryEventAsync(string token, DateTime? fromdate, DateTime? todate, int currentPage, int recpordPerPage);
-
+        Task<List<Event>> QueryEventAsync(string token, DateTime? fromdate, DateTime? todate, int currentPage, int recpordPerPage, CancellationToken ct);
         /// <summary>
         /// Search vu viec
         /// </summary>

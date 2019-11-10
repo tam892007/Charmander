@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BdcMobile.Core.Services.Implementations
@@ -26,6 +27,12 @@ namespace BdcMobile.Core.Services.Implementations
         public async Task<List<Event>> QueryEventAsync(string token, DateTime? fromdate, DateTime? todate, int currentPage, int recpordPerPage)
         {
             var listEvents = await _httpService.QueryEventAsync(token, fromdate, todate, currentPage, recpordPerPage);
+            return listEvents;
+
+        }
+        public async Task<List<Event>> QueryEventAsync(string token, DateTime? fromdate, DateTime? todate, int currentPage, int recpordPerPage, CancellationToken ct)
+        {
+            var listEvents = await _httpService.QueryEventAsync(token, fromdate, todate, currentPage, recpordPerPage, ct);
             return listEvents;
 
         }

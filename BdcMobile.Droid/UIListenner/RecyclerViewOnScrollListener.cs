@@ -25,16 +25,18 @@ namespace BdcMobile.Droid.UIListenner
             var visibleItemCount = recyclerView.ChildCount;
             var totalItemCount = recyclerView.GetAdapter().ItemCount;
             var pastVisiblesItems = LayoutManager.FindFirstVisibleItemPosition();
-
-            if (totalItemCount != 0
+            if (dy > 0) //check for scroll down
+            {
+                if (totalItemCount != 0
                 //&& pastVisiblesItems > 0
                 &&
                 (
                     RemainingItemsToTriggerFetch >= totalItemCount
                     || (visibleItemCount + pastVisiblesItems + RemainingItemsToTriggerFetch) >= totalItemCount
                 ))
-            {
-                LoadMoreEvent?.Invoke(this, null);
+                {
+                    LoadMoreEvent?.Invoke(this, null);
+                }
             }
         }
     }

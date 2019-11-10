@@ -1,11 +1,14 @@
-﻿using BdcMobile.Core.Models;
+﻿using BdcMobile.Core.Commons;
+using BdcMobile.Core.Models;
 using BdcMobile.Core.Services.Interfaces;
 using MvvmCross.Commands;
 using MvvmCross.Logging;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BdcMobile.Core.ViewModels
@@ -15,12 +18,17 @@ namespace BdcMobile.Core.ViewModels
         public static int RecordPerPage { get; set; }
         public string SearchText { get; set; }
         private readonly IEventService _eventService;
-
+        private readonly IMvxLog _mvxLog;
+        public CancellationTokenSource cts { get; set; }
 
         public EventListViewModel(IEventService eventService, IMvxNavigationService mvxNavigationService, IMvxLogProvider mvxLogProvider) : base(mvxLogProvider, mvxNavigationService)
         {
             _eventService = eventService;
-            NavigateToEventDetailsCommand = new MvxAsyncCommand<Event>(async (e) => await NavigateToEventDetails(e));
+
+            _mvxLog = mvxLogProvider.GetLogFor(Constants.AppConfig.LogTag);
+
+            cts = new CancellationTokenSource();
+
             LoadMoreCommand = new MvxCommand(
                 () =>
                 {
@@ -28,37 +36,55 @@ namespace BdcMobile.Core.ViewModels
                     RaisePropertyChanged(() => LoadMoreTask);
                 });
             RefreshCommand = new MvxAsyncCommand(async () => await ExecuteRefreshCommand());
-            NavigateToNotificationListCommand = new MvxAsyncCommand(async (e) => await NavigateToNotificationList());
-            SearchCommand = new MvxAsyncCommand(async () => await SearchData());
+            NavigateToNotificationListCommand = new MvxAsyncCommand(async (e) =>
+            {
+                await NavigateToNotificationList();
+            });
+
+            NavigateToEventDetailsCommand = new MvxAsyncCommand<Event>(async (e) =>
+            {
+                await NavigateToEventDetails(e);
+            });
+            SearchCommand = new MvxAsyncCommand(async (e) =>
+            {
+                SearchTask = MvxNotifyTask.Create(SearchData(e));
+                
+                //await SearchData(e);
+            });
+            
+
+            //SearchCommand = new MvxAsyncCommand(async () =>
+            //{
+            //    SearchTask = MvxNotifyTask.Create(SearchData);
+            //    await RaisePropertyChanged(() => SearchTask);
+            //    //await SearchData();
+            //});
             ShowMenuViewModelCommand = new MvxAsyncCommand(async () => await NavigationService.Navigate<MenuViewModel>());
+            
         }
+
 
         public MvxObservableCollection<Event> Events { get; set; }
 
 
         public IMvxAsyncCommand<Event> NavigateToEventDetailsCommand { get; private set; }
         public IMvxAsyncCommand NavigateToNotificationListCommand { get; private set; }
+
         public IMvxCommand LoadMoreCommand { get; private set; }
+        public MvxNotifyTask LoadMoreTask { get; private set; }
+
         public IMvxAsyncCommand RefreshCommand { get; private set; }
         public IMvxAsyncCommand SearchCommand { get; private set; }
+        public MvxNotifyTask SearchTask { get; private set; }
         public IMvxAsyncCommand ShowMenuViewModelCommand { get; private set; }
 
-        public MvxNotifyTask LoadMoreTask { get; private set; }
+        
 
         public override async Task Initialize()
         {
             Events = new MvxObservableCollection<Event>();
             var token = App.User.api_token;
             RecordPerPage = 20;
-            //var newEvents = await _eventService.QueryEventAsync(token, null, null, 1, RecordPerPage);
-            //if (Events == null)
-            //{
-            //    Events = new ObservableCollection<Event>();
-            //}
-            //foreach (var ev in newEvents)
-            //{
-            //    Events.Add(ev);
-            //}
             await RefreshCommand.ExecuteAsync();
 
             await base.Initialize();
@@ -84,7 +110,19 @@ namespace BdcMobile.Core.ViewModels
             IsBusy = true;
             // do refresh work here
             var token = App.User.api_token;
-            var newEvents = await _eventService.QueryEventAsync(token, null, null, 1, RecordPerPage);            
+            _mvxLog.Info("Start Refresh: " + SearchText);
+            var text = SearchText;
+            List<Event> newEvents;
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                newEvents = await _eventService.SearchEventAsync(token, text, 1, RecordPerPage);
+            }
+            else
+            {
+                newEvents = await _eventService.QueryEventAsync(token, null, null, 1, RecordPerPage);
+            }
+            _mvxLog.Info("End Refresh: " + SearchText);
+
             Events = new MvxObservableCollection<Event>();
             if (newEvents != null)
             {
@@ -105,7 +143,19 @@ namespace BdcMobile.Core.ViewModels
             var token = App.User.api_token;
             var currentItemCount = Events == null ? 0 : Events.Count;
             var nextpage = currentItemCount / RecordPerPage + 1;
-            var newEvents = await _eventService.QueryEventAsync(token, null, null, nextpage, RecordPerPage);
+
+            _mvxLog.Info("Start LoadMore: " + SearchText);
+            var text = SearchText;
+            List<Event> newEvents;
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                newEvents = await _eventService.SearchEventAsync(token, text, nextpage, RecordPerPage);
+            }
+            else
+            {
+                newEvents = await _eventService.QueryEventAsync(token, null, null, nextpage, RecordPerPage);
+            }
+            _mvxLog.Info("End LoadMore: " + SearchText);
             if (newEvents != null)
             {
                 foreach (var ev in newEvents)
@@ -130,20 +180,62 @@ namespace BdcMobile.Core.ViewModels
 
         private async Task SearchData()
         {
+
             IsBusy = true;
-            // do refresh work here
             var token = App.User.api_token;
-            var newEvents = await _eventService.SearchEventAsync(token, SearchText, 1, RecordPerPage);
+
+            _mvxLog.Info("Start Search: " + SearchText);
+            var text = SearchText;
+            List<Event> newEvents;
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                newEvents = await _eventService.SearchEventAsync(token, text, 1, RecordPerPage);
+            }
+            else
+            {
+                newEvents = await _eventService.QueryEventAsync(token, null, null, 1, RecordPerPage);
+            }
+
             Events = new MvxObservableCollection<Event>();
             if (newEvents != null)
             {
                 Events.AddRange(newEvents);
             }
-
+            _mvxLog.Info("End Search: " + text);
             await this.RaisePropertyChanged("Events");
             IsBusy = false;
-        }
 
+
+        }
+        private async Task SearchData(CancellationToken ct)
+        {
+            ct = cts.Token;            
+
+            IsBusy = true;
+            var token = App.User.api_token;
+
+            _mvxLog.Info("Start Search: " + SearchText);
+            var text = SearchText;
+            List<Event> newEvents;
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                newEvents = await _eventService.SearchEventAsync(token, text, 1, RecordPerPage);
+            }
+            else
+            {
+                newEvents = await _eventService.QueryEventAsync(token, null, null, 1, RecordPerPage, ct);
+            }
+
+            Events = new MvxObservableCollection<Event>();
+            if (newEvents != null)
+            {
+                Events.AddRange(newEvents);
+            }
+            _mvxLog.Info("End Search: " + text);
+            await this.RaisePropertyChanged("Events");
+            IsBusy = false;
+            
+        }
 
     }
 }

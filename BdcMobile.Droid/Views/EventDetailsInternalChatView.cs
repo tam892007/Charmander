@@ -48,6 +48,7 @@ namespace BdcMobile.Droid.Views
             return view;
         }
 
+
         
     }
 }

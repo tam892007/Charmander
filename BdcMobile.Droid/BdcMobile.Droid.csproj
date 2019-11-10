@@ -65,6 +65,7 @@
     <Compile Include="CloudMessaging\FirebaseCloudMessaging.cs" />
     <Compile Include="CloudMessaging\NotificationMessage.cs" />
     <Compile Include="Extensions\MvxRecyclerViewExtensions.cs" />
+    <Compile Include="Extensions\MvxTextEditorExtensions.cs" />
     <Compile Include="MainApplication.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="SplashScreen.cs" />
     <Compile Include="TemplateSelector\InternalChatTemplateSelector.cs" />
     <Compile Include="UIControl\ToEndSmoothScroller.cs" />
+    <Compile Include="UIListenner\BDCTextWatcher.cs" />
     <Compile Include="UIListenner\OnClickListener.cs" />
     <Compile Include="UIListenner\OnTouchListener.cs" />
     <Compile Include="Views\EventDetailsPictureGalleryView.cs" />

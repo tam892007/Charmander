@@ -3,6 +3,7 @@ using BdcMobile.Droid.UIListenner;
 using MvvmCross.Droid.Support.V7.RecyclerView;
 using MvvmCross.ViewModels;
 using System;
+using System.Threading;
 using System.Windows.Input;
 
 namespace BdcMobile.Droid.Extensions
@@ -15,6 +16,7 @@ namespace BdcMobile.Droid.Extensions
             onScrollListener.LoadMoreEvent += (object sender, EventArgs e) =>
             {
                 var fetchItemsTaskCompletion = fetchItemsTaskCompletionFunc.Invoke();
+                
                 if (fetchItemsTaskCompletion == null || !fetchItemsTaskCompletion.IsNotCompleted)
                     fetchItemsCommandFunc.Invoke().Execute(null);
             };

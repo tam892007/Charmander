@@ -6,12 +6,22 @@ using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
-using Android.Util;
+using MvvmCross.Logging;
+using System.Threading;
 
 namespace BdcMobile.Core.Services.Implementations
 {
     public class HttpService: IHttpService
-    {        
+    {
+        private IMvxLogProvider _mvxLogProvider;
+        private IMvxLog mvxLog;
+
+
+        public HttpService(IMvxLogProvider mvxLogProvider)
+        {
+            _mvxLogProvider = mvxLogProvider;
+            mvxLog = _mvxLogProvider.GetLogFor(Constants.AppConfig.LogTag);
+        }
         /// <summary>
         /// Login function
         /// </summary>
@@ -72,13 +82,36 @@ namespace BdcMobile.Core.Services.Implementations
                 }
                 catch(Exception ex)
                 {
-                    Log.Error(Constants.AppConfig.LogTag, ex.ToString());
-                    Log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
+                    mvxLog.Error(ex.ToString());
+                    mvxLog.Error(ex.StackTrace);
                 }
             }
             return null;
         }
 
+        public async Task<List<Event>> QueryEventAsync(string token, DateTime? fromdate, DateTime? todate, int currentPage, int recpordPerPage, CancellationToken ct)
+        {
+            //var fromdatestr = fromdate == null ? string.Empty: string.Format("{0:ddMMyyyy}", fromdate);
+            //var todatestr = todate == null ? string.Empty : string.Format("{0:ddMMyyyy}", todate);
+
+            string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.GetItemsAPI, currentPage, recpordPerPage, token);
+            var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "GET", ct);
+            if (apiResponse.Length > 25)
+            {
+                try
+                {
+                    var r = JsonConvert.DeserializeObject(apiResponse);
+                    var result = JsonConvert.DeserializeObject<EventResponseModel>(apiResponse);
+                    return result.data;
+                }
+                catch (Exception ex)
+                {
+                    mvxLog.Error(ex.ToString());
+                    mvxLog.Error(ex.StackTrace);
+                }
+            }
+            return null;
+        }
 
         /// <summary>
         /// Search vu viec
@@ -102,8 +135,8 @@ namespace BdcMobile.Core.Services.Implementations
                 }
                 catch (Exception ex)
                 {
-                    Log.Error(Constants.AppConfig.LogTag, ex.ToString());
-                    Log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
+                    mvxLog.Error(ex.ToString());
+                    mvxLog.Error(ex.StackTrace);
                 }
             }
             return null;
@@ -130,8 +163,8 @@ namespace BdcMobile.Core.Services.Implementations
                 }
                 catch (Exception ex)
                 {
-                    Log.Error(Constants.AppConfig.LogTag, ex.ToString());
-                    Log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
+                    mvxLog.Error(ex.ToString());
+                    mvxLog.Error(ex.StackTrace);
                 }
             }
             return null;
@@ -154,8 +187,8 @@ namespace BdcMobile.Core.Services.Implementations
                 }
                 catch (Exception ex)
                 {
-                    Log.Error(Constants.AppConfig.LogTag, ex.ToString());
-                    Log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
+                    mvxLog.Error(ex.ToString());
+                    mvxLog.Error(ex.StackTrace);
                 }
             }
             return null;
@@ -182,8 +215,8 @@ namespace BdcMobile.Core.Services.Implementations
                 }
                 catch (Exception ex)
                 {
-                    Log.Error(Constants.AppConfig.LogTag, ex.ToString());
-                    Log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
+                    mvxLog.Error(ex.ToString());
+                    mvxLog.Error(ex.StackTrace);
                 }
             }
             return null;
@@ -213,8 +246,8 @@ namespace BdcMobile.Core.Services.Implementations
                 }
                 catch (Exception ex)
                 {
-                    Log.Error(Constants.AppConfig.LogTag, ex.ToString());
-                    Log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
+                    mvxLog.Error(ex.ToString());
+                    mvxLog.Error(ex.StackTrace);
                 }
             }
             return null;
@@ -232,7 +265,7 @@ namespace BdcMobile.Core.Services.Implementations
         /// <returns></returns>
         public async Task<int> SendChatAsync(string token, int eventID, int type, string message, int chat, int belongingTo)
         {
-            string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.SendChatAPI, token, eventID, type, message, 0);
+            string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.SendChatAPI, token, eventID, type, message, 0, string.Empty);
             var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "POST");
 
             return 1;
@@ -250,7 +283,7 @@ namespace BdcMobile.Core.Services.Implementations
         /// <returns></returns>
         public async Task<int> SendChatFileAsync(string token, int eventID, int type, string message, byte[] data, int chat, int belongingTo)
         {
-            string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.SendChatAPI, token, eventID, type, message, 0);
+            string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.SendChatAPI, token, eventID, type, message, 0, data);
             var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "POST");
 
             return 1;
@@ -271,8 +304,8 @@ namespace BdcMobile.Core.Services.Implementations
                 }
                 catch (Exception ex)
                 {
-                    Log.Error(Constants.AppConfig.LogTag, ex.ToString());
-                    Log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
+                    mvxLog.Error(ex.ToString());
+                    mvxLog.Error(ex.StackTrace);
                 }
             }
             return null;

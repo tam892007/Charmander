@@ -1,11 +1,18 @@
 ﻿using Android.App;
+using Android.Content;
+using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.Design.Widget;
+using Android.Support.V7.Widget;
+using Android.Util;
 using Android.Views;
+using Android.Views.InputMethods;
 using Android.Widget;
+using BdcMobile.Core.Commons;
 using BdcMobile.Core.ViewModels;
 using BdcMobile.Droid.UIListenner;
+using Java.Lang;
 using MvvmCross.Droid.Support.V7.AppCompat;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 using static Android.Support.Design.Widget.TabLayout;
@@ -89,6 +96,35 @@ namespace BdcMobile.Droid.Views
 
             var imageView = tab.CustomView.FindViewById<ImageView>(Resource.Id.tabImg);
             imageView.SetImageResource(iconId);
+        }
+
+        public override bool DispatchTouchEvent(MotionEvent ev)
+        {
+            try
+            {
+                if (ev.Action == MotionEventActions.Down)
+                {
+                    View v = CurrentFocus;
+                    if (v != null && v.GetType() == typeof(AppCompatEditText))
+                    {
+                        Rect outRect = new Rect();
+                        v.GetGlobalVisibleRect(outRect);
+                        if (!outRect.Contains((int)ev.RawX, (int)ev.RawY))
+                        {
+                            v.ClearFocus();
+                            InputMethodManager imm = (InputMethodManager)this.GetSystemService(Context.InputMethodService);
+                            imm.HideSoftInputFromWindow(v.WindowToken, 0);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(Constants.AppConfig.LogTag, ex.ToString());
+                Log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
+            }
+
+            return base.DispatchTouchEvent(ev);
         }
     }
 }
