@@ -7,30 +7,29 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="8dp">
-  
-<ffimageloading.cross.MvxSvgCachedImageView
-    android:id="@+id/image_message_profile"
-    android:layout_width="32dp"
-    android:layout_height="32dp"
-    android:src="@drawable/boss"
-    android:layout_alignParentTop="true"
-    android:layout_marginLeft="8dp"
-    android:layout_alignParentLeft="true" 
-    app:MvxBind="LoadingPlaceholderImagePath 'boss.svg'; ErrorPlaceholderImagePath 'boss.svg'; Transformations CircleTransformation; DownsampleWidth DownsampleWidth;ImagePath UserImageURL"/>
+
+    <ffimageloading.cross.MvxSvgCachedImageView
+        android:id="@+id/image_message_profile"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/boss"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="8dp"
+        android:layout_alignParentLeft="true"
+        app:MvxBind="LoadingPlaceholderImagePath 'boss.svg'; ErrorPlaceholderImagePath 'boss.svg'; Transformations CircleTransformation; DownsampleWidth DownsampleWidth;ImagePath UserImageURL"/>
 
 
-<TextView
-    android:id="@+id/text_message_name"
-    android:text="John Doe"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:textSize="12sp"
-    android:layout_toRightOf="@+id/image_message_profile"
-    android:layout_marginLeft="8dp"
-    android:layout_marginTop="4dp" 
-    app:MvxBind="Text UserName"/>
-
-<FFImageLoading.Cross.MvxCachedImageView
+    <TextView
+        android:id="@+id/text_message_name"
+        android:text="John Doe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:layout_toRightOf="@+id/image_message_profile"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
+        app:MvxBind="Text UserName"/>
+    <FFImageLoading.Cross.MvxCachedImageView
         android:id="@+id/img_msg_body"
         android:layout_width="200dp"
         android:layout_height="260dp"
@@ -42,15 +41,15 @@
         app:MvxBind="ImagePath PicturePath; DownsampleWidth DownsampleWidth;"
     />
 
-<TextView
-    android:id="@+id/text_message_time"
-    android:text="11:40"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:textSize="10sp"
-    android:layout_toRightOf="@+id/img_msg_body"
-    android:layout_marginLeft="4dp"
-    android:layout_alignBottom="@+id/img_msg_body" 
-    app:MvxBind="Text Time"/>
+    <TextView
+        android:id="@+id/text_message_time"
+        android:text="11:40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10sp"
+        android:layout_toRightOf="@+id/img_msg_body"
+        android:layout_marginLeft="4dp"
+        android:layout_alignBottom="@+id/img_msg_body"
+        app:MvxBind="Text Time"/>
 
 </RelativeLayout>
