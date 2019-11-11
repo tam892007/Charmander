@@ -16,7 +16,7 @@ namespace BdcMobile.Core.Models
             {
                 if (string.IsNullOrWhiteSpace(_surveyNo))
                 {
-                    return "00/00/1234/XX/XX";
+                    return "--/--/----/--/--";
                 }
                 return _surveyNo;
             }
