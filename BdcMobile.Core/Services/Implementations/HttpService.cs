@@ -329,9 +329,31 @@ namespace BdcMobile.Core.Services.Implementations
             return null;
         }
 
-        public Task<List<Notification>> QueryNotificationAsync(string token, int page, int recordPerPage)
+        /// <summary>
+        /// api/get-notification?api_token={0}&page={1}&record={2}
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="page"></param>
+        /// <param name="recordPerPage"></param>
+        /// <returns></returns>
+        public async Task<List<Notification>> QueryNotificationAsync(string token, int page, int record)
         {
-            throw new NotImplementedException();
+            string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.GetNotification, token, page, record);
+            var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "GET");
+            if (apiResponse.Length > 25)
+            {
+                try
+                {
+                    var result = JsonConvert.DeserializeObject<ListNotificationResponseModel>(apiResponse);
+                    return result.data;
+                }
+                catch (Exception ex)
+                {
+                    mvxLog.Error(ex.ToString());
+                    mvxLog.Error(ex.StackTrace);
+                }
+            }
+            return null;
         }
 
         

@@ -42,7 +42,7 @@ namespace BdcMobile.Core.ViewModels
                 Password = await SecureStorage.GetAsync(Constants.SecureStorageKey.Password);
                 if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
                 {
-                    //LoginCommand.Execute();
+                    LoginCommand.Execute();
                 }
             }
 
