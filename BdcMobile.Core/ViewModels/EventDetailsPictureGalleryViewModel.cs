@@ -1,5 +1,6 @@
 ﻿using BdcMobile.Core.Models;
 using BdcMobile.Core.Services.Interfaces;
+using MvvmCross.Commands;
 using MvvmCross.Logging;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
@@ -13,9 +14,14 @@ namespace BdcMobile.Core.ViewModels
         private readonly IHttpService _networkService;
         public int EventId { get; set; }
         public MvxObservableCollection<File> Files { get; set; }
+
+        public IMvxAsyncCommand<File> OpenDocumentCommand { get; private set; }
+
         public EventDetailsPictureGalleryViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService, IHttpService networkService) : base(logProvider, navigationService)
         {
             _networkService = networkService;
+
+            OpenDocumentCommand = new MvxAsyncCommand<File>(async (f) => await OpenDocument(f));
         }
         public override void Prepare(int parameter)
         {
@@ -42,8 +48,12 @@ namespace BdcMobile.Core.ViewModels
                 }
                 await this.RaisePropertyChanged("Files");
             }
-            
         }
 
+        private async Task OpenDocument(File file)
+        {
+            var index = Files.IndexOf(file);
+            await NavigationService.Navigate(typeof(DocumentDetailsViewModel), new ListParameter<File>(Files, index));
+        }
     }
 }

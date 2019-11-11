@@ -47,7 +47,8 @@
                 android:textColor="#fff"
                 android:background="@android:color/transparent"
                 android:hint="Tìm kiếm vụ việc..."
-                android:textColorHint="#fff"/>
+                android:textColorHint="#fff"
+                local:MvxBind="Text SearchText"/>
             <ImageButton
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
