@@ -31,15 +31,14 @@
         app:MvxBind="Text UserName"/>
     <FFImageLoading.Cross.MvxCachedImageView
         android:id="@+id/img_msg_body"
-        android:maxWidth="240dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="260dp"
         android:layout_marginTop="4dp"
         android:layout_below="@+id/text_message_name"
         android:layout_toRightOf="@+id/image_message_profile"
         android:layout_marginLeft="8dp"
         android:padding="8dp"
-        app:MvxBind="ImagePath PicturePath"
+        app:MvxBind="ImagePath PicturePath; DownsampleWidth DownsampleWidth;"
     />
 
     <TextView
