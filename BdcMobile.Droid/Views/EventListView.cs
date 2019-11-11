@@ -42,23 +42,24 @@ namespace BdcMobile.Droid.Views
                 recyclerView.SetLayoutManager(layoutManager);
                 recyclerView.AddOnScrollFetchItemsListener(layoutManager, () => ViewModel.LoadMoreTask, () => ViewModel.LoadMoreCommand);
             }
-            var editText = this.FindViewById<EditText>(Resource.Id.searchtextbox);
 
+            var editText = this.FindViewById<EditText>(Resource.Id.searchtextbox);
             if(editText != null)
             {
                 editText.OnTextChangeListener(() => ViewModel.SearchTask, () => ViewModel.SearchCommand, ViewModel.cts);
             }
-            
-            
-            //var customTextWatcher = new CustomTextWatcher();
-            //editText.AddTextChangedListener(customTextWatcher);
 
-            //customTextWatcher.TextChange += async () =>
-            //{
-            //    Log.Info(Constants.AppConfig.LogTag, "TextChange:");
-            //    await this.ViewModel.SearchCommand.ExecuteAsync();
-            //};
+            DrawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
 
+            if (bundle == null)
+            {
+                ViewModel.ShowMenuViewModelCommand.Execute(null);
+            }
+
+            var menuBtn = FindViewById<ImageButton>(Resource.Id.menu);
+            menuBtn.Click += delegate {
+                DrawerLayout.OpenDrawer(GravityCompat.Start);
+            };
         }
 
         public override bool DispatchTouchEvent(MotionEvent ev)

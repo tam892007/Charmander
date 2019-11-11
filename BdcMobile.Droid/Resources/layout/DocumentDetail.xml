@@ -1,46 +1,13 @@
 ﻿    
-<RelativeLayout
+<bdcmobile.droid.uicontrol.SquareRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <ffimageloading.cross.MvxSvgCachedImageView
+    <FFImageLoading.Cross.MvxSvgCachedImageView
             android:id="@+id/IconImageView"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_centerVertical="true"
-            android:src="@drawable/pdf"
-            android:padding="10dp"
-            />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/IconImageView"
-        android:orientation="vertical"
-        android:layout_centerInParent="true"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp">
-        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Document 001"
-                android:textSize="14sp"
-                android:textColor="#000"
-                android:layout_weight="0.7"
-                app:MvxBind="Text RealName"/>
-            
-        </LinearLayout>
-    </LinearLayout>
-
-    <View
-		    android:layout_width="match_parent"
-		    android:layout_height="1dp"
-		    android:background="@color/lighter_gray" 
-            android:layout_below="@+id/profileliner"/>
-    
-     
-</RelativeLayout>
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            app:MvxBind="ImagePath PathToDisplay; ErrorPlaceholderImagePath 'error.png'"/>   
+</bdcmobile.droid.uicontrol.SquareRelativeLayout>

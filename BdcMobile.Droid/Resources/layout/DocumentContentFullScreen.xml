@@ -1,0 +1,27 @@
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <FFImageLoading.Cross.MvxSvgCachedImageView
+            android:id="@+id/IconImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            android:src="@drawable/error"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:MvxBind="ImagePath ImageUrl; ErrorPlaceholderImagePath 'error.png'"/>  
+    <TextView
+       android:id="@+id/title"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:background="#7f000000"
+       android:textColor="@android:color/white"
+       android:textSize="16sp"
+       android:textStyle="bold"
+       android:padding="10dp"
+       android:gravity="center"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:MvxBind="Text ImageName"/>
+</android.support.constraint.ConstraintLayout>

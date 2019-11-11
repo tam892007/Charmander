@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BdcMobile.Core.Commons;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -24,6 +25,10 @@ namespace BdcMobile.Core.Models
 
         public DateTime CreateTime { get; set; }
 
+        public string PathToDisplay
+        {
+            get => Constants.AppAPI.IPAPI + Path.Replace('\\', '/').TrimEnd('/') + '/' + DisguisedName;
+        }
     }
 
     public class ListFileResponseModel
