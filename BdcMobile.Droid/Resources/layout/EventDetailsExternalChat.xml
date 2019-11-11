@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:MvxBind="ItemsSource ChatMessages"
+        app:MvxBind="ItemsSource ChatMessages; ItemClick OpenMessageCommand"
         app:MvxTemplateSelector="BdcMobile.Droid.TemplateSelector.InternalChatTemplateSelector,BdcMobile.Droid">
     </MvvmCross.Droid.Support.V7.RecyclerView.MvxRecyclerView>
 </LinearLayout>

@@ -10,7 +10,7 @@ namespace BdcMobile.Droid.Services
     {
         public async Task<string> PickPhotoAsync()
         {
-            var file = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions { CompressionQuality = 92, PhotoSize = PhotoSize.Medium, });
+            var file = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions { CompressionQuality = 92, PhotoSize = PhotoSize.Full, });
             return file?.Path;
         }
 
@@ -18,7 +18,7 @@ namespace BdcMobile.Droid.Services
         {
             var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
             {
-                PhotoSize = PhotoSize.Medium,
+                PhotoSize = PhotoSize.Full,
                 CompressionQuality = 92
             });
             return file?.Path;

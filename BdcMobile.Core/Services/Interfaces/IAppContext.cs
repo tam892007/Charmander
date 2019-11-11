@@ -1,6 +1,4 @@
-﻿using BdcMobile.Core.Models;
-
-namespace BdcMobile.Core.Services.Interfaces
+﻿namespace BdcMobile.Core.Services.Interfaces
 {
     public interface IAppContext
     {

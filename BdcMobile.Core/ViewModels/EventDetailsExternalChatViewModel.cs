@@ -1,6 +1,7 @@
 ﻿using BdcMobile.Core.Commons;
 using BdcMobile.Core.Models;
 using BdcMobile.Core.Services.Interfaces;
+using MvvmCross.Commands;
 using MvvmCross.Logging;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
@@ -23,6 +24,9 @@ namespace BdcMobile.Core.ViewModels
         public override async Task Initialize()
         {
             ChatMessages = new MvxObservableCollection<ChatMessage>();
+            OpenMessageCommand = new MvxAsyncCommand<ChatMessage>(async (e) => {
+                if (e.CType == ChatType.Picture) await OpenMessage(e);
+            });
             await LoadChatMessages();
             await base.Initialize();
         }
@@ -45,6 +49,12 @@ namespace BdcMobile.Core.ViewModels
         public override void Prepare(int parameter)
         {
             EventId = parameter;
+        }
+
+        public IMvxAsyncCommand<ChatMessage> OpenMessageCommand { get; private set; }
+        private async Task OpenMessage(ChatMessage m)
+        {
+            await NavigationService.Navigate(typeof(PictureChatFullScreenViewModel), m);
         }
     }
 }

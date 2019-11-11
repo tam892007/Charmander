@@ -67,9 +67,12 @@
     <Compile Include="Extensions\MvxRecyclerViewExtensions.cs" />
     <Compile Include="Extensions\MvxTextEditorExtensions.cs" />
     <Compile Include="MainApplication.cs" />
+    <Compile Include="Views\PictureChatFullScreenView.cs" />
+    <AndroidResource Include="Resources\layout\PictureChatFullScreen.xml" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <AndroidResource Include="Resources\xml\file_paths.xml" />
+    <Compile Include="Services\AppInfoService.cs" />
     <Compile Include="Services\MediaService.cs" />
     <Compile Include="Setup.cs" />
     <Compile Include="SplashScreen.cs" />
@@ -80,6 +83,7 @@
     <Compile Include="UIListenner\OnClickListener.cs" />
     <Compile Include="UIListenner\OnTouchListener.cs" />
     <Compile Include="UIListenner\ZoomOutPageTransformer.cs" />
+    <Compile Include="Views\DebugView.cs" />
     <Compile Include="Views\DocumentContentFullScreenView.cs" />
     <Compile Include="Views\DocumentDetailsView.cs" />
     <Compile Include="Views\EventDetailsPictureGalleryView.cs" />
@@ -431,6 +435,17 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-nodpi\error.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\DebugView.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\debug.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\settings.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

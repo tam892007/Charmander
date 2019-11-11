@@ -16,6 +16,7 @@ namespace BdcMobile.Core
             base.InitializeFirstChance();
             Mvx.IoCProvider.RegisterType<ICloudMessaging>(() => new FirebaseCloudMessaging());
             Mvx.IoCProvider.RegisterType<IMediaService>(() => new MediaService());
+            Mvx.IoCProvider.RegisterSingleton<IAppInfo>(() => new AppInfoService());
         }
 
         protected override void FillTargetFactories(IMvxTargetBindingFactoryRegistry registry)

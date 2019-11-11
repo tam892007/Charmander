@@ -1,5 +1,6 @@
 ﻿using BdcMobile.Core.Models;
 using System;
+using System.Threading.Tasks;
 
 namespace BdcMobile.Core.Services.Interfaces
 {
@@ -9,8 +10,10 @@ namespace BdcMobile.Core.Services.Interfaces
 
         void Publish(Notification notification);
 
-        Guid Subscribe(Action<Notification> OnReceiveNotification);
+        Guid Subscribe(Action<Notification> OnReceiveNotification, string tag);
 
         void Unsubscribe(Guid id);
+
+        string GetCloudMessagingToken();
     }
 }

@@ -28,7 +28,7 @@ namespace BdcMobile.Core.ViewModels
             _appContext = appContext;
 
             ShowSettingsCommand = new MvxAsyncCommand(async () => await System.Threading.Tasks.Task.Delay(10000));
-            ShowDebugCommand = new MvxAsyncCommand(async () => await System.Threading.Tasks.Task.Delay(10000));
+            ShowDebugCommand = new MvxAsyncCommand(async () => await _navigationService.Navigate<DebugViewModel>());
             DoLogoutCommand = new MvxAsyncCommand(async () => await DoLogOut());
 
             UserDisplayName = appContext.UserDisplayName;

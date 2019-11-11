@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/colorPrimary"
+        android:gravity="center_vertical"
+        android:paddingVertical="12dp">
+        <ImageButton
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@drawable/abc_ic_ab_back_material"
+            android:background="@android:color/transparent"
+            android:paddingHorizontal="18dp"
+            android:tint="#fff"
+            app:MvxBind="Click BackCommand"/>
+        <TextView
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textSize="18sp"
+            android:textColor="#fff"
+            android:background="@android:color/transparent"
+            android:text="Nhà phát triển"/>
+    </LinearLayout>
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/header"
+        android:padding="18dp">
+        <TextView
+            android:text="FCM Token:"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:id="@+id/fcmToken"/>
+        <TextView
+            android:id="@+id/fcmTokenVal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="@+id/fcmToken"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textSize="12dp"
+            android:textIsSelectable="true"
+            app:MvxBind="Text CloudMessagingToken"/>
+
+        <TextView
+            android:id="@+id/version"
+            android:text="App Version:"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            app:layout_constraintTop_toBottomOf="@+id/fcmTokenVal"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="@+id/version"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fcmTokenVal"
+            android:layout_below="@+id/fcmTokenVal"
+            android:textSize="12dp"
+            android:textIsSelectable="true"
+            app:MvxBind="Text AppVersion"/>
+    </android.support.constraint.ConstraintLayout>
+</RelativeLayout>

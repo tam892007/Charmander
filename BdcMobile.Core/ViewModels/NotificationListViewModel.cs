@@ -12,7 +12,7 @@ namespace BdcMobile.Core.ViewModels
         public NotificationListViewModel(IMvxNavigationService mvxNavigationService, IMvxLogProvider mvxLogProvider, ICloudMessaging cloudMessaging) : base(mvxLogProvider, mvxNavigationService)
         {
             _cloudMessaging = cloudMessaging;
-            _cloudMessaging.Subscribe(OnReceiveNotification);
+            _cloudMessaging.Subscribe(OnReceiveNotification, nameof(NotificationListViewModel));
 
             Notifications = new MvxObservableCollection<Notification>();
         }

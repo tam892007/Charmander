@@ -31,6 +31,11 @@ namespace BdcMobile.Core.ViewModels
         public override async Task Initialize()
         {
             ChatMessages = new MvxObservableCollection<ChatMessage>();
+
+            OpenMessageCommand = new MvxAsyncCommand<ChatMessage>(async (e) => {
+                if (e.CType == ChatType.Picture) await OpenMessage(e);
+            });
+
             await LoadChatMessages(DateTime.Today);
             await base.Initialize();
         }
@@ -49,7 +54,7 @@ namespace BdcMobile.Core.ViewModels
         private async Task DoTakePicture()
         {
             var path = await _pictureChooserTask.TakePhotoAsync();
-            OnPictureAsync(path);
+            await OnPictureAsync(path);
         }
 
         private IMvxAsyncCommand _choosePictureCommand;
@@ -190,6 +195,13 @@ namespace BdcMobile.Core.ViewModels
         public override void Prepare(int parameter)
         {
             EventId = parameter;
+        }
+
+        public IMvxAsyncCommand<ChatMessage> OpenMessageCommand { get; private set; }
+
+        private async Task OpenMessage(ChatMessage m)
+        {
+            await NavigationService.Navigate(typeof(PictureChatFullScreenViewModel), m);
         }
     }
 }
