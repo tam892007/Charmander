@@ -35,6 +35,21 @@ namespace BdcMobile.Core.Commons
                 }
                 log.Info("Finish: " + method + ": " + url);
             }
+            catch (WebException ex)
+            {
+                log.Error(ex.ToString());
+                log.Error(ex.StackTrace);
+                log.Error(method + ": " + url);
+                var webResponse = ex.Response as HttpWebResponse;
+                if (webResponse != null &&
+                    webResponse.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    
+                    
+                }
+                else
+                    throw;
+            }
             catch (Exception ex)
             {
 

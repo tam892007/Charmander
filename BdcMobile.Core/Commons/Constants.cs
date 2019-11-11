@@ -50,6 +50,10 @@ namespace BdcMobile.Core.Commons
             public static int ExternalChat = 0;
         }
 
+        public static class TimeZone
+        {
+            public static string HanoiTime = "Asia/Bangkok";
+        }
 
     }
 }

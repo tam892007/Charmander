@@ -31,6 +31,7 @@ namespace BdcMobile.Droid.TemplateSelector
                 case 1: return Resource.Layout.ItemMessageSent;
                 case 2: return Resource.Layout.ItemMessageReceived;
                 case 3: return Resource.Layout.PictureMessageSent;
+                case 4: return Resource.Layout.PictureMessageReceived;
 
                 default: return -1;
             }
