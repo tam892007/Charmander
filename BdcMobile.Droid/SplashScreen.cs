@@ -38,7 +38,7 @@ namespace BdcMobile.Droid
             HandleIntent(intent);
         }
 
-        protected void HandleIntent(Intent intent)
+        protected async void HandleIntent(Intent intent)
         {
             if (!string.IsNullOrEmpty(intent.GetStringExtra(Constants.AppConfig.FCMExtraName)))
             {
@@ -48,7 +48,7 @@ namespace BdcMobile.Droid
                     switch (notification.Type)
                     {
                         case Core.Models.NotificationType.NewChat:
-                            mvxNavigationService.Navigate<EventDetailsViewModel>();
+                            await mvxNavigationService.Navigate(typeof(EventDetailsViewModel), new BdcMobile.Core.Models.Event { SurveyID = notification.SurveyID });
                             break;
                         default: break;
                     }

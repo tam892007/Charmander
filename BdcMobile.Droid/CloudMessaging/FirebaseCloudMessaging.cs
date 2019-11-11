@@ -107,7 +107,7 @@ namespace BdcMobile.Droid.CloudMessaging
                     return PendingIntent.GetActivity(Application.Context, 0, intent, PendingIntentFlags.UpdateCurrent);
                 default:
                     intent = new Intent(Intent.ActionView);
-                    intent.SetData(Android.Net.Uri.Parse("http://google.com"));
+                    intent.SetData(Android.Net.Uri.Parse(Constants.AppAPI.IPAPI));
                     return PendingIntent.GetActivity(Application.Context, 0, intent, PendingIntentFlags.UpdateCurrent);
             }
         }

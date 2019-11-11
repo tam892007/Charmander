@@ -1,6 +1,7 @@
 ﻿using BdcMobile.Core.Commons;
 using BdcMobile.Core.Models;
 using BdcMobile.Core.Services.Interfaces;
+using MvvmCross.Commands;
 using MvvmCross.Logging;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
@@ -14,14 +15,18 @@ namespace BdcMobile.Core.ViewModels
         ICloudMessaging _cloudMessaging;
         private IHttpService _networkService;
         private readonly IMvxLog _mvxLog;
-        public NotificationListViewModel(IMvxNavigationService mvxNavigationService, IMvxLogProvider mvxLogProvider, ICloudMessaging cloudMessaging, IHttpService networkService) 
+        private ICommonService _commonService;
+        public NotificationListViewModel(IMvxNavigationService mvxNavigationService, IMvxLogProvider mvxLogProvider, 
+            ICloudMessaging cloudMessaging, IHttpService networkService, ICommonService commonService) 
             : base(mvxLogProvider, mvxNavigationService)
         {
             _cloudMessaging = cloudMessaging;
             _networkService = networkService;
+            _commonService = commonService;
             _cloudMessaging.Subscribe(OnReceiveNotification, nameof(NotificationListViewModel));
             _mvxLog = mvxLogProvider.GetLogFor(Constants.AppConfig.LogTag);
             Notifications = new MvxObservableCollection<Notification>();
+            OpenNotificationCommand = new MvxAsyncCommand<Notification>(async (n) => await OpenNotification(n));
         }
             
 
@@ -60,6 +65,13 @@ namespace BdcMobile.Core.ViewModels
             _mvxLog.Info("End Load Notification");
             await this.RaisePropertyChanged(nameof(Notifications));
 
+        }
+
+        public IMvxAsyncCommand<Notification> OpenNotificationCommand { get; private set; }
+
+        private async Task OpenNotification(Notification n)
+        {
+            _commonService.OpenBrowser(Constants.AppAPI.IPAPI);
         }
     }
 }

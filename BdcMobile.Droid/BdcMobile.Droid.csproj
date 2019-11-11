@@ -67,6 +67,7 @@
     <Compile Include="Extensions\MvxRecyclerViewExtensions.cs" />
     <Compile Include="Extensions\MvxTextEditorExtensions.cs" />
     <Compile Include="MainApplication.cs" />
+    <Compile Include="Services\CommonService.cs" />
     <Compile Include="Views\PictureChatFullScreenView.cs" />
     <AndroidResource Include="Resources\layout\PictureChatFullScreen.xml" />
     <Compile Include="Resources\Resource.designer.cs" />

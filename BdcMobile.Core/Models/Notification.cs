@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using BdcMobile.Core.Commons;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 
 namespace BdcMobile.Core.Models
 {
@@ -8,7 +11,11 @@ namespace BdcMobile.Core.Models
 
         public string Content { get; set; }
 
+        public string Action { get; set; }
+
         public NotificationType Type { get; set; }
+
+        public string Created_at { get; set; }
 
         public int SurveyID { get; set; }
     }

@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             local:MvxItemTemplate="@layout/notificationlistitem"
-            local:MvxBind="ItemsSource Notifications"/>
+            local:MvxBind="ItemsSource Notifications; ItemClick OpenNotificationCommand"/>
 
     </MvvmCross.Droid.Support.V4.MvxSwipeRefreshLayout>
 </RelativeLayout>

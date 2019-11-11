@@ -51,6 +51,9 @@ namespace BdcMobile.Core.ViewModels
             ImageURL = parameter.ImageURL;
         }
 
+        public override void Prepare()
+        {
 
+        }
     }
 }
