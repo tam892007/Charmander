@@ -8,9 +8,13 @@
     <MvvmCross.Droid.Support.V7.RecyclerView.MvxRecyclerView
         android:id="@+id/reyclerview_message_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"    
+        android:layout_height="match_parent"
+        android:stackFromBottom="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:MvxBind="ItemsSource ChatMessages; ItemClick OpenMessageCommand"
         android:layout_above="@+id/line"
-        app:MvxBind="ItemsSource ChatMessages"
         app:MvxTemplateSelector="BdcMobile.Droid.TemplateSelector.InternalChatTemplateSelector,BdcMobile.Droid">
     </MvvmCross.Droid.Support.V7.RecyclerView.MvxRecyclerView>
     <!-- A horizontal line between the chatbox and RecyclerView -->

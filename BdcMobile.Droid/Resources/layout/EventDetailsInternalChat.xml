@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/line"
-        app:MvxBind="ItemsSource ChatMessages"
+        app:MvxBind="ItemsSource ChatMessages; ItemClick OpenMessageCommand"
         app:MvxTemplateSelector="BdcMobile.Droid.TemplateSelector.InternalChatTemplateSelector,BdcMobile.Droid">
     </MvvmCross.Droid.Support.V7.RecyclerView.MvxRecyclerView>
 

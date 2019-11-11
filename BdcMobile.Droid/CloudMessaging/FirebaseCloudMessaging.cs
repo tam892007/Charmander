@@ -7,7 +7,7 @@ using Android.Support.V4.App;
 using BdcMobile.Core.Commons;
 using BdcMobile.Core.Models;
 using BdcMobile.Core.Services.Interfaces;
-using BdcMobile.Droid.Views;
+using Firebase.Iid;
 using Firebase.Messaging;
 using MvvmCross;
 using MvvmCross.Plugin.Messenger;
@@ -90,7 +90,8 @@ namespace BdcMobile.Droid.CloudMessaging
             {
                 Title = message.Data["title"],
                 Content = message.Data["content"],
-                Type = Enum.Parse<NotificationType>(message.Data["type"]),
+                SurveyID = Convert.ToInt32(message.Data["surveyId"]),
+                Type = System.Enum.Parse<NotificationType>(message.Data["type"]),
             };
         }
 
@@ -116,8 +117,13 @@ namespace BdcMobile.Droid.CloudMessaging
             _messenger.Publish(new NotificationMessage(this, notification));
         }
 
-        public Guid Subscribe(Action<Notification> OnReceiveNotification)
+        public Guid Subscribe(Action<Notification> OnReceiveNotification, string tag)
         {
+            if (_messenger.HasSubscriptionsForTag<NotificationMessage>(tag))
+            {
+                return Guid.Empty;
+            }
+
             var subscription = _messenger.SubscribeOnMainThread<NotificationMessage>((msg) =>
             {
                 OnReceiveNotification(msg.Notification);
@@ -132,6 +138,12 @@ namespace BdcMobile.Droid.CloudMessaging
         {
             _messenger.Unsubscribe<NotificationMessage>(_subscriptionToken[id]);
             _subscriptionToken.Remove(id);
+        }
+
+        [Obsolete]
+        public string GetCloudMessagingToken()
+        {
+            return FirebaseInstanceId.Instance.Token;
         }
     }
 }

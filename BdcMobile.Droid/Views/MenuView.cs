@@ -23,7 +23,6 @@ namespace BdcMobile.Droid.Views
     public class MenuView : MvxFragment<MenuViewModel>, NavigationView.IOnNavigationItemSelectedListener
     {
         private NavigationView _navigationView;
-        private IMenuItem _previousMenuItem;
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
@@ -35,11 +34,11 @@ namespace BdcMobile.Droid.Views
             _navigationView.SetNavigationItemSelectedListener(this);
 
             var iconPlanets = _navigationView.Menu.FindItem(Resource.Id.nav_settings);
-            var imgPlanet = VectorDrawableCompat.Create(Resources, Resource.Drawable.bell, Activity.Theme);
+            var imgPlanet = VectorDrawableCompat.Create(Resources, Resource.Drawable.settings, Activity.Theme);
             iconPlanets.SetIcon(imgPlanet);
 
             var iconPeople = _navigationView.Menu.FindItem(Resource.Id.nav_debug);
-            var imgPeople = VectorDrawableCompat.Create(Resources, Resource.Drawable.bell, Activity.Theme);
+            var imgPeople = VectorDrawableCompat.Create(Resources, Resource.Drawable.debug, Activity.Theme);
             iconPeople.SetIcon(imgPeople);
 
             var iconStatistics = _navigationView.Menu.FindItem(Resource.Id.nav_logout);
@@ -51,16 +50,7 @@ namespace BdcMobile.Droid.Views
 
         public bool OnNavigationItemSelected(IMenuItem item)
         {
-            if (_previousMenuItem != null)
-                _previousMenuItem.SetChecked(false);
-
-            item.SetCheckable(true);
-            item.SetChecked(true);
-
-            _previousMenuItem = item;
-
             Task.Run(() => Navigate(item.ItemId));
-
             return true;
         }
 

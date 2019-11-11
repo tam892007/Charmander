@@ -19,10 +19,11 @@ namespace BdcMobile.Core.ViewModels
         {
             _cloudMessaging = cloudMessaging;
             _networkService = networkService;
-            _cloudMessaging.Subscribe(OnReceiveNotification);
+            _cloudMessaging.Subscribe(OnReceiveNotification, nameof(NotificationListViewModel));
             _mvxLog = mvxLogProvider.GetLogFor(Constants.AppConfig.LogTag);
             Notifications = new MvxObservableCollection<Notification>();
         }
+            
 
         public override async Task Initialize()
         {
