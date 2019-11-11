@@ -11,12 +11,13 @@
     <FFImageLoading.Cross.MvxCachedImageView
         android:id="@+id/img_msg_body"
         android:maxWidth="240dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="280dp"        
         android:padding="8dp"
         android:layout_alignParentRight="true"
         android:background="@android:color/transparent"
-        app:MvxBind="ImagePath PicturePath"
+        android:src="@drawable/error"
+        app:MvxBind="ImagePath PicturePath; DownsampleWidth DownsampleWidth; ErrorPlaceholderImagePath 'error.png'"
     />
 
     <TextView

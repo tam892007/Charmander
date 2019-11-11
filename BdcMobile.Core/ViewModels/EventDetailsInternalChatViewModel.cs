@@ -126,6 +126,7 @@ namespace BdcMobile.Core.ViewModels
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(Message)) return;
                 var token = App.User.api_token;
                 var chatmessage = new ChatMessage { Content = Message, IsFromMe = true, CType = ChatType.Text, CreateTime = DateTime.Now };
                 ChatMessages.Add(chatmessage);
@@ -152,7 +153,7 @@ namespace BdcMobile.Core.ViewModels
                 if (string.IsNullOrWhiteSpace(filename)) filename = "untitled.png";
                 if (string.IsNullOrWhiteSpace(Message)) Message = filename;
                 var token = App.User.api_token;
-                var chatmessage = new ChatMessage { Content = Message, IsFromMe = true, PictureContent = data, CType = ChatType.Picture, CreateTime = DateTime.Now };
+                var chatmessage = new ChatMessage { Content = Message, IsFromMe = true, PictureContent = data, CType = ChatType.Picture, CreateTime = DateTime.Now, PicturePath = Constants.AppAPI.IPAPI };
                 ChatMessages.Add(chatmessage);
                 Message = string.Empty;
                 await RaisePropertyChanged(nameof(Message)); 

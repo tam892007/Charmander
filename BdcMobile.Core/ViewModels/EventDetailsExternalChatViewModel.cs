@@ -137,6 +137,7 @@ namespace BdcMobile.Core.ViewModels
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(Message)) return;
                 var token = App.User.api_token;
                 var chatmessage = new ChatMessage { Content = Message, IsFromMe = true, CType = ChatType.Text, CreateTime = DateTime.Now };
                 ChatMessages.Add(chatmessage);

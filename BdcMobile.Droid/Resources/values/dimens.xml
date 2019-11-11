@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="chat_picture_image_width">240dp</dimen>
+  <dimen name="chat_picture_image_height">400dp</dimen>
+</resources>
