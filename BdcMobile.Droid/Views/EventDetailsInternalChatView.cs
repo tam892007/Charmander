@@ -16,19 +16,15 @@ namespace BdcMobile.Droid.Views
     public class EventDetailsInternalChatView : MvxFragment<EventDetailsInternalChatViewModel>
     {
         private MvxRecyclerView _chatListView;
-        private ToEndSmoothScroller _scroller;
         public override void OnCreate(Bundle savedInstanceState)
-        {
-            
-            
+        {            
             base.OnCreate(savedInstanceState);
-
-            _scroller = new ToEndSmoothScroller(Context);
 
             ViewModel.PropertyChanged += (o, e) =>
             {
                 if (e.PropertyName == nameof(ViewModel.ChatMessages))
                 {
+                    var _scroller = new ToEndSmoothScroller(Context);
                     _scroller.TargetPosition = ViewModel.ChatMessages.Count - 1;
                     _chatListView.GetLayoutManager().StartSmoothScroll(_scroller);
                 }
