@@ -65,6 +65,7 @@ namespace BdcMobile.Droid.Views
         {
             try
             {
+                Log.Info(Constants.AppConfig.LogTag, "DispatchTouchEvent" + ev.Action);
                 if (ev.Action == MotionEventActions.Down)
                 {
                     View v = CurrentFocus;

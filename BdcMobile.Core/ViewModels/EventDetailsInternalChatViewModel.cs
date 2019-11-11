@@ -31,7 +31,7 @@ namespace BdcMobile.Core.ViewModels
         public override async Task Initialize()
         {
             ChatMessages = new MvxObservableCollection<ChatMessage>();
-            await LoadChatMessages(DateTime.Today);
+            await LoadChatMessages(DateTime.Now);
             await base.Initialize();
         }
 
@@ -49,7 +49,7 @@ namespace BdcMobile.Core.ViewModels
         private async Task DoTakePicture()
         {
             var path = await _pictureChooserTask.TakePhotoAsync();
-            OnPictureAsync(path);
+            await OnPictureAsync(path);
         }
 
         private IMvxAsyncCommand _choosePictureCommand;
@@ -175,7 +175,8 @@ namespace BdcMobile.Core.ViewModels
             {
                 foreach (var chat in listChat)
                 {
-                    chat.IsFromMe = chat.UserID == App.User.ID;
+                    chat.IsFromMe = chat.UserID == App.User.ID;                                    
+
                     if (!string.IsNullOrWhiteSpace(chat.FileIndex) && chat.FileIndex != "[]")
                     {
                         chat.CType = ChatType.Picture;

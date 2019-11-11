@@ -1,4 +1,6 @@
 ﻿using Android.Support.V7.Widget;
+using Android.Util;
+using BdcMobile.Core.Commons;
 using BdcMobile.Droid.UIListenner;
 using MvvmCross.Droid.Support.V7.RecyclerView;
 using MvvmCross.ViewModels;
@@ -15,6 +17,7 @@ namespace BdcMobile.Droid.Extensions
             var onScrollListener = new RecyclerViewOnScrollListener(linearLayoutManager);
             onScrollListener.LoadMoreEvent += (object sender, EventArgs e) =>
             {
+                Log.Info(Constants.AppConfig.LogTag, "LoadMoreEvent: OnScrollFetchItemsListener");
                 var fetchItemsTaskCompletion = fetchItemsTaskCompletionFunc.Invoke();
                 
                 if (fetchItemsTaskCompletion == null || !fetchItemsTaskCompletion.IsNotCompleted)

@@ -1,4 +1,5 @@
 ﻿using BdcMobile.Core.Commons;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,6 +23,7 @@ namespace BdcMobile.Core.Models
         public string Func { get; set; }
         public string target { get; set; }
 
+        [JsonConverter(typeof(InvalidDataFormatJsonConverter))]
         public DateTime? CreateTime { get; set; }
 
         public string Time 

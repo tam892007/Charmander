@@ -168,6 +168,8 @@ namespace BdcMobile.Core.Services.Implementations
 
         public async Task<List<ChatMessage>> QueryChatAsync(string token, int eventID, int type, bool isNewQuery, DateTime createTime)
         {
+
+            //var createTimestr = string.Format("{0:yyyy/dd/MM hh:mm:ss}", createTime);
             var createTimestr = string.Format("{0:yyyy/dd/MM}", createTime);
             var api = isNewQuery ? Constants.AppAPI.GetNewChatAPI : Constants.AppAPI.GetOldChatAPI;
 
@@ -204,7 +206,7 @@ namespace BdcMobile.Core.Services.Implementations
             {
                 try
                 {
-                    var result = JsonConvert.DeserializeObject<ListChatMessageResponseModel>(apiResponse);
+                    var result = Utility.DeserializeObject<ListChatMessageResponseModel>(apiResponse);
                     return result.data;
                 }
                 catch (Exception ex)
