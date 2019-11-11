@@ -1,4 +1,6 @@
 ﻿using BdcMobile.Core.Commons;
+using FFImageLoading.Transformations;
+using FFImageLoading.Work;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -37,7 +39,8 @@ namespace BdcMobile.Core.Models
                 return string.Empty;
             }
         }
-
+        public double DownsampleWidth => 200d;
+        public List<ITransformation> CircleTransformation => new List<ITransformation> { new CircleTransformation() };
         public bool IsFromMe { get; set; }
         public bool IsSent
         {

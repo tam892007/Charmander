@@ -109,7 +109,7 @@ namespace BdcMobile.Core.ViewModels
             var data = memoryStream.ToArray();
             await SendFile(data);
 
-            await RaisePropertyChanged("ChatMessages");
+            await RaisePropertyChanged(nameof(ChatMessages));
         }
 
         private MvxAsyncCommand _sendTextCommand;
@@ -135,6 +135,7 @@ namespace BdcMobile.Core.ViewModels
                 var chat = await _networkService.SendChatAsync(token, EventId, Constants.ChatType.InternalChat, chatmessage.Content, 0, App.User.ID);
                 chatmessage.ChatID = chat.lastID;
                 //chatmessage.Content += " sent";
+                Log.Info(Constants.AppConfig.LogTag, "Sent:" + chatmessage.Content);
                 await RaisePropertyChanged(nameof(ChatMessages));
             }
             catch(Exception ex)
@@ -160,7 +161,8 @@ namespace BdcMobile.Core.ViewModels
                 chatmessage.ChatID = chat.lastID;
                 chatmessage.FileIndex = chat.fileIndex;
                 chatmessage.PicturePath = Constants.AppAPI.IPAPI + chatmessage.FileIndex.Replace("[\"", "").Replace("\"]", "").Replace("\\\\", "\\");
-                
+
+                Log.Info(Constants.AppConfig.LogTag, "Sent:" + chatmessage.PicturePath);
                 await RaisePropertyChanged(nameof(ChatMessages));
             }
             catch (Exception ex)
@@ -189,7 +191,7 @@ namespace BdcMobile.Core.ViewModels
                     ChatMessages.Add(chat);                   
                 }
             }
-            await RaisePropertyChanged("ChatMessages");
+            await RaisePropertyChanged(nameof(ChatMessages));
         }
 
         public override void Prepare(int parameter)

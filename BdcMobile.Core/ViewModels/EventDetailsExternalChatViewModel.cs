@@ -107,7 +107,7 @@ namespace BdcMobile.Core.ViewModels
             var data = memoryStream.ToArray();
             await SendFile(data);
 
-            await RaisePropertyChanged("ChatMessages");
+            await RaisePropertyChanged(nameof(ChatMessages));
         }
 
 
@@ -204,7 +204,7 @@ namespace BdcMobile.Core.ViewModels
                     ChatMessages.Add(chat);
                 }
             }
-            await RaisePropertyChanged("ChatMessages");
+            await RaisePropertyChanged(nameof(ChatMessages));
         }
 
         public override void Prepare(int parameter)

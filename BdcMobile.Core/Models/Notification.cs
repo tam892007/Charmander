@@ -1,4 +1,6 @@
-﻿namespace BdcMobile.Core.Models
+﻿using System.Collections.Generic;
+
+namespace BdcMobile.Core.Models
 {
     public class Notification
     {
@@ -23,5 +25,10 @@
         InputIncome,
         RequestToCompleteEvent,
         CompleteEvent,
+    }
+
+    public class ListNotificationResponseModel
+    {
+        public List<Notification> data { get; set; }
     }
 }

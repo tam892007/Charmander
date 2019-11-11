@@ -8,14 +8,16 @@
     android:layout_height="wrap_content"
     android:paddingTop="8dp">
 
-    <ImageView
+    <ffimageloading.cross.MvxSvgCachedImageView
         android:id="@+id/image_message_profile"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:src="@drawable/logo"
+        android:src="@drawable/boss"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="8dp"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        app:MvxBind="LoadingPlaceholderImagePath 'boss.svg'; ErrorPlaceholderImagePath 'boss.svg'; Transformations CircleTransformation; DownsampleWidth DownsampleWidth;ImagePath UserImageURL"/>
+
 
     <TextView
         android:id="@+id/text_message_name"
@@ -25,10 +27,12 @@
         android:textSize="12sp"
         android:layout_toRightOf="@+id/image_message_profile"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="4dp" />
+        android:layout_marginTop="4dp"
+        app:MvxBind="Text UserName"/>
     <FFImageLoading.Cross.MvxCachedImageView
         android:id="@+id/img_msg_body"
-        android:layout_width="260dp"
+        android:maxWidth="240dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_below="@+id/text_message_name"
@@ -37,7 +41,6 @@
         android:padding="8dp"
         app:MvxBind="ImagePath PicturePath"
     />
-
 
     <TextView
         android:id="@+id/text_message_time"
