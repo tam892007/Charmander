@@ -95,5 +95,9 @@ namespace BdcMobile.Core.ViewModels
         {
             _notification = notification;
         }
+
+        public override void Prepare()
+        { 
+        }
     }
 }
