@@ -91,6 +91,11 @@ namespace BdcMobile.Droid.Views
 
             return base.DispatchTouchEvent(ev);
         }
+
+        public override void OnBackPressed()
+        {
+            //navigate to the screen you want to
+        }
     }
 
     

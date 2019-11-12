@@ -14,7 +14,7 @@ using System;
 
 namespace BdcMobile.Droid.Views
 {
-    [Activity(Label = "Login", LaunchMode = LaunchMode.SingleTask, NoHistory = true)]
+    [Activity(Label = "Login", LaunchMode = LaunchMode.SingleTask, NoHistory = true, ExcludeFromRecents =true)]
     [MvxActivityPresentation]
     public class LoginView : MvxAppCompatActivity<LoginViewModel>
     {
@@ -52,5 +52,9 @@ namespace BdcMobile.Droid.Views
             return base.DispatchTouchEvent(ev);
         }
 
+        public override void OnBackPressed()
+        {
+            //navigate to the screen you want to
+        }
     }
 }
