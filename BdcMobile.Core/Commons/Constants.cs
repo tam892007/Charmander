@@ -55,5 +55,10 @@ namespace BdcMobile.Core.Commons
             public static string HanoiTime = "Asia/Bangkok";
         }
 
+        public static class DateTimeFormat
+        {
+            public static string DateOnlyFormat = "dd/MM/yyyy";
+            public static string DateAndTimeFormat = "dd/MM/yyyy hh:mm:ss";
+        }
     }
 }

@@ -30,6 +30,7 @@ namespace BdcMobile.Droid.Views
             SetContentView(Resource.Layout.EventDetails);
             ViewModel.ShowInitialViewModelsCommand.Execute();
             SetUIForTabs();
+
         }
 
         private void SetUIForTabs()

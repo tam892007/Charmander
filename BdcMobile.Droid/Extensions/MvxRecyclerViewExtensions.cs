@@ -19,9 +19,22 @@ namespace BdcMobile.Droid.Extensions
             {
                 Log.Info(Constants.AppConfig.LogTag, "LoadMoreEvent: OnScrollFetchItemsListener");
                 var fetchItemsTaskCompletion = fetchItemsTaskCompletionFunc.Invoke();
-                
-                if (fetchItemsTaskCompletion == null || !fetchItemsTaskCompletion.IsNotCompleted)
-                    fetchItemsCommandFunc.Invoke().Execute(null);
+
+
+                if (fetchItemsTaskCompletion != null && fetchItemsTaskCompletion.IsNotCompleted)
+                {
+                    Log.Info(Constants.AppConfig.LogTag, "Cancel searchCommand ");
+                    
+                } else if (fetchItemsTaskCompletion == null || !fetchItemsTaskCompletion.IsNotCompleted)
+                {
+                    Log.Info(Constants.AppConfig.LogTag, "Execute searchCommand ");
+                    fetchItemsCommandFunc?.Invoke().Execute(null);   
+                }
+                else
+                {
+                    Log.Info(Constants.AppConfig.LogTag, "searchCommand is not completed");
+                }
+                    
             };
             recyclerView.AddOnScrollListener(onScrollListener);
         }

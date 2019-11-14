@@ -16,6 +16,25 @@ namespace BdcMobile.Core.ViewModels
         private IHttpService _networkService;
         private readonly IMvxLog _mvxLog;
         private ICommonService _commonService;
+        public IMvxAsyncCommand RefreshCommand { get; set; }
+        public IMvxCommand LoadMoreCommand { get; private set; }
+        public MvxNotifyTask LoadMoreTask { get; private set; }
+        private bool _isBusy;
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
+        }
+
+        private bool _isLoadingMore;
+        public bool IsLoadingMore
+        {
+            get => _isLoadingMore;
+            set => SetProperty(ref _isLoadingMore, value);
+        }
+
+        public int ItemPerPage = 20;
+
         public NotificationListViewModel(IMvxNavigationService mvxNavigationService, IMvxLogProvider mvxLogProvider, 
             ICloudMessaging cloudMessaging, IHttpService networkService, ICommonService commonService) 
             : base(mvxLogProvider, mvxNavigationService)
@@ -27,6 +46,13 @@ namespace BdcMobile.Core.ViewModels
             _mvxLog = mvxLogProvider.GetLogFor(Constants.AppConfig.LogTag);
             Notifications = new MvxObservableCollection<Notification>();
             OpenNotificationCommand = new MvxAsyncCommand<Notification>(async (n) => await OpenNotification(n));
+            RefreshCommand = new MvxAsyncCommand(() => LoadNotification());
+            LoadMoreCommand = new MvxCommand(
+                () =>
+                {
+                    LoadMoreTask = MvxNotifyTask.Create(LoadMoreNotification);
+                    RaisePropertyChanged(() => LoadMoreTask);
+                });
         }
             
 
@@ -49,12 +75,21 @@ namespace BdcMobile.Core.ViewModels
             
         }
 
-        private async Task LoadNotification()
+        private async Task LoadNotification(int page = 1)
         {
+            if(page == 1)
+            {
+                // first load or refresh load
+                IsBusy = true;
+            } else
+            {
+                // load more data.
+                IsLoadingMore = true;
+            }
             var token = App.User.api_token;
 
             _mvxLog.Info("Start Load Notification");
-            List<Notification> newNotifications = await _networkService.QueryNotificationAsync(token, 1, 20);
+            List<Notification> newNotifications = await _networkService.QueryNotificationAsync(token, page, ItemPerPage);
 
 
             Notifications = new MvxObservableCollection<Notification>();
@@ -64,7 +99,8 @@ namespace BdcMobile.Core.ViewModels
             }
             _mvxLog.Info("End Load Notification");
             await this.RaisePropertyChanged(nameof(Notifications));
-
+            IsBusy = false;
+            IsLoadingMore = false;
         }
 
         public IMvxAsyncCommand<Notification> OpenNotificationCommand { get; private set; }
@@ -72,6 +108,13 @@ namespace BdcMobile.Core.ViewModels
         private async Task OpenNotification(Notification n)
         {
             _commonService.OpenBrowser(Constants.AppAPI.IPAPI);
+        }
+
+        private async Task LoadMoreNotification()
+        {
+            var currentItemCount = Notifications == null ? 0 : Notifications.Count;
+            var nextpage = currentItemCount / ItemPerPage + 1;
+            await LoadNotification(nextpage);
         }
     }
 }

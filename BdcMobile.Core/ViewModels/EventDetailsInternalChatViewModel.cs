@@ -6,6 +6,7 @@ using MvvmCross.Logging;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -35,7 +36,7 @@ namespace BdcMobile.Core.ViewModels
                 if (e.CType == ChatType.Picture) await OpenMessage(e);
             });
 
-            await LoadChatMessages(DateTime.Now);
+            await LoadChatMessages();
             await base.Initialize();
         }
 
@@ -173,10 +174,18 @@ namespace BdcMobile.Core.ViewModels
             }
         }
 
-        private async Task LoadChatMessages(DateTime datetime)
+        private async Task LoadChatMessages(DateTime? datetime = null)
         {
-            //var listChat = await _networkService.QueryChatAsync(App.User.api_token, EventId, Constants.ChatType.InternalChat, false, datetime);
-            var listChat = await _networkService.QueryChatAsync(App.User.api_token, EventId, Constants.ChatType.InternalChat, true, datetime);
+
+            List<ChatMessage> listChat;
+            if (datetime == null)
+            {
+                listChat = await _networkService.QueryChatAsync(App.User.api_token, EventId, Constants.ChatType.InternalChat);
+            }
+            else
+            {
+                listChat = await _networkService.QueryChatAsync(App.User.api_token, EventId, Constants.ChatType.InternalChat, true, datetime.Value);
+            }
 
             if (listChat != null && listChat.Count > 0)
             {

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res-auto"
@@ -30,12 +30,23 @@
             android:background="@android:color/transparent"
             android:text="Thông báo"/>
     </LinearLayout>
+
     <MvvmCross.Droid.Support.V4.MvxSwipeRefreshLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:paddingBottom="0dp"
-        android:layout_below="@+id/header">
+        android:layout_below="@+id/header"
+        local:MvxBind="Refreshing IsBusy; RefreshCommand RefreshCommand">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
+                <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="0dp">
         <MvvmCross.Droid.Support.V7.RecyclerView.MvxRecyclerView
             android:id="@+id/lstNotification"
             android:scrollbars="vertical"
@@ -43,6 +54,36 @@
             android:layout_height="match_parent"
             local:MvxItemTemplate="@layout/notificationlistitem"
             local:MvxBind="ItemsSource Notifications; ItemClick OpenNotificationCommand"/>
+                </LinearLayout>
+        <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" 
+                    android:orientation="vertical"
+                    android:gravity="bottom"
+                    android:layout_gravity="bottom"
+                    >
 
+                    <RelativeLayout
+                        local:MvxBind="Visibility IsLoadingMore"
+                        android:id="@+id/loginLoading"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@color/material_grey_50">
+
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/animation_view"
+                            android:scaleType="center"
+                            local:lottie_scale="0.5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            local:lottie_fileName="loading01.json"
+                            local:lottie_loop="true"
+                            local:lottie_autoPlay="true"
+                            android:layout_centerInParent="true"/>                        
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+        </FrameLayout>  
     </MvvmCross.Droid.Support.V4.MvxSwipeRefreshLayout>
 </RelativeLayout>

@@ -1,6 +1,8 @@
 ﻿using Android.App;
 using Android.OS;
+using Android.Support.V7.Widget;
 using BdcMobile.Core.ViewModels;
+using BdcMobile.Droid.Extensions;
 using BdcMobile.Droid.UIListenner;
 using MvvmCross.Droid.Support.V7.AppCompat;
 using MvvmCross.Droid.Support.V7.RecyclerView;
@@ -15,6 +17,15 @@ namespace BdcMobile.Droid.Views
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.NotificationList);
+
+            var recyclerView = FindViewById<MvxRecyclerView>(Resource.Id.lstNotification);
+            if (recyclerView != null)
+            {
+                recyclerView.HasFixedSize = true;
+                var layoutManager = new LinearLayoutManager(this);
+                recyclerView.SetLayoutManager(layoutManager);
+                recyclerView.AddOnScrollFetchItemsListener(layoutManager, () => ViewModel.LoadMoreTask, () => ViewModel.LoadMoreCommand);
+            }
         }
     }
 }

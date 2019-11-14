@@ -317,7 +317,9 @@ namespace BdcMobile.Core.Services.Implementations
             {
                 try
                 {
-                    var result = JsonConvert.DeserializeObject<ListFileResponseModel>(apiResponse);
+                    var serializeSettings = new JsonSerializerSettings();
+                    serializeSettings.DateFormatString = Constants.DateTimeFormat.DateOnlyFormat;
+                    var result = JsonConvert.DeserializeObject<ListFileResponseModel>(apiResponse, serializeSettings);
                     return result.data;
                 }
                 catch (Exception ex)
