@@ -11,6 +11,8 @@ namespace BdcMobile.Droid.UIListenner
         public delegate void LoadMoreEventHandler(object sender, EventArgs e);
 
         public int RemainingItemsToTriggerFetch { get; set; } = 3;
+        public ScrollDirection Direction { get; set; }
+        
 
         public event LoadMoreEventHandler LoadMoreEvent;
 
@@ -25,13 +27,13 @@ namespace BdcMobile.Droid.UIListenner
         {
             base.OnScrolled(recyclerView, dx, dy);
             if (!IsLoading)
-            {
-                Log.Info(Constants.AppConfig.LogTag, "OnScrolled");
-                IsLoading = true;
+            {                
+                IsLoading = true;                
                 var visibleItemCount = recyclerView.ChildCount;
+                Log.Info(Constants.AppConfig.LogTag, "OnScrolled Down");
                 var totalItemCount = recyclerView.GetAdapter().ItemCount;
                 var pastVisiblesItems = LayoutManager.FindFirstVisibleItemPosition();
-                if (dy > 0) //check for scroll down
+                if (dy > 0 && Direction == ScrollDirection.DOWN) //check for scroll down
                 {
                     if (totalItemCount != 0
                     //&& pastVisiblesItems > 0
@@ -43,6 +45,14 @@ namespace BdcMobile.Droid.UIListenner
                     {
                         LoadMoreEvent?.Invoke(this, null);
                     }
+                } else if(dy < 0 && Direction == ScrollDirection.UP)
+                {
+                    Log.Info(Constants.AppConfig.LogTag, "OnScrolled Up: " + pastVisiblesItems + "/" + RemainingItemsToTriggerFetch);
+                    if (pastVisiblesItems < RemainingItemsToTriggerFetch)
+                    {
+                        LoadMoreEvent?.Invoke(this, null);
+                    }
+                    
                 }
                 IsLoading = false;
             } 

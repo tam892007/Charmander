@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <MvvmCross.Droid.Support.V7.RecyclerView.MvxRecyclerView
-        android:id="@+id/reyclerview_message_list"
+        android:id="@+id/reyclerview_external_message_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:stackFromBottom="true"
