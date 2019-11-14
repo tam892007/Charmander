@@ -22,9 +22,9 @@ namespace BdcMobile.Droid.Views
 
             ViewModel.PropertyChanged += (o, e) =>
             {
-                if (e.PropertyName == nameof(ViewModel.ChatMessages))
+                if (e.PropertyName == nameof(ViewModel.ChatMessages) && ViewModel.ChatMessages?.Count > 0)
                 {
-                    var _scroller = new ToEndSmoothScroller(Context);
+                    var _scroller = new ToEndSmoothScroller(Android.App.Application.Context);
                     _scroller.TargetPosition = ViewModel.ChatMessages.Count - 1;
                     _chatListView.GetLayoutManager().StartSmoothScroll(_scroller);
                 }

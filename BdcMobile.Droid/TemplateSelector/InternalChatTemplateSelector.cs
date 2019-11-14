@@ -15,12 +15,13 @@ namespace BdcMobile.Droid.TemplateSelector
                 return -1;
             }
 
-            switch (msg.CType)
+            if (msg.Files == null || msg.Files.Count < 2)
             {
-                case ChatType.Text: return msg.IsFromMe ? 1 : 2;
-                case ChatType.Picture: return msg.IsFromMe ? 3 : 4;
-
-                default: return -1;
+                return msg.IsFromMe ? 1 : 2;
+            }
+            else
+            {
+                return msg.IsFromMe ? 3 : 4;
             }
         }
 

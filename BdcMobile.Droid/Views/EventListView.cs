@@ -2,25 +2,19 @@
 using Android.Content;
 using Android.Graphics;
 using Android.OS;
-using Android.Support.V7.Widget;
-using Android.Text;
-using Android.Util;
-using Android.Views;
-using Android.Views.InputMethods;
 using Android.Support.V4.View;
 using Android.Support.V4.Widget;
 using Android.Support.V7.Widget;
+using Android.Util;
+using Android.Views;
+using Android.Views.InputMethods;
 using Android.Widget;
 using BdcMobile.Core.Commons;
 using BdcMobile.Core.ViewModels;
 using BdcMobile.Droid.Extensions;
-using BdcMobile.Droid.UIListenner;
-using Java.Lang;
 using MvvmCross.Droid.Support.V7.AppCompat;
 using MvvmCross.Droid.Support.V7.RecyclerView;
-using System;
 using Exception = System.Exception;
-using System.Threading;
 
 namespace BdcMobile.Droid.Views
 {

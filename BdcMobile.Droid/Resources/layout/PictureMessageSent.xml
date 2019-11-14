@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+
 
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -6,18 +6,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="8dp">
+    android:padding="8dp">
+
+    <FFImageLoading.Cross.MvxCachedImageView
+        android:id="@+id/img_msg_body2"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/error"
+        android:layout_toLeftOf="@+id/img_msg_body"
+        android:background="@android:color/transparent"
+        app:MvxBind="ImagePath Files[0].FilePath; ErrorPlaceholderImagePath 'error.png'"
+    />
 
     <FFImageLoading.Cross.MvxCachedImageView
         android:id="@+id/img_msg_body"
-        android:maxWidth="240dp"
-        android:layout_width="200dp"
-        android:layout_height="280dp"        
-        android:padding="8dp"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/error"
         android:layout_alignParentRight="true"
         android:background="@android:color/transparent"
-        android:src="@drawable/error"
-        app:MvxBind="ImagePath PicturePath; DownsampleWidth DownsampleWidth; ErrorPlaceholderImagePath 'error.png'"
+        app:MvxBind="ImagePath Files[1].FilePath; ErrorPlaceholderImagePath 'error.png'"
+    />
+
+    <TextView
+        android:id="@+id/numberoffile"
+        android:adjustViewBounds="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+1"
+        app:MvxBind="Visible IsMultiPicture; Text MultiPictureTextDisplay"
+        android:textSize="24dp"
+        android:layout_alignLeft="@+id/img_msg_body"
+        android:layout_alignTop="@+id/img_msg_body"
+        android:layout_alignBottom="@+id/img_msg_body"
+        android:layout_alignParentRight="true"
+        android:background="#7f000000"
+        android:gravity="center"
+        android:textColor="@color/white"
     />
 
     <TextView
@@ -27,8 +54,8 @@
         android:layout_height="wrap_content"
         android:textSize="10sp"
         android:layout_marginRight="4dp"
-        android:layout_toLeftOf="@+id/img_msg_body"
-        android:layout_alignBottom="@+id/img_msg_body"
+        android:layout_toLeftOf="@+id/img_msg_body2"
+        android:layout_alignBottom="@+id/img_msg_body2"
         app:MvxBind="Text Time"/>
     
     

@@ -1,8 +1,9 @@
-﻿using System.IO;
-using System.Threading.Tasks;
-using BdcMobile.Core.Services.Interfaces;
+﻿using BdcMobile.Core.Services.Interfaces;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Linq;
 
 namespace BdcMobile.Droid.Services
 {
@@ -12,6 +13,13 @@ namespace BdcMobile.Droid.Services
         {
             var file = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions { CompressionQuality = 92, PhotoSize = PhotoSize.Full, });
             return file?.Path;
+        }
+
+        public async Task<IList<string>> PickPhotosAsync()
+        {
+            var files = await CrossMedia.Current.PickPhotosAsync(new PickMediaOptions { CompressionQuality = 92, PhotoSize = PhotoSize.Full, },
+                new MultiPickerOptions { });
+            return files?.Select(x => x.Path).ToList();
         }
 
         public async Task<string> TakePhotoAsync()

@@ -3,7 +3,7 @@ using BdcMobile.Core.Services.Interfaces;
 using BdcMobile.Core.Commons;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 using MvvmCross.Logging;
@@ -166,10 +166,17 @@ namespace BdcMobile.Core.Services.Implementations
             return null;
         }
 
+        /// <summary>
+        /// Get Chat from Server
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="eventID"></param>
+        /// <param name="type"></param>
+        /// <param name="isNewQuery"></param>
+        /// <param name="createTime"></param>
+        /// <returns></returns>
         public async Task<List<ChatMessage>> QueryChatAsync(string token, int eventID, int type, bool isNewQuery, DateTime createTime)
         {
-
-            //var createTimestr = string.Format("{0:yyyy/dd/MM hh:mm:ss}", createTime);
             var createTimestr = string.Format("{0:yyyy/dd/MM}", createTime);
             var api = isNewQuery ? Constants.AppAPI.GetNewChatAPI : Constants.AppAPI.GetOldChatAPI;
 
@@ -180,6 +187,15 @@ namespace BdcMobile.Core.Services.Implementations
                 try
                 {
                     var result = JsonConvert.DeserializeObject<ListChatMessageResponseModel>(apiResponse);
+
+                    ///parse list file
+                    foreach (var d in result.data)
+                    {
+                        var paths = JsonConvert.DeserializeObject<string[]>(d.FileIndex.Trim('"'));
+                        if (paths == null || paths.Length == 0) continue;
+                        d.Files = paths.Select(p => new ChatPicture { FilePath = Constants.AppAPI.IPAPI + p.Replace("\\\\", "/") }).ToList();
+                    }
+
                     return result.data;
                 }
                 catch (Exception ex)
@@ -288,10 +304,10 @@ namespace BdcMobile.Core.Services.Implementations
         /// <param name="chat"></param>
         /// <param name="belongingTo"></param>
         /// <returns></returns>
-        public async Task<ChatSentResponse> SendChatFileAsync(string token, int eventID, int type, string message, byte[] data, int chat, int belongingTo, string filename)
+        public async Task<ChatSentResponse> SendChatFileAsync(string token, int eventID, int type, string message, byte[] data, int chat, int belongingTo, string fileName)
         {
             string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.SendChatAPI, token, eventID, type, message, 0, string.Empty);
-            var apiResponse = await NetWorkUtility.SendFile(apiUrl, data, filename);
+            var apiResponse = await NetWorkUtility.SendFile(apiUrl, new List<byte[]>() { data }, new List<string>() { string.Empty });
             if (apiResponse.Length > 25)
             {
                 try
@@ -356,6 +372,38 @@ namespace BdcMobile.Core.Services.Implementations
             return null;
         }
 
-        
+        public async Task<ChatSentResponse> SendChatFileAsync(string token, int eventID, int type, string message, IEnumerable<string> filePaths, int chat, int belongingTo)
+        {
+            if (string.IsNullOrEmpty(message))
+            {
+                message = DateTime.Now.ToShortDateString();
+            }
+
+            string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.SendChatAPI, token, eventID, type, message, 0, string.Empty);
+
+            List<byte[]> data = new List<byte[]>();
+            List<string> fileNames = new List<string>();
+            foreach (var path in filePaths)
+            {
+                data.Add(System.IO.File.ReadAllBytes(path));
+                fileNames.Add(System.IO.Path.GetFileName(path));
+            }
+
+            var apiResponse = await NetWorkUtility.SendFile(apiUrl, data, fileNames);
+            if (apiResponse.Length > 25)
+            {
+                try
+                {
+                    var result = JsonConvert.DeserializeObject<ChatSentResponse>(apiResponse);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    mvxLog.Error(ex.ToString());
+                    mvxLog.Error(ex.StackTrace);
+                }
+            }
+            return null;
+        }
     }
 }

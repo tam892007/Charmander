@@ -6,7 +6,8 @@ using MvvmCross.Logging;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using System;
-using System.IO;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BdcMobile.Core.ViewModels
@@ -21,7 +22,7 @@ namespace BdcMobile.Core.ViewModels
 
 
         public EventDetailsInternalChatViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService,
-            IMediaService mvxPictureChooserTask, IHttpService networkService) 
+            IMediaService mvxPictureChooserTask, IHttpService networkService)
             : base(logProvider, navigationService)
         {
             _pictureChooserTask = mvxPictureChooserTask;
@@ -32,7 +33,7 @@ namespace BdcMobile.Core.ViewModels
         {
             ChatMessages = new MvxObservableCollection<ChatMessage>();
             OpenMessageCommand = new MvxAsyncCommand<ChatMessage>(async (e) => {
-                if (e.CType == ChatType.Picture) await OpenMessage(e);
+                if (e.Files?.Count > 0) await OpenMessage(e);
             });
 
             await LoadChatMessages(DateTime.Now);
@@ -53,7 +54,7 @@ namespace BdcMobile.Core.ViewModels
         private async Task DoTakePicture()
         {
             var path = await _pictureChooserTask.TakePhotoAsync();
-            await OnPictureAsync(path);
+            await OnPictureAsync(new List<string> { path });
         }
 
         private IMvxAsyncCommand _choosePictureCommand;
@@ -69,8 +70,8 @@ namespace BdcMobile.Core.ViewModels
 
         private async Task DoChoosePicture()
         {
-            var path = await _pictureChooserTask.PickPhotoAsync();
-            await OnPictureAsync(path);
+            var paths = await _pictureChooserTask.PickPhotosAsync();
+            await OnPictureAsync(paths);
         }
 
         private byte[] _bytes;
@@ -81,33 +82,21 @@ namespace BdcMobile.Core.ViewModels
             set { _bytes = value; RaisePropertyChanged(() => Bytes); }
         }
 
-        private async Task OnPictureAsync(string path)
+        private async Task OnPictureAsync(IList<string> paths)
         {
-            if (string.IsNullOrEmpty(path))
+            if (paths == null || paths.Count == 0)
             {
                 return;
             }
-            
-            string filename = Path.GetFileName(path);
-            var ms = new MemoryStream();
-            using (FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read))
-            {                
-                byte[] bytes = new byte[file.Length];
-                file.Read(bytes, 0, (int)file.Length);
-                ms.Write(bytes, 0, (int)file.Length);
+
+            var chatmessage = new ChatMessage { Content = Message, IsFromMe = true, CreateTime = DateTime.Now, Files = new List<ChatPicture>() };
+
+            foreach (var path in paths)
+            {
+                chatmessage.Files.Add(new ChatPicture { FilePath = path });
             }
-            var data = ms.ToArray();
-            await SendFile(data, filename);
 
-            await RaisePropertyChanged(nameof(ChatMessages));
-        }
-        private async Task OnPictureAsync(Stream pictureStream)
-        {
-            var memoryStream = new MemoryStream();
-            pictureStream.CopyTo(memoryStream);
-
-            var data = memoryStream.ToArray();
-            await SendFile(data);
+            await SendChatMessage(chatmessage);
 
             await RaisePropertyChanged(nameof(ChatMessages));
         }
@@ -128,14 +117,13 @@ namespace BdcMobile.Core.ViewModels
             {
                 if (string.IsNullOrWhiteSpace(Message)) return;
                 var token = App.User.api_token;
-                var chatmessage = new ChatMessage { Content = Message, IsFromMe = true, CType = ChatType.Text, CreateTime = DateTime.Now };
+                var chatmessage = new ChatMessage { Content = Message, IsFromMe = true, CreateTime = DateTime.Now };
                 ChatMessages.Add(chatmessage);
                 Message = string.Empty;
                 await RaisePropertyChanged(nameof(Message));
                 await RaisePropertyChanged(nameof(ChatMessages));
                 var chat = await _networkService.SendChatAsync(token, EventId, Constants.ChatType.InternalChat, chatmessage.Content, 0, App.User.ID);
                 chatmessage.ChatID = chat.lastID;
-                //chatmessage.Content += " sent";
                 Log.Info(Constants.AppConfig.LogTag, "Sent:" + chatmessage.Content);
                 await RaisePropertyChanged(nameof(ChatMessages));
             }
@@ -146,24 +134,23 @@ namespace BdcMobile.Core.ViewModels
             }
         }
 
-        private async Task SendFile(byte[] data, string filename=null)
+        private async Task SendChatMessage(ChatMessage msg)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(filename)) filename = "untitled.png";
-                if (string.IsNullOrWhiteSpace(Message)) Message = filename;
                 var token = App.User.api_token;
-                var chatmessage = new ChatMessage { Content = Message, IsFromMe = true, PictureContent = data, CType = ChatType.Picture, CreateTime = DateTime.Now, PicturePath = Constants.AppAPI.IPAPI };
-                ChatMessages.Add(chatmessage);
+                ChatMessages.Add(msg);
                 Message = string.Empty;
                 await RaisePropertyChanged(nameof(Message)); 
                 await RaisePropertyChanged(nameof(ChatMessages));
-                var chat = await _networkService.SendChatFileAsync(token, EventId, Constants.ChatType.InternalChat, chatmessage.Content, data, 0, App.User.ID, filename);
-                chatmessage.ChatID = chat.lastID;
-                chatmessage.FileIndex = chat.fileIndex;
-                chatmessage.PicturePath = Constants.AppAPI.IPAPI + chatmessage.FileIndex.Replace("[\"", "").Replace("\"]", "").Replace("\\\\", "\\");
 
-                Log.Info(Constants.AppConfig.LogTag, "Sent:" + chatmessage.PicturePath);
+                var filePaths = msg.Files.Select(x => x.FilePath);
+                ////Send to server and handle failure
+                var chat = await _networkService.SendChatFileAsync(token, EventId, Constants.ChatType.InternalChat, msg.Content, filePaths, 0, App.User.ID);
+                msg.ChatID = chat.lastID;
+                msg.FileIndex = chat.fileIndex;
+                
+                Log.Info(Constants.AppConfig.LogTag, "Sent:" + msg.ChatID);
                 await RaisePropertyChanged(nameof(ChatMessages));
             }
             catch (Exception ex)
@@ -183,12 +170,6 @@ namespace BdcMobile.Core.ViewModels
                 foreach (var chat in listChat)
                 {
                     chat.IsFromMe = chat.UserID == App.User.ID;                                    
-
-                    if (!string.IsNullOrWhiteSpace(chat.FileIndex) && chat.FileIndex != "[]")
-                    {
-                        chat.CType = ChatType.Picture;
-                        chat.PicturePath = Constants.AppAPI.IPAPI +  chat.FileIndex.Replace("[\"", "").Replace("\"]", "").Replace("\\\\", "\\");
-                    }
                     ChatMessages.Add(chat);                   
                 }
             }

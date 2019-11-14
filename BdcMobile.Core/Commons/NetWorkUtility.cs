@@ -94,7 +94,7 @@ namespace BdcMobile.Core.Commons
             return content;
         }
 
-        public static async Task<string> SendFile(string url, byte[] data, string filename)
+        public static async Task<string> SendFile(string url, IList<byte[]> data, IList<string> fileNames)
         {
             var ilog = Mvx.IoCProvider.Resolve<IMvxLogProvider>();
             var log = ilog.GetLogFor(Constants.AppConfig.LogTag);
@@ -103,8 +103,12 @@ namespace BdcMobile.Core.Commons
             try
             {
                 Dictionary<string, object> dict = new Dictionary<string, object>();
-                FileParameter fileParameter = new FileParameter(data, filename);
-                dict.Add("file[0]", fileParameter);
+                for (int i = 0; i < data.Count; i++)
+                {
+                    var fileParameter = new FileParameter(data[i], fileNames[i]);
+                    dict.Add($"file[{i}]", fileParameter);
+                }
+
                 var response = await FormUpload.MultipartFormDataPost(url, string.Empty, dict);
 
                 using (var stream = response.GetResponseStream())
@@ -114,6 +118,7 @@ namespace BdcMobile.Core.Commons
                         content = sr.ReadToEnd();
                     }
                 }
+
                 log.Info("Finish: POST: " + url);
             }
             catch (Exception ex)
@@ -122,6 +127,7 @@ namespace BdcMobile.Core.Commons
                 log.Error(ex.StackTrace);
                 log.Error("POST: " + url);
             }
+
             return content;
         }
 

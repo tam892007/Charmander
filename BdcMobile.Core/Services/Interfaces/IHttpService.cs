@@ -96,6 +96,8 @@ namespace BdcMobile.Core.Services.Interfaces
         /// <returns></returns>
         Task<ChatSentResponse> SendChatFileAsync(string token, int eventID, int type, string message, byte[] data, int chat, int belongingTo, string filename);
 
+        Task<ChatSentResponse> SendChatFileAsync(string token, int eventID, int type, string message, IEnumerable<string>filePaths, int chat, int belongingTo);
+
         /// <summary>
         /// Get All file of Event
         /// </summary>

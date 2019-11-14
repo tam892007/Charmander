@@ -10,9 +10,7 @@ namespace BdcMobile.Core.Models
 {
     public class ChatMessage
     {
-        public byte [] PictureContent { get; set; }
-
-        public string PicturePath { get; set; }
+        public IList<ChatPicture> Files { get; set; }
         public int ChatID { get; set; }
         public int SurID { get; set; }
         public int UserID { get; set; }
@@ -21,7 +19,6 @@ namespace BdcMobile.Core.Models
         public int BelongingTo { get; set; }
         public string FileIndex { get; set; }
         public int Type { get; set; }
-        public ChatType CType { get; set; }
         public string Func { get; set; }
         public string target { get; set; }
 
@@ -39,7 +36,7 @@ namespace BdcMobile.Core.Models
                 return string.Empty;
             }
         }
-        public double DownsampleWidth => 200d;
+
         public List<ITransformation> CircleTransformation => new List<ITransformation> { new CircleTransformation() };
         public bool IsFromMe { get; set; }
         public bool IsSent
@@ -66,6 +63,12 @@ namespace BdcMobile.Core.Models
 
             }
         }
+
+        public bool IsSinglePicture => Files?.Count == 1;
+
+        public bool IsMultiPicture => Files?.Count > 2;
+
+        public string MultiPictureTextDisplay => $"+{Files?.Count - 2}";
     }
 
     public class ListChatMessageResponseModel
@@ -78,12 +81,5 @@ namespace BdcMobile.Core.Models
 
         public int lastID { get; set; }
         public string fileIndex { get; set; }
-    }
-
-
-    public enum ChatType
-    {
-        Text,
-        Picture,
     }
 }

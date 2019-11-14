@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace BdcMobile.Core.Services.Interfaces
@@ -7,5 +8,6 @@ namespace BdcMobile.Core.Services.Interfaces
     {
         Task<string> TakePhotoAsync();
         Task<string> PickPhotoAsync();
+        Task<IList<string>> PickPhotosAsync();
     }
 }

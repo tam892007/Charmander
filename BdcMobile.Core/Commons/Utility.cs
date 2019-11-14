@@ -37,7 +37,7 @@ namespace BdcMobile.Core.Commons
             try
             {
                 TimeZoneInfo estZone = TimeZoneInfo.FindSystemTimeZoneById(Constants.TimeZone.HanoiTime);                
-                var date = DateTime.Parse(dataString, CultureInfo.InvariantCulture);
+                var date = DateTime.ParseExact(dataString,"dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
                 DateTime estTime = TimeZoneInfo.ConvertTimeToUtc(date, estZone);
                 return estTime;
             }

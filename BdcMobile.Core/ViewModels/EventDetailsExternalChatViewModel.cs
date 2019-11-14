@@ -30,7 +30,7 @@ namespace BdcMobile.Core.ViewModels
         {
             ChatMessages = new MvxObservableCollection<ChatMessage>();
             OpenMessageCommand = new MvxAsyncCommand<ChatMessage>(async (e) => {
-                if (e.CType == ChatType.Picture) await OpenMessage(e);
+                if (e.Files?.Count > 0) await OpenMessage(e);
             });
 
             await LoadChatMessages(DateTime.Now);
@@ -139,7 +139,7 @@ namespace BdcMobile.Core.ViewModels
             {
                 if (string.IsNullOrWhiteSpace(Message)) return;
                 var token = App.User.api_token;
-                var chatmessage = new ChatMessage { Content = Message, IsFromMe = true, CType = ChatType.Text, CreateTime = DateTime.Now };
+                var chatmessage = new ChatMessage { Content = Message, IsFromMe = true, CreateTime = DateTime.Now };
                 ChatMessages.Add(chatmessage);
                 Message = string.Empty;
                 await RaisePropertyChanged(nameof(Message));
@@ -163,7 +163,7 @@ namespace BdcMobile.Core.ViewModels
                 if (string.IsNullOrWhiteSpace(filename)) filename = "untitled.png";
                 if (string.IsNullOrWhiteSpace(Message)) Message = filename;
                 var token = App.User.api_token;
-                var chatmessage = new ChatMessage { Content = Message, IsFromMe = true, PictureContent = data, CType = ChatType.Picture, CreateTime = DateTime.Now };
+                var chatmessage = new ChatMessage { Content = Message, IsFromMe = true, CreateTime = DateTime.Now };
                 ChatMessages.Add(chatmessage);
                 Message = string.Empty;
                 await RaisePropertyChanged(nameof(Message));
@@ -171,7 +171,6 @@ namespace BdcMobile.Core.ViewModels
                 var chat = await _networkService.SendChatFileAsync(token, EventId, Constants.ChatType.ExternalChat, chatmessage.Content, data, 0, App.User.ID, filename);
                 chatmessage.ChatID = chat.lastID;
                 chatmessage.FileIndex = chat.fileIndex;
-                chatmessage.PicturePath = Constants.AppAPI.IPAPI + chatmessage.FileIndex.Replace("[\"", "").Replace("\"]", "").Replace("\\\\", "\\");
 
                 await RaisePropertyChanged(nameof(ChatMessages));
             }
@@ -197,11 +196,7 @@ namespace BdcMobile.Core.ViewModels
                         //TimeZoneInfo serverZone = TimeZoneInfo.FindSystemTimeZoneById(Constants.TimeZoneId.HanoiTime);
                         //chat.ClientDateTime = TimeZoneInfo(chat.CreateTime.Value, serverZone);
                     }
-                    if (!string.IsNullOrWhiteSpace(chat.FileIndex) && chat.FileIndex != "[]")
-                    {
-                        chat.CType = ChatType.Picture;
-                        chat.PicturePath = Constants.AppAPI.IPAPI + chat.FileIndex.Replace("[\"", "").Replace("\"]", "").Replace("\\\\", "\\");
-                    }
+
                     ChatMessages.Add(chat);
                 }
             }

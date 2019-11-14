@@ -15,23 +15,10 @@ namespace BdcMobile.Core.ViewModels
             CloseDialogCommand = new MvxAsyncCommand(async () => await _navigationService.Close(this));
         }
 
-        private string _imageUrl;
-        public string ImageUrl
-        {
-            get { return _imageUrl; }
-            set
-            {
-                if (_imageUrl != value)
-                {
-                    SetProperty(ref _imageUrl, value);
-                }
-            }
-        }
-
-        public int SelectedIndex { get; private set; }
+        public ChatMessage ChatMessage { get; set; }
         public override void Prepare(ChatMessage parameter)
         {
-            ImageUrl = parameter.PicturePath.Replace('\\', '/');
+            ChatMessage = parameter;
         }
     }
 }
