@@ -1,5 +1,4 @@
-﻿using Android.Support.Constraints;
-using BdcMobile.Core.Services.Interfaces;
+﻿using BdcMobile.Core.Services.Interfaces;
 
 namespace BdcMobile.Droid.Services
 {
@@ -7,7 +6,8 @@ namespace BdcMobile.Droid.Services
     {
         public string GetAppVersion()
         {
-            return BuildConfig.VersionName;
+            var ctx = Plugin.CurrentActivity.CrossCurrentActivity.Current.Activity.ApplicationContext;
+            return ctx.PackageManager.GetPackageInfo(ctx.PackageName, 0).VersionName;
         }
     }
 }
