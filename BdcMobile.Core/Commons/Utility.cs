@@ -36,10 +36,11 @@ namespace BdcMobile.Core.Commons
 
             try
             {
-                TimeZoneInfo estZone = TimeZoneInfo.FindSystemTimeZoneById(Constants.TimeZone.HanoiTime);                
-                var date = DateTime.Parse(dataString, CultureInfo.InvariantCulture);
+                TimeZoneInfo estZone = TimeZoneInfo.FindSystemTimeZoneById(Constants.TimeZone.HanoiTime);
+                
+                var date = DateTime.ParseExact(dataString, Constants.DateTimeFormat.DateAndTimeFormat, CultureInfo.InvariantCulture);
                 DateTime estTime = TimeZoneInfo.ConvertTimeToUtc(date, estZone);
-                return estTime;
+                return estTime.ToLocalTime();
             }
             catch (Exception ex)
             {

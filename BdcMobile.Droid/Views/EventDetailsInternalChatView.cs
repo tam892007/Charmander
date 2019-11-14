@@ -2,7 +2,9 @@
 using Android.Runtime;
 using Android.Support.V7.Widget;
 using Android.Views;
+using BdcMobile.Core.Commons;
 using BdcMobile.Core.ViewModels;
+using BdcMobile.Droid.Extensions;
 using BdcMobile.Droid.UIControl;
 using MvvmCross.Droid.Support.V4;
 using MvvmCross.Droid.Support.V7.RecyclerView;
@@ -36,10 +38,16 @@ namespace BdcMobile.Droid.Views
             base.OnCreateView(inflater, container, savedInstanceState);
             var view = this.BindingInflate(Resource.Layout.EventDetailsInternalChat, null);
 
-            _chatListView = view.FindViewById<MvxRecyclerView>(Resource.Id.reyclerview_message_list);
-            var linearLayoutManager = new LinearLayoutManager(Activity);
-            linearLayoutManager.StackFromEnd = true;
-            _chatListView.SetLayoutManager(linearLayoutManager);
+            _chatListView = view.FindViewById<MvxRecyclerView>(Resource.Id.reyclerview_internal_message_list);
+            if (_chatListView != null)
+            {
+                var linearLayoutManager = new LinearLayoutManager(Activity);
+                linearLayoutManager.StackFromEnd = true;
+                _chatListView.SetLayoutManager(linearLayoutManager);
+                _chatListView.HasFixedSize = true;
+                _chatListView.AddOnScrollFetchItemsListener(linearLayoutManager, () => ViewModel.LoadPreviousMessageTask, () => ViewModel.LoadPreviousMessage, ScrollDirection.UP);
+            }
+
 
             return view;
         }

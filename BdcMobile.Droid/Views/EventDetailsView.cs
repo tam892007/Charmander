@@ -11,9 +11,11 @@ using Android.Views.InputMethods;
 using Android.Widget;
 using BdcMobile.Core.Commons;
 using BdcMobile.Core.ViewModels;
+using BdcMobile.Droid.Extensions;
 using BdcMobile.Droid.UIListenner;
 using Java.Lang;
 using MvvmCross.Droid.Support.V7.AppCompat;
+using MvvmCross.Droid.Support.V7.RecyclerView;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 using Plugin.Permissions;
 using static Android.Support.Design.Widget.TabLayout;
@@ -30,6 +32,8 @@ namespace BdcMobile.Droid.Views
             SetContentView(Resource.Layout.EventDetails);
             ViewModel.ShowInitialViewModelsCommand.Execute();
             SetUIForTabs();
+
+            
 
         }
 

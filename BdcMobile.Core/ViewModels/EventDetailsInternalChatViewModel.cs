@@ -14,11 +14,16 @@ namespace BdcMobile.Core.ViewModels
 {
     public class EventDetailsInternalChatViewModel : MvxNavigationViewModel<int>
     {
+        public DateTime BeginTime { get; set; }
+        public DateTime EndTime { get; set; }
         private readonly IMediaService _pictureChooserTask;
         public MvxObservableCollection<ChatMessage> ChatMessages { get; set; }
         private readonly IHttpService _networkService;
         public int EventId { get; set; }
         public string Message { get; set; }
+
+        public MvxCommand LoadPreviousMessage { get; set; }
+        public MvxNotifyTask LoadPreviousMessageTask { get; set; }
 
 
         public EventDetailsInternalChatViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService,
@@ -27,6 +32,12 @@ namespace BdcMobile.Core.ViewModels
         {
             _pictureChooserTask = mvxPictureChooserTask;
             _networkService = networkService;
+            LoadPreviousMessage = new MvxCommand(() =>
+            {
+                LoadPreviousMessageTask = MvxNotifyTask.Create(LoadPreviousChatMessages());
+                RaisePropertyChanged(() => LoadPreviousMessageTask);
+
+            });
         }
 
         public override async Task Initialize()
@@ -35,6 +46,7 @@ namespace BdcMobile.Core.ViewModels
             OpenMessageCommand = new MvxAsyncCommand<ChatMessage>(async (e) => {
                 if (e.CType == ChatType.Picture) await OpenMessage(e);
             });
+            BeginTime = EndTime = DateTime.Now;
 
             await LoadChatMessages();
             await base.Initialize();
@@ -174,21 +186,53 @@ namespace BdcMobile.Core.ViewModels
             }
         }
 
-        private async Task LoadChatMessages(DateTime? datetime = null)
+        /// <summary>
+        /// First Loading Data
+        /// </summary>
+        /// <returns></returns>
+        private async Task LoadChatMessages()
         {
+            EndTime = DateTime.Now;
+            List<ChatMessage> listChat = await _networkService.QueryChatAsync(App.User.api_token, EventId, Constants.ChatType.InternalChat);
+            if (listChat != null && listChat.Count > 0)
+            {
+                listChat.Reverse();
+                foreach (var chat in listChat)
+                {
+                    chat.IsFromMe = chat.UserID == App.User.ID;
 
-            List<ChatMessage> listChat;
-            if (datetime == null)
-            {
-                listChat = await _networkService.QueryChatAsync(App.User.api_token, EventId, Constants.ChatType.InternalChat);
+                    if (!string.IsNullOrWhiteSpace(chat.FileIndex) && chat.FileIndex != "[]")
+                    {
+                        chat.CType = ChatType.Picture;
+                        chat.PicturePath = Constants.AppAPI.IPAPI + chat.FileIndex.Replace("[\"", "").Replace("\"]", "").Replace("\\\\", "\\");
+                    }
+                    if (chat.CreateTime!= DateTime.MinValue && BeginTime > chat.CreateTime) BeginTime = chat.CreateTime.Value;
+                    ChatMessages.Add(chat);
+                }
             }
-            else
-            {
-                listChat = await _networkService.QueryChatAsync(App.User.api_token, EventId, Constants.ChatType.InternalChat, true, datetime.Value);
-            }
+            
+            await RaisePropertyChanged(nameof(ChatMessages));
+        }
+
+        private async Task LoadPreviousChatMessages()
+        {
+            await LoadChatMessages(BeginTime, false);
+        }
+
+        private async Task UpdateLatestChatMessages()
+        {
+            await LoadChatMessages(EndTime, true);
+        }
+
+        private async Task LoadChatMessages(DateTime datetime, bool isNewChatQuery)
+        {
+            if (isNewChatQuery) EndTime = DateTime.Now;
+            List<ChatMessage> listChat = await _networkService.QueryChatAsync(App.User.api_token, EventId, Constants.ChatType.InternalChat, isNewChatQuery, datetime);
+            
 
             if (listChat != null && listChat.Count > 0)
             {
+                if (isNewChatQuery) listChat.Reverse();
                 foreach (var chat in listChat)
                 {
                     chat.IsFromMe = chat.UserID == App.User.ID;                                    
@@ -198,7 +242,17 @@ namespace BdcMobile.Core.ViewModels
                         chat.CType = ChatType.Picture;
                         chat.PicturePath = Constants.AppAPI.IPAPI +  chat.FileIndex.Replace("[\"", "").Replace("\"]", "").Replace("\\\\", "\\");
                     }
-                    ChatMessages.Add(chat);                   
+
+                    if (chat.CreateTime != DateTime.MinValue && BeginTime > chat.CreateTime) BeginTime = chat.CreateTime.Value;
+                    if (isNewChatQuery)
+                    {
+                        ChatMessages.Add(chat);
+                    }
+                    else
+                    {
+                        ChatMessages.Insert(0, chat);
+                    }
+                                      
                 }
             }
             await RaisePropertyChanged(nameof(ChatMessages));

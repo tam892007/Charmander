@@ -36,7 +36,7 @@ namespace BdcMobile.Droid.Views
             base.OnCreateView(inflater, container, savedInstanceState);
             var view = this.BindingInflate(Resource.Layout.EventDetailsExternalChat, null);
 
-            _chatListView = view.FindViewById<MvxRecyclerView>(Resource.Id.reyclerview_message_list);
+            _chatListView = view.FindViewById<MvxRecyclerView>(Resource.Id.reyclerview_external_message_list);
             var linearLayoutManager = new LinearLayoutManager(Activity);
             linearLayoutManager.StackFromEnd = true;
             _chatListView.SetLayoutManager(linearLayoutManager);

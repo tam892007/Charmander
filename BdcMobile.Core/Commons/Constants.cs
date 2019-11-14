@@ -58,7 +58,13 @@ namespace BdcMobile.Core.Commons
         public static class DateTimeFormat
         {
             public static string DateOnlyFormat = "dd/MM/yyyy";
-            public static string DateAndTimeFormat = "dd/MM/yyyy hh:mm:ss";
+            public static string DateAndTimeFormat = "dd/MM/yyyy HH:mm:ss";
         }
+
+        
+    }
+    public enum ScrollDirection
+    {
+        UP, DOWN
     }
 }
