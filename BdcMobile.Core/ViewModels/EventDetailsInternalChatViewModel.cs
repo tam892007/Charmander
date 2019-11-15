@@ -121,7 +121,9 @@ namespace BdcMobile.Core.ViewModels
                 _sendTextCommand = _sendTextCommand ?? new MvxAsyncCommand(async () => await SendText());
                 return _sendTextCommand;
             }
-        }        
+        }
+        
+        public bool RequestScroll { get; set; }
 
         private async Task SendText()
         {
@@ -134,10 +136,10 @@ namespace BdcMobile.Core.ViewModels
                 Message = string.Empty;
                 await RaisePropertyChanged(nameof(Message));
                 await RaisePropertyChanged(nameof(ChatMessages));
+                await RaisePropertyChanged(nameof(RequestScroll));
                 var chat = await _networkService.SendChatAsync(token, EventId, Constants.ChatType.InternalChat, chatmessage.Content, 0, App.User.ID);
                 chatmessage.ChatID = chat.lastID;
                 Log.Info(Constants.AppConfig.LogTag, "Sent:" + chatmessage.Content);
-                await RaisePropertyChanged(nameof(ChatMessages));
             }
             catch(Exception ex)
             {
@@ -155,15 +157,14 @@ namespace BdcMobile.Core.ViewModels
                 Message = string.Empty;
                 await RaisePropertyChanged(nameof(Message)); 
                 await RaisePropertyChanged(nameof(ChatMessages));
+                await RaisePropertyChanged(nameof(RequestScroll));
 
                 var filePaths = msg.Files.Select(x => x.FilePath);
                 ////Send to server and handle failure
                 var chat = await _networkService.SendChatFileAsync(token, EventId, Constants.ChatType.InternalChat, msg.Content, filePaths, 0, App.User.ID);
                 msg.ChatID = chat.lastID;
                 msg.FileIndex = chat.fileIndex;
-                
                 Log.Info(Constants.AppConfig.LogTag, "Sent:" + msg.ChatID);
-                await RaisePropertyChanged(nameof(ChatMessages));
             }
             catch (Exception ex)
             {
@@ -192,6 +193,7 @@ namespace BdcMobile.Core.ViewModels
             }
             
             await RaisePropertyChanged(nameof(ChatMessages));
+            await RaisePropertyChanged(nameof(RequestScroll));
         }
 
         private async Task LoadPreviousChatMessages()

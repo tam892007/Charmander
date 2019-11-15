@@ -34,10 +34,10 @@
         android:layout_width="140dp"
         android:layout_height="140dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/error"
+        android:src="@drawable/image_place_holder"
         android:layout_toRightOf="@+id/image_message_profile"
         android:background="@android:color/transparent"
-        app:MvxBind="ImagePath Files[1].FilePath; DownsampleWidth DownsampleWidth; ErrorPlaceholderImagePath 'error.png'"
+        app:MvxBind="ImagePath Files[1].FilePath"
         android:layout_below="@+id/text_message_name"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
@@ -48,11 +48,11 @@
         android:layout_width="140dp"
         android:layout_height="140dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/error"
+        android:src="@drawable/image_place_holder"
         android:layout_toRightOf="@+id/img_msg_body2"
         android:layout_alignBottom="@+id/img_msg_body2"
         android:background="@android:color/transparent"
-        app:MvxBind="ImagePath Files[0].FilePath; DownsampleWidth DownsampleWidth; ErrorPlaceholderImagePath 'error.png'"
+        app:MvxBind="ImagePath Files[0].FilePath"
     />
 
     <TextView

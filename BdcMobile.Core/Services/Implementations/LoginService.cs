@@ -1,5 +1,6 @@
 ﻿using BdcMobile.Core.Models;
 using BdcMobile.Core.Services.Interfaces;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BdcMobile.Core.Services.Implementations
@@ -19,19 +20,15 @@ namespace BdcMobile.Core.Services.Implementations
         /// <param name="userName"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public async System.Threading.Tasks.Task<User> LoginAsync(string userName, string password)
+        public async Task<User> LoginAsync(string userName, string password, CancellationToken token = default)
         {
             var user = new User
             {
                 AccountName = userName,
                 Password = password
             };
-            if (string.IsNullOrWhiteSpace(user.AccountName) || string.IsNullOrWhiteSpace(user.Password))
-            {
-                user.ErrorMessage = "Vui lòng nhập tài khoản và mật khẩu.";
-                return user;
-            }
-            var result = await _httpService.LoginAsync(user);
+            
+            var result = await _httpService.LoginAsync(user, token);
             if (result != null)
             {
                 result.IsAuthenticated = true;

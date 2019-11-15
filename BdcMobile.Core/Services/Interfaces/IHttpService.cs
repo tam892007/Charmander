@@ -14,7 +14,7 @@ namespace BdcMobile.Core.Services.Interfaces
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        Task<User> LoginAsync(User user);
+        Task<User> LoginAsync(User user, CancellationToken token);
 
         /// <summary>
         /// Verify user login by token

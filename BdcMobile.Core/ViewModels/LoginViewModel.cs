@@ -6,6 +6,7 @@ using MvvmCross.Logging;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 
@@ -17,8 +18,17 @@ namespace BdcMobile.Core.ViewModels
         private readonly ILoginService _loginService;
         public string UserName { get; set; }
         public string Password { get; set; }
-        public string ErrorMessage { get; set; }
+
+        private string _errorMessaage;
+        public string ErrorMessage
+        {
+            get => _errorMessaage;
+            private set => SetProperty(ref _errorMessaage, value);
+        }
         public IMvxAsyncCommand LoginCommand { get; private set; }
+
+        private CancellationTokenSource CancelLoginToken;
+        public IMvxCommand CancelLoginCommand { get; private set; }
 
         private bool _isCallingLogin;
         public bool IsCallingLogin
@@ -31,6 +41,7 @@ namespace BdcMobile.Core.ViewModels
         {
             _loginService = loginService;
             LoginCommand = new MvxAsyncCommand(Login);
+            CancelLoginCommand = new MvxCommand(() => { CancelLoginToken?.Cancel(); });
         }
 
         public override async Task Initialize()
@@ -51,14 +62,14 @@ namespace BdcMobile.Core.ViewModels
 
         private async Task Login()
         {
-            IsCallingLogin = true;
-            if (string.IsNullOrWhiteSpace(UserName) || string.IsNullOrWhiteSpace(Password))
+            if (!Validate())
             {
-                ErrorMessage = "Vui lòng nhập tài khoản và mật khẩu.";
-                return ;
+                return;
             }
 
-            var user = await _loginService.LoginAsync(UserName, Password);
+            IsCallingLogin = true;
+            CancelLoginToken = new CancellationTokenSource();
+            var user = await _loginService.LoginAsync(UserName, Password, CancelLoginToken.Token);
             if (user.IsAuthenticated)
             {
                 try
@@ -85,10 +96,35 @@ namespace BdcMobile.Core.ViewModels
             } 
             else
             {
-                ErrorMessage = user.ErrorMessage;
+                ///NOT user cancel action. 
+                if (!CancelLoginToken.IsCancellationRequested)
+                {
+                    ErrorMessage = string.IsNullOrEmpty(ErrorMessage) ? "Đăng nhập thất bại." : ErrorMessage;
+                }
             }
 
             IsCallingLogin = false;
+        }
+
+        public override bool Validate()
+        {
+            ErrorMessage = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(UserName))
+            {
+                ErrorMessage = "Vui lòng nhập tài khoản.";
+            }
+            else if (string.IsNullOrWhiteSpace(Password))
+            {
+                ErrorMessage = "Vui lòng nhập mật khẩu.";
+            }
+
+            if (!string.IsNullOrEmpty(ErrorMessage))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public override void Prepare(Notification notification)

@@ -1,4 +1,5 @@
-﻿using MvvmCross;
+﻿using BdcMobile.Core.Extensions;
+using MvvmCross;
 using MvvmCross.Logging;
 using System;
 using System.Collections.Generic;
@@ -61,19 +62,19 @@ namespace BdcMobile.Core.Commons
         }
 
 
-
         public static async Task<string> MakeRequestAsync(string url, string method, CancellationToken ct)
         {
             var ilog = Mvx.IoCProvider.Resolve<IMvxLogProvider>();
             var log = ilog.GetLogFor(Constants.AppConfig.LogTag);
             log.Info(method + ": " + url);
             var content = string.Empty;
+
             try
             {
                 var request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = method;
 
-                var response = await request.GetResponseAsync();
+                var response = await request.GetResponseAsync(ct);
 
                 using (var stream = response.GetResponseStream())
                 {
@@ -82,15 +83,16 @@ namespace BdcMobile.Core.Commons
                         content = sr.ReadToEnd();
                     }
                 }
+
                 log.Info("Finish: " + method + ": " + url);
             }
             catch (Exception ex)
             {
-
                 log.Error(ex.ToString());
                 log.Error(ex.StackTrace);
                 log.Error(method + ": " + url);
             }
+
             return content;
         }
 

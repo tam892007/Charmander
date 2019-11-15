@@ -27,10 +27,10 @@ namespace BdcMobile.Core.Services.Implementations
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public async Task<User> LoginAsync(User user)
+        public async Task<User> LoginAsync(User user, CancellationToken token = default)
         {
             string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.UserLoginAPI, user.AccountName, user.Password);
-            var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "POST");
+            var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "POST", token);
             if (apiResponse.Length > 25)
             {
                 var result = JsonConvert.DeserializeObject<LoginResponseModel>(apiResponse);
@@ -155,6 +155,15 @@ namespace BdcMobile.Core.Services.Implementations
                 try
                 {
                     var result = JsonConvert.DeserializeObject<ListChatMessageResponseModel>(apiResponse);
+
+                    ///parse list file
+                    foreach (var d in result.data)
+                    {
+                        var paths = JsonConvert.DeserializeObject<string[]>(d.FileIndex.Trim('"'));
+                        if (paths == null || paths.Length == 0) continue;
+                        d.Files = paths.Select(p => new ChatPicture { FilePath = Constants.AppAPI.IPAPI + p.Replace("\\\\", "/") }).ToList();
+                    }
+
                     return result.data;
                 }
                 catch (Exception ex)

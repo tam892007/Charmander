@@ -7,11 +7,10 @@
             android:id="@+id/IconImageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerInside"
-            android:src="@drawable/error"
+            android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:MvxBind="ImagePath ImageUrl; ErrorPlaceholderImagePath 'error.png'"/>  
+            app:MvxBind="ImagePath ImageUrl"/>  
     <TextView
        android:id="@+id/title"
        android:layout_width="match_parent"

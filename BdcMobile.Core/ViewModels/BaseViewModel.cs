@@ -31,6 +31,10 @@ namespace BdcMobile.Core.ViewModels
         public IMvxAsyncCommand BackCommand { get; private set; }
 
         public abstract override void Prepare(T parameter);
-        
+
+        public virtual bool Validate()
+        {
+            return true;
+        } 
     }
 }

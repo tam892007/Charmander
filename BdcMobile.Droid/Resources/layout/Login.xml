@@ -154,7 +154,37 @@
             android:layout_marginTop="12.7dp"
             android:text="Đăng nhập"
             android:background="@drawable/blue_fill__rounded_color"
-            local:MvxBind="Click LoginCommand"
+            local:MvxBind="Click LoginCommand; Visible !IsCallingLogin"
             />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="#ffffff"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:layout_marginLeft="62dp"
+            android:layout_marginRight="62dp"
+            android:layout_marginTop="12.7dp"
+            android:text="Hủy bỏ"
+            android:background="@drawable/blue_fill__rounded_color"
+            local:MvxBind="Click CancelLoginCommand; Visible IsCallingLogin"
+            />
+
+        <TextView
+            android:layout_marginTop="12.7dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Error Message"
+            android:layout_marginLeft="62dp"
+            android:layout_marginRight="62dp"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:textColor="#FF0000"
+            local:MvxBind="Text ErrorMessage"
+        />
     </LinearLayout>
 </RelativeLayout>
