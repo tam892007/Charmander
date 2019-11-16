@@ -149,21 +149,21 @@ namespace BdcMobile.Core.Models
 
         private async Task SendChatMessage()
         {
-            var ilog = Mvx.IoCProvider.Resolve<IMvxLogProvider>();
-            var log = ilog.GetLogFor(Constants.AppConfig.LogTag);
+            //var ilog = Mvx.IoCProvider.Resolve<IMvxLogProvider>();
+            //var log = ilog.GetLogFor(Constants.AppConfig.LogTag);
             var networkService = Mvx.IoCProvider.Resolve<IHttpService>();
             try
             {
-                log.Info(Constants.AppConfig.LogTag, "Resend: " + Content);
+                //log.Info(Constants.AppConfig.LogTag, "Resend: " + Content);
 
                 var token = App.User.api_token;
                 SendStatus = 0;
                 await RaisePropertyChanged(nameof(Time));
-                await RaisePropertyChanged(nameof(IsSendError));
-                var filePaths = Files.Select(x => x.FilePath);
+                await RaisePropertyChanged(nameof(IsSendError));                
                 ChatSentResponse chat = null;
-                if(filePaths.Count() > 0)
+                if(Files!= null && Files.Count() > 0)
                 {
+                    var filePaths = Files.Select(x => x.FilePath);
                     chat = await networkService.SendChatFileAsync(token, SurID, Type, Content, filePaths, 0, App.User.ID);
                 } else
                 {
@@ -182,12 +182,12 @@ namespace BdcMobile.Core.Models
                 await RaisePropertyChanged(nameof(Content));
                 await RaisePropertyChanged(nameof(Time));
                 await RaisePropertyChanged(nameof(IsSendError));
-                log.Info(Constants.AppConfig.LogTag, "Sent: " + Content);
+                //log.Info(Constants.AppConfig.LogTag, "Sent: " + Content);
             }
             catch (Exception ex)
             {
-                log.Error(Constants.AppConfig.LogTag, ex.ToString());
-                log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
+                //log.Error(Constants.AppConfig.LogTag, ex.ToString());
+                //log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
             }
         }
     }

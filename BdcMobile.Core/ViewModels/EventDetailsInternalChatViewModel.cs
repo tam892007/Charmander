@@ -62,18 +62,7 @@ namespace BdcMobile.Core.ViewModels
                 if (e.Files?.Count > 0) await OpenMessage(e);
             });
             BeginTime = EndTime = DateTime.Now;
-            if(timer == null)
-            {
-                timer = new Timer(10000);
-                timer.Elapsed += async (sender, e) =>
-                {
-                    if(LoadNewMessageTask== null || LoadNewMessageTask.IsCompleted) {
-                        await LoadNewMessage.ExecuteAsync();
-                    }
-                    
-                };
-            }
-            timer.Start();
+            
 
             await LoadChatMessages();
             await base.Initialize();
@@ -81,6 +70,18 @@ namespace BdcMobile.Core.ViewModels
         public override void ViewAppeared()
         {
             Log.Info("ViewDisappearing");
+            if (timer == null)
+            {
+                timer = new Timer(Constants.AppConfig.PullMessageTime);
+                timer.Elapsed += async (sender, e) =>
+                {
+                    if (LoadNewMessageTask == null || LoadNewMessageTask.IsCompleted)
+                    {
+                        await LoadNewMessage.ExecuteAsync();
+                    }
+
+                };
+            }
             if (timer != null) timer.Start();
             base.ViewAppeared();
         }
@@ -181,7 +182,7 @@ namespace BdcMobile.Core.ViewModels
         {
             get
             {
-                _sendTextCommand = _sendTextCommand ?? new MvxAsyncCommand(async () => await SendText());
+                _sendTextCommand = _sendTextCommand ?? new MvxAsyncCommand(async () => await SendText(), null, true);
                 return _sendTextCommand;
             }
         }        
@@ -219,12 +220,12 @@ namespace BdcMobile.Core.ViewModels
                     msg.SendStatus = 2;
                 }
                 await RaisePropertyChanged(nameof(ChatMessages));
-                Log.Info(Constants.AppConfig.LogTag, "Sent: " + msg.Content);
+                //Log.Info(Constants.AppConfig.LogTag, "Sent: " + msg.Content);
             }
             catch(Exception ex)
             {
-                Log.Error(Constants.AppConfig.LogTag, ex.ToString());
-                Log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
+                //Log.Error(Constants.AppConfig.LogTag, ex.ToString());
+                //Log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
             }
         }
 
@@ -253,12 +254,12 @@ namespace BdcMobile.Core.ViewModels
                     msg.SendStatus = 2;
                 }
                 
-                Log.Info(Constants.AppConfig.LogTag, "Sent:" + msg.ChatID);
+                //Log.Info(Constants.AppConfig.LogTag, "Sent:" + msg.ChatID);
             }
             catch (Exception ex)
             {
-                Log.Error(Constants.AppConfig.LogTag, ex.ToString());
-                Log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
+                //Log.Error(Constants.AppConfig.LogTag, ex.ToString());
+                //Log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
             }
         }
 

@@ -14,6 +14,7 @@ namespace BdcMobile.Core.Commons
             public static string FCMExtraName = "BDC_Notification";
 
             public static string LogTag = "BDC_Mobile";
+            public static int PullMessageTime = 30000;
 
         }
 

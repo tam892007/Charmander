@@ -66,7 +66,7 @@ namespace BdcMobile.Core.ViewModels
             BeginTime = EndTime = DateTime.Now;
             if (timer == null)
             {
-                timer = new Timer(10000);
+                timer = new Timer(Constants.AppConfig.PullMessageTime);
                 timer.Elapsed += async (sender, e) =>
                 {
                     if (LoadNewMessageTask == null || LoadNewMessageTask.IsCompleted)
@@ -76,7 +76,6 @@ namespace BdcMobile.Core.ViewModels
 
                 };
             }
-
 
             timer.Start();
             await LoadChatMessages();
@@ -180,23 +179,13 @@ namespace BdcMobile.Core.ViewModels
 
             await RaisePropertyChanged(nameof(ChatMessages));
         }
-
-
-
-
-
-
-
-
-
-
-
+        
         private MvxAsyncCommand _sendTextCommand;
         public MvxAsyncCommand SendTextCommand
         {
             get
             {
-                _sendTextCommand = _sendTextCommand ?? new MvxAsyncCommand(async () => await SendText());
+                _sendTextCommand = _sendTextCommand ?? new MvxAsyncCommand(async () => await SendText(), null, true);
                 return _sendTextCommand;
             }
         }
@@ -234,12 +223,9 @@ namespace BdcMobile.Core.ViewModels
                     msg.SendStatus = 2;
                 }
                 await RaisePropertyChanged(nameof(ChatMessages));
-                Log.Info(Constants.AppConfig.LogTag, "Sent: " + msg.Content);
             }
             catch (Exception ex)
             {
-                Log.Error(Constants.AppConfig.LogTag, ex.ToString());
-                Log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
             }
         }
 
@@ -248,23 +234,12 @@ namespace BdcMobile.Core.ViewModels
             try
             {
                 IsScrollingTop = false;
-
                 var token = App.User.api_token;
-
-
-
-
-
-
-
                 ChatMessages.Add(msg);
                 Message = string.Empty;
                 await RaisePropertyChanged(nameof(Message));
                 await RaisePropertyChanged(nameof(ChatMessages));
                 await RaisePropertyChanged(nameof(RequestScroll));
-
-
-
                 var filePaths = msg.Files.Select(x => x.FilePath);
                 ////Send to server and handle failure
                 var chat = await _networkService.SendChatFileAsync(token, msg.SurID, msg.Type, msg.Content, filePaths, 0, App.User.ID);
@@ -279,12 +254,9 @@ namespace BdcMobile.Core.ViewModels
                     msg.SendStatus = 2;
                 }
 
-                Log.Info(Constants.AppConfig.LogTag, "Sent:" + msg.ChatID);
             }
             catch (Exception ex)
             {
-                Log.Error(Constants.AppConfig.LogTag, ex.ToString());
-                Log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
             }
         }
 

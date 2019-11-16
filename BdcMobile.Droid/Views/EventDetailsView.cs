@@ -117,8 +117,8 @@ namespace BdcMobile.Droid.Views
             }
             catch (Exception ex)
             {
-                Log.Error(Constants.AppConfig.LogTag, ex.ToString());
-                Log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
+                //Log.Error(Constants.AppConfig.LogTag, ex.ToString());
+                //Log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
             }
 
             return base.DispatchTouchEvent(ev);
