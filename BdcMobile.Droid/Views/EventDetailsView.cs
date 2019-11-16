@@ -37,6 +37,7 @@ namespace BdcMobile.Droid.Views
 
         }
 
+
         private void SetUIForTabs()
         {
             var tabLayout = FindViewById<TabLayout>(Resource.Id.tabs);

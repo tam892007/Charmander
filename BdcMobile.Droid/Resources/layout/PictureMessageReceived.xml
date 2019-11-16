@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+
 
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -28,14 +28,25 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="4dp"
         app:MvxBind="Text UserName"/>
-
+    
+    <FFImageLoading.Cross.MvxCachedImageView
+        android:id="@+id/img_msg_body"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/image_place_holder"
+        android:layout_toRightOf="@+id/image_message_profile"
+        android:layout_alignBottom="@+id/img_msg_body2"
+        android:background="@android:color/transparent"
+        app:MvxBind="ImagePath Files[0].FilePath"
+    />
     <FFImageLoading.Cross.MvxCachedImageView
         android:id="@+id/img_msg_body2"
         android:layout_width="140dp"
         android:layout_height="140dp"
         android:scaleType="centerCrop"
         android:src="@drawable/image_place_holder"
-        android:layout_toRightOf="@+id/image_message_profile"
+        android:layout_toRightOf="@+id/img_msg_body"
         android:background="@android:color/transparent"
         app:MvxBind="ImagePath Files[1].FilePath"
         android:layout_below="@+id/text_message_name"
@@ -43,17 +54,6 @@
         android:layout_marginLeft="8dp"
     />
 
-    <FFImageLoading.Cross.MvxCachedImageView
-        android:id="@+id/img_msg_body"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/image_place_holder"
-        android:layout_toRightOf="@+id/img_msg_body2"
-        android:layout_alignBottom="@+id/img_msg_body2"
-        android:background="@android:color/transparent"
-        app:MvxBind="ImagePath Files[0].FilePath"
-    />
 
     <TextView
         android:id="@+id/numberoffile"
@@ -64,7 +64,7 @@
         app:MvxBind="Visible IsMultiPicture; Text MultiPictureTextDisplay"
         android:textSize="24dp"
         android:layout_marginTop="8dp"
-        android:layout_toRightOf="@+id/image_message_profile"
+        android:layout_toRightOf="@+id/img_msg_body"
         android:layout_below="@+id/text_message_name"
         android:layout_alignRight="@+id/img_msg_body2"
         android:layout_alignBottom="@+id/img_msg_body2"

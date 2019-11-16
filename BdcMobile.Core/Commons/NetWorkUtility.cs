@@ -45,11 +45,10 @@ namespace BdcMobile.Core.Commons
                 if (webResponse != null &&
                     webResponse.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    
-                    
+                    // TODO: handle Unauthorized 
+
                 }
-                else
-                    throw;
+
             }
             catch (Exception ex)
             {

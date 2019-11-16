@@ -5,6 +5,7 @@ using MvvmCross.Commands;
 using MvvmCross.Logging;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
+using System.Threading.Tasks;
 
 namespace BdcMobile.Core.ViewModels
 {
@@ -16,7 +17,7 @@ namespace BdcMobile.Core.ViewModels
         {
             AppContext = Mvx.IoCProvider.Resolve<IAppContext>();
 
-            BackCommand = new MvxAsyncCommand(async () => await NavigationService.Close(this));
+            BackCommand = new MvxAsyncCommand(async () => await BackCommandTask());
         }
 
         protected virtual void SyncContextFromUser(User user)
@@ -29,6 +30,10 @@ namespace BdcMobile.Core.ViewModels
         }
 
         public IMvxAsyncCommand BackCommand { get; private set; }
+        private async Task BackCommandTask()
+        {
+            await NavigationService.Close(this);
+        }
 
         public abstract override void Prepare(T parameter);
 

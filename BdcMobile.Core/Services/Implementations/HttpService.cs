@@ -186,7 +186,16 @@ namespace BdcMobile.Core.Services.Implementations
         /// <returns></returns>
         public async Task<List<ChatMessage>> QueryChatAsync(string token, int eventID, int type, bool isNewQuery, DateTime createTime)
         {
-            var createTimestr = string.Format("{0:yyyy/dd/MM}", createTime);
+            if(createTime.Kind == DateTimeKind.Local)
+            {
+                var utcdatetime = createTime.ToUniversalTime();
+                var estZone = TimeZoneInfo.FindSystemTimeZoneById(Constants.TimeZone.HanoiTime);
+
+                createTime = TimeZoneInfo.ConvertTimeFromUtc(utcdatetime, estZone);
+            }
+
+            var createTimestr = string.Format(Constants.DateTimeFormat.DateAndTimeFormatConvert, createTime);
+
             var api = isNewQuery ? Constants.AppAPI.GetNewChatAPI : Constants.AppAPI.GetOldChatAPI;
 
             string apiUrl = Constants.AppAPI.IPAPI + string.Format(api, token, eventID, type, createTimestr);

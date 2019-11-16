@@ -59,6 +59,7 @@ namespace BdcMobile.Core.Commons
         {
             public static string DateOnlyFormat = "dd/MM/yyyy";
             public static string DateAndTimeFormat = "dd/MM/yyyy HH:mm:ss";
+            public static string DateAndTimeFormatConvert = "{0:dd/MM/yyyy HH:mm:ss}";
         }
 
         
