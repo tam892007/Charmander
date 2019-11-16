@@ -74,6 +74,7 @@
     <Compile Include="LinkerPleaseInclude.cs" />
     <Compile Include="MainApplication.cs" />
     <Compile Include="Services\CommonService.cs" />
+    <Compile Include="UIControl\EditTextWithClearButton.cs" />
     <Compile Include="Views\PictureGalleryView.cs" />
     <Compile Include="Views\PictureChatFullScreenView.cs" />
     <AndroidResource Include="Resources\layout\PictureChatFullScreen.xml" />
@@ -474,6 +475,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-nodpi\refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\selector_edittext.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\clear.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

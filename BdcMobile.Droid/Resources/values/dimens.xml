@@ -2,4 +2,5 @@
 <resources>
   <dimen name="chat_picture_image_width">240dp</dimen>
   <dimen name="chat_picture_image_height">400dp</dimen>
+  <dimen name="icon_size">24dp</dimen>
 </resources>
