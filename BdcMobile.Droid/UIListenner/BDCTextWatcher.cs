@@ -28,8 +28,6 @@ namespace BdcMobile.Droid.UIListenner
         Runnable workRunnable;
         public void AfterTextChanged(IEditable s)
         {
-            Log.Info(Constants.AppConfig.LogTag, "AfterTextChanged:" + s.ToString());
-
             handler.RemoveCallbacks(workRunnable);
             workRunnable = new Runnable(new Action(delegate
             {
@@ -39,19 +37,18 @@ namespace BdcMobile.Droid.UIListenner
             handler.PostDelayed(workRunnable, DELAY);
         }
 
-        public void BeforeTextChanged(ICharSequence s, int start, int count, int after)
-        {
-            Log.Info(Constants.AppConfig.LogTag, "BeforeTextChanged:" + s.ToString());
-        }
 
         public new void Dispose()
         {
             base.Dispose();
         }
 
+        public void BeforeTextChanged(ICharSequence s, int start, int count, int after)
+        {            
+        }
+
         public void OnTextChanged(ICharSequence s, int start, int before, int count)
         {
-            Log.Info(Constants.AppConfig.LogTag, "OnTextChanged:" + s.ToString());
         }
     }
 }

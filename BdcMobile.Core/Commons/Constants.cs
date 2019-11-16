@@ -14,6 +14,7 @@ namespace BdcMobile.Core.Commons
             public static string FCMExtraName = "BDC_Notification";
 
             public static string LogTag = "BDC_Mobile";
+            public static int PullMessageTime = 30000;
 
         }
 
@@ -59,6 +60,7 @@ namespace BdcMobile.Core.Commons
         {
             public static string DateOnlyFormat = "dd/MM/yyyy";
             public static string DateAndTimeFormat = "dd/MM/yyyy HH:mm:ss";
+            public static string DateAndTimeFormatConvert = "{0:dd/MM/yyyy HH:mm:ss}";
         }
 
         

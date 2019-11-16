@@ -30,7 +30,6 @@ namespace BdcMobile.Droid.UIListenner
             {                
                 IsLoading = true;                
                 var visibleItemCount = recyclerView.ChildCount;
-                Log.Info(Constants.AppConfig.LogTag, "OnScrolled Down");
                 var totalItemCount = recyclerView.GetAdapter().ItemCount;
                 var pastVisiblesItems = LayoutManager.FindFirstVisibleItemPosition();
                 if (dy > 0 && Direction == ScrollDirection.DOWN) //check for scroll down
@@ -47,7 +46,6 @@ namespace BdcMobile.Droid.UIListenner
                     }
                 } else if(dy < 0 && Direction == ScrollDirection.UP)
                 {
-                    Log.Info(Constants.AppConfig.LogTag, "OnScrolled Up: " + pastVisiblesItems + "/" + RemainingItemsToTriggerFetch);
                     if (pastVisiblesItems < RemainingItemsToTriggerFetch)
                     {
                         LoadMoreEvent?.Invoke(this, null);
@@ -56,11 +54,6 @@ namespace BdcMobile.Droid.UIListenner
                 }
                 IsLoading = false;
             } 
-            else
-            {
-                Log.Info(Constants.AppConfig.LogTag, "OnScrolled - Cancel");
-            }
-            
         }
     }
 }

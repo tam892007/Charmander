@@ -18,8 +18,8 @@ namespace BdcMobile.Core.Commons
         public static async Task<string> MakeRequestAsync(string url, string method)
         {
             var ilog = Mvx.IoCProvider.Resolve<IMvxLogProvider>();
-            var log = ilog.GetLogFor(Constants.AppConfig.LogTag);
-            log.Info(method + ": " + url);
+            //var log = ilog.GetLogFor(Constants.AppConfig.LogTag);
+            //log.Info(method + ": " + url);
             var content = string.Empty;
             try
             {
@@ -34,29 +34,28 @@ namespace BdcMobile.Core.Commons
                         content = sr.ReadToEnd();
                     }
                 }
-                log.Info("Finish: " + method + ": " + url);
+                //log.Info("Finish: " + method + ": " + url);
             }
             catch (WebException ex)
             {
-                log.Error(ex.ToString());
-                log.Error(ex.StackTrace);
-                log.Error(method + ": " + url);
+                //log.Error(ex.ToString());
+                //log.Error(ex.StackTrace);
+                //log.Error(method + ": " + url);
                 var webResponse = ex.Response as HttpWebResponse;
                 if (webResponse != null &&
                     webResponse.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    
-                    
+                    // TODO: handle Unauthorized 
+
                 }
-                else
-                    throw;
+
             }
             catch (Exception ex)
             {
 
-                log.Error(ex.ToString());
-                log.Error(ex.StackTrace);
-                log.Error(method + ": " + url);
+                //log.Error(ex.ToString());
+                //log.Error(ex.StackTrace);
+                //log.Error(method + ": " + url);
             }
             return content;
         }
@@ -65,8 +64,8 @@ namespace BdcMobile.Core.Commons
         public static async Task<string> MakeRequestAsync(string url, string method, CancellationToken ct)
         {
             var ilog = Mvx.IoCProvider.Resolve<IMvxLogProvider>();
-            var log = ilog.GetLogFor(Constants.AppConfig.LogTag);
-            log.Info(method + ": " + url);
+            //var log = ilog.GetLogFor(Constants.AppConfig.LogTag);
+            //log.Info(method + ": " + url);
             var content = string.Empty;
 
             try
@@ -84,13 +83,13 @@ namespace BdcMobile.Core.Commons
                     }
                 }
 
-                log.Info("Finish: " + method + ": " + url);
+                //log.Info("Finish: " + method + ": " + url);
             }
             catch (Exception ex)
             {
-                log.Error(ex.ToString());
-                log.Error(ex.StackTrace);
-                log.Error(method + ": " + url);
+                //log.Error(ex.ToString());
+                //log.Error(ex.StackTrace);
+                //log.Error(method + ": " + url);
             }
 
             return content;
@@ -99,8 +98,8 @@ namespace BdcMobile.Core.Commons
         public static async Task<string> SendFile(string url, IList<byte[]> data, IList<string> fileNames)
         {
             var ilog = Mvx.IoCProvider.Resolve<IMvxLogProvider>();
-            var log = ilog.GetLogFor(Constants.AppConfig.LogTag);
-            log.Info("POST: " + url);
+            //var log = ilog.GetLogFor(Constants.AppConfig.LogTag);
+            //log.Info("POST: " + url);
             var content = string.Empty;
             try
             {
@@ -121,13 +120,13 @@ namespace BdcMobile.Core.Commons
                     }
                 }
 
-                log.Info("Finish: POST: " + url);
+                //log.Info("Finish: POST: " + url);
             }
             catch (Exception ex)
             {
-                log.Error(ex.ToString());
-                log.Error(ex.StackTrace);
-                log.Error("POST: " + url);
+                //log.Error(ex.ToString());
+                //log.Error(ex.StackTrace);
+                //log.Error("POST: " + url);
             }
 
             return content;
@@ -136,8 +135,8 @@ namespace BdcMobile.Core.Commons
         public static string MakeRequestSync(string url, string method)
         {
             var ilog = Mvx.IoCProvider.Resolve<IMvxLogProvider>();
-            var log = ilog.GetLogFor(Constants.AppConfig.LogTag);
-            log.Info("POST: " + url);
+            //var log = ilog.GetLogFor(Constants.AppConfig.LogTag);
+            //log.Info("POST: " + url);
             var content = string.Empty;
             try
             {
@@ -156,9 +155,9 @@ namespace BdcMobile.Core.Commons
             }
             catch (Exception ex)
             {
-                log.Error(ex.ToString());
-                log.Error(ex.StackTrace);
-                log.Error(method + ": " + url);
+                //log.Error(ex.ToString());
+                //log.Error(ex.StackTrace);
+                //log.Error(method + ": " + url);
             }
             return content;
         }

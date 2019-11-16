@@ -16,7 +16,9 @@ namespace BdcMobile.Core.Models
             {
                 if (string.IsNullOrWhiteSpace(_surveyNo))
                 {
-                    return "--/--/----/--/--";
+                    //return "--/--/----/--/--";
+                    return "Chưa có số chứng từ";
+
                 }
                 return _surveyNo;
             }

@@ -8,7 +8,10 @@ using MvvmCross.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Timers;
 using System.Threading.Tasks;
+using MvvmCross.Base;
+using MvvmCross;
 
 namespace BdcMobile.Core.ViewModels
 {
@@ -24,7 +27,11 @@ namespace BdcMobile.Core.ViewModels
 
         public MvxCommand LoadPreviousMessage { get; set; }
         public MvxNotifyTask LoadPreviousMessageTask { get; set; }
-
+        public MvxAsyncCommand LoadNewMessage { get; set; }
+        public MvxNotifyTask LoadNewMessageTask { get; set; }
+        
+        public Timer timer { get; set; }
+        public bool IsScrollingTop { get; set; }
 
         public EventDetailsInternalChatViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService,
             IMediaService mvxPictureChooserTask, IHttpService networkService)
@@ -38,6 +45,14 @@ namespace BdcMobile.Core.ViewModels
                 RaisePropertyChanged(() => LoadPreviousMessageTask);
 
             });
+
+            LoadNewMessage = new MvxAsyncCommand(async () =>
+            {
+                LoadNewMessageTask = MvxNotifyTask.Create(LoadLatestChatMessages());
+                await RaisePropertyChanged(() => LoadPreviousMessageTask);
+
+            });
+
         }
 
         public override async Task Initialize()
@@ -47,9 +62,50 @@ namespace BdcMobile.Core.ViewModels
                 if (e.Files?.Count > 0) await OpenMessage(e);
             });
             BeginTime = EndTime = DateTime.Now;
+            
 
             await LoadChatMessages();
             await base.Initialize();
+        }
+        public override void ViewAppeared()
+        {
+            Log.Info("ViewDisappearing");
+            if (timer == null)
+            {
+                timer = new Timer(Constants.AppConfig.PullMessageTime);
+                timer.Elapsed += async (sender, e) =>
+                {
+                    if (LoadNewMessageTask == null || LoadNewMessageTask.IsCompleted)
+                    {
+                        await LoadNewMessage.ExecuteAsync();
+                    }
+
+                };
+            }
+            if (timer != null) timer.Start();
+            base.ViewAppeared();
+        }
+
+
+        public override void ViewDisappearing()
+        {
+            Log.Info("ViewDisappearing");
+            if (timer != null) timer.Stop();
+            base.ViewDisappearing();
+        }
+
+        public override void ViewDisappeared()
+        {
+            Log.Info("ViewDisappeared");
+
+            base.ViewDisappeared();
+        }
+
+        public override void ViewDestroy(bool viewFinishing = true)
+        {
+            Log.Info("ViewDestroy");
+            if (timer != null) timer.Close();
+            base.ViewDestroy(viewFinishing);
         }
 
         private IMvxAsyncCommand _takePictureCommand;
@@ -100,8 +156,16 @@ namespace BdcMobile.Core.ViewModels
             {
                 return;
             }
-
-            var chatmessage = new ChatMessage { Content = Message, IsFromMe = true, CreateTime = DateTime.Now, Files = new List<ChatPicture>() };
+            
+            var chatmessage = new ChatMessage()
+            {
+                Content = Message,
+                SurID = EventId,
+                Type = Constants.ChatType.InternalChat,
+                IsFromMe = true,
+                CreateTime = DateTime.Now,
+                Files = new List<ChatPicture>()
+            };
 
             foreach (var path in paths)
             {
@@ -118,33 +182,50 @@ namespace BdcMobile.Core.ViewModels
         {
             get
             {
-                _sendTextCommand = _sendTextCommand ?? new MvxAsyncCommand(async () => await SendText());
+                _sendTextCommand = _sendTextCommand ?? new MvxAsyncCommand(async () => await SendText(), null, true);
                 return _sendTextCommand;
             }
-        }
-        
+        }        
+
         public bool RequestScroll { get; set; }
 
         private async Task SendText()
         {
             try
             {
+                IsScrollingTop = false;
                 if (string.IsNullOrWhiteSpace(Message)) return;
                 var token = App.User.api_token;
-                var chatmessage = new ChatMessage { Content = Message, IsFromMe = true, CreateTime = DateTime.Now };
-                ChatMessages.Add(chatmessage);
+                var msg = new ChatMessage()
+                {
+                    Content = Message,
+                    IsFromMe = true,
+                    CreateTime = DateTime.Now,
+                    SurID = EventId,
+                    Type = Constants.ChatType.InternalChat,
+                    SendStatus = 0
+                };
+                ChatMessages.Add(msg);
                 Message = string.Empty;
                 await RaisePropertyChanged(nameof(Message));
                 await RaisePropertyChanged(nameof(ChatMessages));
                 await RaisePropertyChanged(nameof(RequestScroll));
-                var chat = await _networkService.SendChatAsync(token, EventId, Constants.ChatType.InternalChat, chatmessage.Content, 0, App.User.ID);
-                chatmessage.ChatID = chat.lastID;
-                Log.Info(Constants.AppConfig.LogTag, "Sent:" + chatmessage.Content);
+                var chat = await _networkService.SendChatAsync(token, msg.SurID, msg.Type, msg.Content, 0, App.User.ID);
+                if (chat != null)
+                {
+                    msg.ChatID = chat.lastID;
+                }
+                else
+                {
+                    msg.SendStatus = 2;
+                }
+                await RaisePropertyChanged(nameof(ChatMessages));
+                //Log.Info(Constants.AppConfig.LogTag, "Sent: " + msg.Content);
             }
             catch(Exception ex)
             {
-                Log.Error(Constants.AppConfig.LogTag, ex.ToString());
-                Log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
+                //Log.Error(Constants.AppConfig.LogTag, ex.ToString());
+                //Log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
             }
         }
 
@@ -152,6 +233,7 @@ namespace BdcMobile.Core.ViewModels
         {
             try
             {
+                IsScrollingTop = false;
                 var token = App.User.api_token;
                 ChatMessages.Add(msg);
                 Message = string.Empty;
@@ -161,15 +243,23 @@ namespace BdcMobile.Core.ViewModels
 
                 var filePaths = msg.Files.Select(x => x.FilePath);
                 ////Send to server and handle failure
-                var chat = await _networkService.SendChatFileAsync(token, EventId, Constants.ChatType.InternalChat, msg.Content, filePaths, 0, App.User.ID);
-                msg.ChatID = chat.lastID;
-                msg.FileIndex = chat.fileIndex;
-                Log.Info(Constants.AppConfig.LogTag, "Sent:" + msg.ChatID);
+                var chat = await _networkService.SendChatFileAsync(token, msg.SurID, msg.Type, msg.Content, filePaths, 0, App.User.ID);
+                
+                if(chat != null)
+                {
+                    msg.ChatID = chat.lastID;
+                    msg.FileIndex = chat.fileIndex;
+                } else
+                {
+                    msg.SendStatus = 2;
+                }
+                
+                //Log.Info(Constants.AppConfig.LogTag, "Sent:" + msg.ChatID);
             }
             catch (Exception ex)
             {
-                Log.Error(Constants.AppConfig.LogTag, ex.ToString());
-                Log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
+                //Log.Error(Constants.AppConfig.LogTag, ex.ToString());
+                //Log.Error(Constants.AppConfig.LogTag, ex.StackTrace);
             }
         }
 
@@ -201,35 +291,51 @@ namespace BdcMobile.Core.ViewModels
             await LoadChatMessages(BeginTime, false);
         }
 
-        private async Task UpdateLatestChatMessages()
+
+        private async Task LoadLatestChatMessages()
         {
             await LoadChatMessages(EndTime, true);
         }
 
         private async Task LoadChatMessages(DateTime datetime, bool isNewChatQuery)
         {
-            if (isNewChatQuery) EndTime = DateTime.Now;
-            List<ChatMessage> listChat = await _networkService.QueryChatAsync(App.User.api_token, EventId, Constants.ChatType.InternalChat, isNewChatQuery, datetime);
-            
+            if (isNewChatQuery)
+            {
+                EndTime = DateTime.Now;
+            } else
+            {
+                IsScrollingTop = true;
+            }
 
+            List<ChatMessage> listChat = await _networkService.QueryChatAsync(App.User.api_token, EventId, Constants.ChatType.InternalChat, isNewChatQuery, datetime);
+
+            var hasNewChat = false;
             if (listChat != null && listChat.Count > 0)
             {
-                if (isNewChatQuery) listChat.Reverse();
+                if (isNewChatQuery) listChat.Reverse();                
                 foreach (var chat in listChat)
                 {
                     chat.IsFromMe = chat.UserID == App.User.ID;                                    
                     if (chat.CreateTime != DateTime.MinValue && BeginTime > chat.CreateTime) BeginTime = chat.CreateTime.Value;
                     if (isNewChatQuery)
                     {
-                        ChatMessages.Add(chat);
+                        var existed = ChatMessages.Any(c => c.ChatID == chat.ChatID);                        
+                        if (!existed)
+                        {
+                            hasNewChat = true;
+                            ChatMessages.Add(chat);
+                        }
                     }
                     else
                     {
+                        hasNewChat = true;
                         ChatMessages.Insert(0, chat);
                     }                                    
                 }
             }
-            await RaisePropertyChanged(nameof(ChatMessages));
+            
+            if (hasNewChat)  await RaisePropertyChanged(nameof(ChatMessages));
+            if(hasNewChat && isNewChatQuery && !IsScrollingTop) await RaisePropertyChanged(nameof(RequestScroll));
         }
 
         public override void Prepare(int parameter)

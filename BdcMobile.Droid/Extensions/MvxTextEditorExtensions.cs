@@ -30,24 +30,15 @@ namespace BdcMobile.Droid.Extensions
                 
                 if (isTaskNotifycompleted != null && isTaskNotifycompleted.IsNotCompleted)
                 {
-                    Log.Info(Constants.AppConfig.LogTag, "Cancel searchCommand ");
                     IMvxAsyncCommand scommand = searchCommand?.Invoke();
                     cts.Cancel();
                 }
 
                 if (isTaskNotifycompleted == null || !isTaskNotifycompleted.IsNotCompleted)
                 {
-                    Log.Info(Constants.AppConfig.LogTag, "Execute searchCommand ");
-                    var command = searchCommand?.Invoke();
-                    
+                    var command = searchCommand?.Invoke();                    
                     var task = command.ExecuteAsync();
-                    //command.Cancel();
-
-                } else
-                {
-                    Log.Info(Constants.AppConfig.LogTag, "searchCommand is not completed");
-                }
-                
+                }                 
             };
         }
     }

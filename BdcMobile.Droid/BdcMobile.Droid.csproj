@@ -471,6 +471,12 @@
     <AndroidResource Include="Resources\drawable\image_place_holder.xml" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidResource Include="Resources\drawable\refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
     <AndroidResource Include="Resources\drawable\selector_edittext.xml" />
   </ItemGroup>
   <ItemGroup>

@@ -57,6 +57,20 @@
         android:layout_toLeftOf="@+id/img_msg_body2"
         android:layout_alignBottom="@+id/img_msg_body2"
         app:MvxBind="Text Time"/>
-    
+    <ImageButton
+        android:id="@+id/resend_button" 
+        android:maxWidth="20dp"
+        android:maxHeight="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="4dp"        
+        android:scaleType="centerCrop"       
+        android:adjustViewBounds="true"
+        android:background="@android:color/transparent"
+        android:src="@drawable/refresh"
+        android:layout_alignBottom="@+id/img_msg_body2"
+        android:layout_toLeftOf="@+id/text_message_time"
+        app:MvxBind="Visible IsSendError; Click ResendCommand;"
+    />
     
 </RelativeLayout>
