@@ -77,7 +77,7 @@ namespace BdcMobile.Core.ViewModels
                     await SecureStorage.SetAsync(Constants.SecureStorageKey.OAuthToken, user.api_token);
                     await SecureStorage.SetAsync(Constants.SecureStorageKey.Username, UserName);
                     await SecureStorage.SetAsync(Constants.SecureStorageKey.Password, Password);
-                    SyncContextFromUser(user);
+                    AppContext.SyncContextFromUser(user);
                 }
                 catch
                 {

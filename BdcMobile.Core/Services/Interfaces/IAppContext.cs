@@ -1,4 +1,6 @@
-﻿namespace BdcMobile.Core.Services.Interfaces
+﻿using BdcMobile.Core.Models;
+
+namespace BdcMobile.Core.Services.Interfaces
 {
     public interface IAppContext
     {
@@ -9,6 +11,10 @@
         string AvatarUrl { get; set; }
         string CloudMessagingToken { get; set; }
 
+        UserRole UserRole { get; set; }
+
         void Reset();
+
+        void SyncContextFromUser(User user);
     }
 }

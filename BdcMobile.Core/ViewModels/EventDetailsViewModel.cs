@@ -31,12 +31,17 @@ namespace BdcMobile.Core.ViewModels
 
         private async Task ShowInitialViewModels()
         {
-            await Task.WhenAll(new List<Task>
+            var tasks = new List<Task>();
+
+            if (AppContext.UserRole == UserRole.Employee)
             {
-                NavigationService.Navigate<EventDetailsInternalChatViewModel, int>(SurveyID),
-                NavigationService.Navigate<EventDetailsExternalChatViewModel, int>(SurveyID),
-                NavigationService.Navigate<EventDetailsPictureGalleryViewModel, int>(SurveyID),
-            });
+                tasks.Add(NavigationService.Navigate<EventDetailsInternalChatViewModel, int>(SurveyID));
+            }
+
+            tasks.Add(NavigationService.Navigate<EventDetailsExternalChatViewModel, int>(SurveyID));
+            tasks.Add(NavigationService.Navigate<EventDetailsPictureGalleryViewModel, int>(SurveyID));
+
+            await Task.WhenAll(tasks);
         }
 
         public override void Prepare(Event parameter)

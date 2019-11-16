@@ -1,5 +1,4 @@
-﻿using BdcMobile.Core.Models;
-using BdcMobile.Core.Services.Interfaces;
+﻿using BdcMobile.Core.Services.Interfaces;
 using MvvmCross;
 using MvvmCross.Commands;
 using MvvmCross.Logging;
@@ -17,15 +16,6 @@ namespace BdcMobile.Core.ViewModels
             AppContext = Mvx.IoCProvider.Resolve<IAppContext>();
 
             BackCommand = new MvxAsyncCommand(async () => await NavigationService.Close(this));
-        }
-
-        protected virtual void SyncContextFromUser(User user)
-        {
-            AppContext.UserDisplayName = user.Name;
-            AppContext.UserLoginName = user.AccountName;
-            AppContext.IsUserAuthenticated = user.IsAuthenticated;
-            AppContext.AvatarUrl = user.Image;
-            AppContext.ApiToken = user.api_token;
         }
 
         public IMvxAsyncCommand BackCommand { get; private set; }

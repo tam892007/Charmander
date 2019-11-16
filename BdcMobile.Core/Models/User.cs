@@ -21,4 +21,9 @@
         public User user { get; set; }
     }
 
+    public enum UserRole
+    {
+        None,
+        Employee,
+    }
 }

@@ -1,8 +1,6 @@
 ﻿using Android.App;
-using Android.Content;
 using Android.Graphics;
 using Android.OS;
-using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V7.Widget;
 using Android.Util;
@@ -10,12 +8,10 @@ using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
 using BdcMobile.Core.Commons;
+using BdcMobile.Core.Models;
 using BdcMobile.Core.ViewModels;
-using BdcMobile.Droid.Extensions;
-using BdcMobile.Droid.UIListenner;
 using Java.Lang;
 using MvvmCross.Droid.Support.V7.AppCompat;
-using MvvmCross.Droid.Support.V7.RecyclerView;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 using Plugin.Permissions;
 using static Android.Support.Design.Widget.TabLayout;
@@ -32,26 +28,37 @@ namespace BdcMobile.Droid.Views
             SetContentView(Resource.Layout.EventDetails);
             ViewModel.ShowInitialViewModelsCommand.Execute();
             SetUIForTabs();
-
-            
-
         }
 
         private void SetUIForTabs()
         {
             var tabLayout = FindViewById<TabLayout>(Resource.Id.tabs);
 
-            var tabCustomView = (ImageView)LayoutInflater.Inflate(Resource.Layout.Tab, null);
-            tabCustomView.SetImageResource(Resource.Drawable.chat_selected);
-            tabLayout.GetTabAt(0).SetCustomView(tabCustomView);
+            int tabIdx = 0;
+            ImageView tabCustomView;
+
+            if (ViewModel.AppContext.UserRole == UserRole.Employee)
+            {
+                tabCustomView = (ImageView)LayoutInflater.Inflate(Resource.Layout.Tab, null);
+                tabCustomView.SetImageResource(Resource.Drawable.chat_selected);
+                tabLayout.GetTabAt(tabIdx++).SetCustomView(tabCustomView).SetContentDescription("chat_internal");
+            }
 
             tabCustomView = (ImageView)LayoutInflater.Inflate(Resource.Layout.Tab, null);
-            tabCustomView.SetImageResource(Resource.Drawable.chatexternal);
-            tabLayout.GetTabAt(1).SetCustomView(tabCustomView);
+            if (tabIdx == 0)
+            {
+                tabCustomView.SetImageResource(Resource.Drawable.chatexternalselected);
+            }
+            else
+            {
+                tabCustomView.SetImageResource(Resource.Drawable.chatexternal);
+            }
+
+            tabLayout.GetTabAt(tabIdx++).SetCustomView(tabCustomView).SetContentDescription("chat_external");
 
             tabCustomView = (ImageView)LayoutInflater.Inflate(Resource.Layout.Tab, null);
             tabCustomView.SetImageResource(Resource.Drawable.picture);
-            tabLayout.GetTabAt(2).SetCustomView(tabCustomView);
+            tabLayout.GetTabAt(tabIdx).SetCustomView(tabCustomView).SetContentDescription("gallery");
 
             tabLayout.AddOnTabSelectedListener(this);
         }
@@ -63,11 +70,11 @@ namespace BdcMobile.Droid.Views
         public void OnTabSelected(Tab tab)
         {
             int iconId = 0;
-            switch (tab.Position)
+            switch (tab.ContentDescription)
             {
-                case 0: iconId = Resource.Drawable.chat_selected; break;
-                case 1: iconId = Resource.Drawable.chatexternalselected; break;
-                case 2: iconId = Resource.Drawable.picture_selected; break;
+                case "chat_internal": iconId = Resource.Drawable.chat_selected; break;
+                case "chat_external": iconId = Resource.Drawable.chatexternalselected; break;
+                case "gallery": iconId = Resource.Drawable.picture_selected; break;
             }
 
             var imageView = tab.CustomView.FindViewById<ImageView>(Resource.Id.tabImg);
@@ -77,11 +84,11 @@ namespace BdcMobile.Droid.Views
         public void OnTabUnselected(Tab tab)
         {
             int iconId = 0;
-            switch (tab.Position)
+            switch (tab.ContentDescription)
             {
-                case 0: iconId = Resource.Drawable.chat; break;
-                case 1: iconId = Resource.Drawable.chatexternal; break;
-                case 2: iconId = Resource.Drawable.picture; break;
+                case "chat_internal": iconId = Resource.Drawable.chat; break;
+                case "chat_external": iconId = Resource.Drawable.chatexternal; break;
+                case "gallery": iconId = Resource.Drawable.picture; break;
             }
 
             var imageView = tab.CustomView.FindViewById<ImageView>(Resource.Id.tabImg);
@@ -108,7 +115,7 @@ namespace BdcMobile.Droid.Views
                         if (!outRect.Contains((int)ev.RawX, (int)ev.RawY))
                         {
                             v.ClearFocus();
-                            InputMethodManager imm = (InputMethodManager)this.GetSystemService(Context.InputMethodService);
+                            InputMethodManager imm = (InputMethodManager)this.GetSystemService(InputMethodService);
                             imm.HideSoftInputFromWindow(v.WindowToken, 0);
                         }
                     }

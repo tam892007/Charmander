@@ -1,5 +1,6 @@
 ﻿using BdcMobile.Core.Models;
 using BdcMobile.Core.Services.Interfaces;
+using System;
 
 namespace BdcMobile.Core.Services.Implementations
 {
@@ -16,6 +17,8 @@ namespace BdcMobile.Core.Services.Implementations
         public string AvatarUrl { get; set; }
         public string CloudMessagingToken { get; set; }
 
+        public UserRole UserRole { get; set; }
+
         public void Reset()
         {
             Initialize();
@@ -30,6 +33,25 @@ namespace BdcMobile.Core.Services.Implementations
             ApiToken = string.Empty;
             AvatarUrl = string.Empty;
             CloudMessagingToken = string.Empty;
+            UserRole = UserRole.None;
+        }
+
+        public void SyncContextFromUser(User user)
+        {
+            UserDisplayName = user.Name;
+            UserLoginName = user.AccountName;
+            IsUserAuthenticated = user.IsAuthenticated;
+            AvatarUrl = user.Image;
+            ApiToken = user.api_token;
+
+            if (Enum.TryParse(user.Type, out UserRole role))
+            {
+                UserRole = UserRole.Employee;
+            }
+            else
+            {
+                UserRole = UserRole.None;
+            }
         }
     }
 }
