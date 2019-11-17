@@ -29,6 +29,8 @@ namespace BdcMobile.Droid.Views
 
             _recyclerView = view.FindViewById<MvxRecyclerView>(Resource.Id.gallery);
             _recyclerView.SetLayoutManager(new GridLayoutManager(Context, 2));
+            _recyclerView.HasFixedSize = true;
+            _recyclerView.SetItemViewCacheSize(20);
             return view;
         }
     }

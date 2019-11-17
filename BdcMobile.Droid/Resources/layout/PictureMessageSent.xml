@@ -16,7 +16,7 @@
         android:src="@drawable/image_place_holder"
         android:layout_toLeftOf="@+id/img_msg_body"
         android:background="@android:color/transparent"
-        app:MvxBind="ImagePath Files[0].FilePath"
+        app:MvxBind="ImagePath Files[0].FilePath; DownsampleWidth Downsample; DownsampleHeight Downsample"
     />
 
     <FFImageLoading.Cross.MvxCachedImageView
@@ -27,7 +27,7 @@
         android:src="@drawable/image_place_holder"
         android:layout_alignParentRight="true"
         android:background="@android:color/transparent"
-        app:MvxBind="ImagePath Files[1].FilePath"
+        app:MvxBind="ImagePath Files[1].FilePath; DownsampleWidth Downsample; DownsampleHeight Downsample"
     />
 
     <TextView

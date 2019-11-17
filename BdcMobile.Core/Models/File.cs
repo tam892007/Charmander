@@ -29,6 +29,8 @@ namespace BdcMobile.Core.Models
         {
             get => Constants.AppAPI.IPAPI + Path.Replace('\\', '/').TrimEnd('/') + '/' + DisguisedName;
         }
+
+        public double Downsample => 50d;
     }
 
     public class ListFileResponseModel

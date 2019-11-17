@@ -135,6 +135,8 @@ namespace BdcMobile.Core.Models
 
         public string MultiPictureTextDisplay => $"+{Files?.Count - 2}";
 
+        public double Downsample => 50d;
+
         private MvxAsyncCommand _resendCommand;
 
 
