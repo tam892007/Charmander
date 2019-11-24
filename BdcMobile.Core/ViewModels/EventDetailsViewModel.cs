@@ -1,4 +1,5 @@
 ﻿using BdcMobile.Core.Models;
+using BdcMobile.Core.Services.Interfaces;
 using FFImageLoading.Transformations;
 using FFImageLoading.Work;
 using MvvmCross.Commands;
@@ -20,13 +21,15 @@ namespace BdcMobile.Core.ViewModels
         public string Status { get; set; }
         public string ImageURL { get; set; }
         public int SelectedTabIndex { get; set; }
+        private readonly IHttpService _networkService;
         public List<ITransformation> CircleTransformation => new List<ITransformation> { new CircleTransformation() };
 
         public IMvxAsyncCommand ShowInitialViewModelsCommand { get; private set; }
         
 
-        public EventDetailsViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService) : base(logProvider, navigationService)
+        public EventDetailsViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService, IHttpService networkService) : base(logProvider, navigationService)
         {
+            _networkService = networkService;
             ShowInitialViewModelsCommand = new MvxAsyncCommand(ShowInitialViewModels);
         }
 
@@ -54,13 +57,20 @@ namespace BdcMobile.Core.ViewModels
         {
             SurveyID = parameter.SurveyID;
             SelectedTabIndex = parameter.TabIndex;
-            //SurveyNo = parameter.SurveyNo;
-            //SurveyDescription = parameter.SurveyDescription;
-            //TOR = parameter.TOR;
-            //Status = parameter.Status;
-            //PartnerName = parameter.PartnerName;
-            //PlaceOfSurvey = parameter.PlaceOfSurvey;
-            //ImageURL = parameter.ImageURL;
+
+            var evt = _networkService.GetEventById(SurveyID);
+            if(evt != null)
+            {
+                
+                SurveyNo = evt.SurveyNo;
+                SurveyDescription = evt.SurveyDescription;
+                TOR = evt.TOR;
+                Status = evt.Status;
+                PartnerName = evt.PartnerName;
+                PlaceOfSurvey = evt.PlaceOfSurvey;
+                ImageURL = evt.ImageURL;
+            }
+            
         }
 
         public override void Prepare()

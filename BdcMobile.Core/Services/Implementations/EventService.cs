@@ -51,5 +51,10 @@ namespace BdcMobile.Core.Services.Implementations
             return listEvents;
         }
 
+        public Event GetEventById(int id)
+        {
+            var evt = _httpService.GetEventById(id);
+            return evt;
+        }
     }
 }

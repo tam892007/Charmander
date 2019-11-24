@@ -46,6 +46,7 @@
               android:id="@+id/serverIPVal"
               android:layout_width="0dp"
               android:layout_height="wrap_content"
+              android:singleLine="true"
               app:layout_constraintLeft_toRightOf="@+id/serverIP"
               app:layout_constraintRight_toRightOf="parent"
               app:layout_constraintBaseline_toBaselineOf="@+id/serverIP"

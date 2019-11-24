@@ -43,6 +43,7 @@ namespace BdcMobile.Core.Services.Interfaces
         Task<List<Event>> SearchEventAsync(string token, string keyword, int page, int record);
 
 
+        Event GetEventById(int id);
 
         /// <summary>
         /// Query all Chat in of a event Synchronize

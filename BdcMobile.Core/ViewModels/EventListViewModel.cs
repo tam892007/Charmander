@@ -19,14 +19,14 @@ namespace BdcMobile.Core.ViewModels
         public static int RecordPerPage { get; set; }
         public string SearchText { get; set; }
         private readonly IEventService _eventService;
-        private readonly IMvxLog _mvxLog;
+        //private readonly IMvxLog _mvxLog;
         public CancellationTokenSource cts { get; set; }
 
         public EventListViewModel(IEventService eventService, IMvxNavigationService mvxNavigationService, IMvxLogProvider mvxLogProvider) : base(mvxLogProvider, mvxNavigationService)
         {
             _eventService = eventService;
 
-            _mvxLog = mvxLogProvider.GetLogFor(Constants.AppConfig.LogTag);
+            //_mvxLog = mvxLogProvider.GetLogFor(Constants.AppConfig.LogTag);
 
             cts = new CancellationTokenSource();
 
@@ -114,7 +114,7 @@ namespace BdcMobile.Core.ViewModels
             IsBusy = true;
             // do refresh work here
             var token = App.User.api_token;
-            _mvxLog.Info("Start Refresh: " + SearchText);
+            //_mvxLog.Info("Start Refresh: " + SearchText);
             var text = SearchText;
             List<Event> newEvents;
             if (!string.IsNullOrWhiteSpace(text))
@@ -125,7 +125,7 @@ namespace BdcMobile.Core.ViewModels
             {
                 newEvents = await _eventService.QueryEventAsync(token, null, null, 1, RecordPerPage);
             }
-            _mvxLog.Info("End Refresh: " + SearchText);
+            //_mvxLog.Info("End Refresh: " + SearchText);
 
             Events = new MvxObservableCollection<Event>();
             if (newEvents != null)
@@ -148,7 +148,7 @@ namespace BdcMobile.Core.ViewModels
             var currentItemCount = Events == null ? 0 : Events.Count;
             var nextpage = currentItemCount / RecordPerPage + 1;
 
-            _mvxLog.Info("Start LoadMore: " + SearchText);
+            //_mvxLog.Info("Start LoadMore: " + SearchText);
             var text = SearchText;
             List<Event> newEvents;
             if (!string.IsNullOrWhiteSpace(text))
@@ -159,7 +159,7 @@ namespace BdcMobile.Core.ViewModels
             {
                 newEvents = await _eventService.QueryEventAsync(token, null, null, nextpage, RecordPerPage);
             }
-            _mvxLog.Info("End LoadMore: " + SearchText);
+            //_mvxLog.Info("End LoadMore: " + SearchText);
             if (newEvents != null)
             {
                 foreach (var ev in newEvents)
@@ -188,7 +188,7 @@ namespace BdcMobile.Core.ViewModels
             IsBusy = true;
             var token = App.User.api_token;
 
-            _mvxLog.Info("Start Search: " + SearchText);
+            //_mvxLog.Info("Start Search: " + SearchText);
             var text = SearchText;
             List<Event> newEvents;
             if (!string.IsNullOrWhiteSpace(text))
@@ -205,7 +205,7 @@ namespace BdcMobile.Core.ViewModels
             {
                 Events.AddRange(newEvents);
             }
-            _mvxLog.Info("End Search: " + text);
+            //_mvxLog.Info("End Search: " + text);
             await this.RaisePropertyChanged("Events");
             IsBusy = false;
 
@@ -218,7 +218,7 @@ namespace BdcMobile.Core.ViewModels
             IsBusy = true;
             var token = App.User.api_token;
 
-            _mvxLog.Info("Start Search: " + SearchText);
+            //_mvxLog.Info("Start Search: " + SearchText);
             var text = SearchText;
             List<Event> newEvents;
             if (!string.IsNullOrWhiteSpace(text))
@@ -235,7 +235,7 @@ namespace BdcMobile.Core.ViewModels
             {
                 Events.AddRange(newEvents);
             }
-            _mvxLog.Info("End Search: " + text);
+            //_mvxLog.Info("End Search: " + text);
             await this.RaisePropertyChanged("Events");
             IsBusy = false;
             

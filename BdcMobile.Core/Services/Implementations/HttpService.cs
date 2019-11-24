@@ -14,13 +14,13 @@ namespace BdcMobile.Core.Services.Implementations
     public class HttpService: IHttpService
     {
         private IMvxLogProvider _mvxLogProvider;
-        private IMvxLog mvxLog;
+        //private IMvxLog mvxLog;
 
 
         public HttpService(IMvxLogProvider mvxLogProvider)
         {
             _mvxLogProvider = mvxLogProvider;
-            mvxLog = _mvxLogProvider.GetLogFor(Constants.AppConfig.LogTag);
+            //mvxLog = _mvxLogProvider.GetLogFor(Constants.AppConfig.LogTag);
         }
         /// <summary>
         /// Login function
@@ -81,8 +81,8 @@ namespace BdcMobile.Core.Services.Implementations
                 }
                 catch(Exception ex)
                 {
-                    mvxLog.Error(ex.ToString());
-                    mvxLog.Error(ex.StackTrace);
+                    //mvxLog.Error(ex.ToString());
+                    //mvxLog.Error(ex.StackTrace);
                 }
             }
             return null;
@@ -104,8 +104,8 @@ namespace BdcMobile.Core.Services.Implementations
                 }
                 catch (Exception ex)
                 {
-                    mvxLog.Error(ex.ToString());
-                    mvxLog.Error(ex.StackTrace);
+                    //mvxLog.Error(ex.ToString());
+                    //mvxLog.Error(ex.StackTrace);
                 }
             }
             return null;
@@ -132,8 +132,28 @@ namespace BdcMobile.Core.Services.Implementations
                 }
                 catch (Exception ex)
                 {
-                    mvxLog.Error(ex.ToString());
-                    mvxLog.Error(ex.StackTrace);
+                    //mvxLog.Error(ex.ToString());
+                    //mvxLog.Error(ex.StackTrace);
+                }
+            }
+            return null;
+        }
+
+        public Event GetEventById(int id)
+        {
+            string apiUrl = App.Context.ServerAddress + string.Format(Constants.AppAPI.GetItemByIdAPI, id);
+            var apiResponse = NetWorkUtility.MakeRequestSync(apiUrl, "GET");
+            if (apiResponse.Length > 25)
+            {
+                try
+                {
+                    var result = JsonConvert.DeserializeObject<Event>(apiResponse);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    //mvxLog.Error(ex.ToString());
+                    //mvxLog.Error(ex.StackTrace);
                 }
             }
             return null;
@@ -168,8 +188,8 @@ namespace BdcMobile.Core.Services.Implementations
                 }
                 catch (Exception ex)
                 {
-                    mvxLog.Error(ex.ToString());
-                    mvxLog.Error(ex.StackTrace);
+                    //mvxLog.Error(ex.ToString());
+                    //mvxLog.Error(ex.StackTrace);
                 }
             }
             return null;
@@ -218,8 +238,8 @@ namespace BdcMobile.Core.Services.Implementations
                 }
                 catch (Exception ex)
                 {
-                    mvxLog.Error(ex.ToString());
-                    mvxLog.Error(ex.StackTrace);
+                    //mvxLog.Error(ex.ToString());
+                    //mvxLog.Error(ex.StackTrace);
                 }
             }
             return null;
@@ -245,8 +265,8 @@ namespace BdcMobile.Core.Services.Implementations
                 }
                 catch (Exception ex)
                 {
-                    mvxLog.Error(ex.ToString());
-                    mvxLog.Error(ex.StackTrace);
+                    //mvxLog.Error(ex.ToString());
+                    //mvxLog.Error(ex.StackTrace);
                 }
             }
             return null;
@@ -275,8 +295,8 @@ namespace BdcMobile.Core.Services.Implementations
                 }
                 catch (Exception ex)
                 {
-                    mvxLog.Error(ex.ToString());
-                    mvxLog.Error(ex.StackTrace);
+                    //mvxLog.Error(ex.ToString());
+                    //mvxLog.Error(ex.StackTrace);
                 }
             }
             return null;
@@ -305,8 +325,8 @@ namespace BdcMobile.Core.Services.Implementations
                 }
                 catch (Exception ex)
                 {
-                    mvxLog.Error(ex.ToString());
-                    mvxLog.Error(ex.StackTrace);
+                    //mvxLog.Error(ex.ToString());
+                    //mvxLog.Error(ex.StackTrace);
                 }
             }
             return null;
@@ -335,8 +355,8 @@ namespace BdcMobile.Core.Services.Implementations
                 }
                 catch (Exception ex)
                 {
-                    mvxLog.Error(ex.ToString());
-                    mvxLog.Error(ex.StackTrace);
+                    //mvxLog.Error(ex.ToString());
+                    //mvxLog.Error(ex.StackTrace);
                 }
             }
             return null;
@@ -358,8 +378,8 @@ namespace BdcMobile.Core.Services.Implementations
                 }
                 catch (Exception ex)
                 {
-                    mvxLog.Error(ex.ToString());
-                    mvxLog.Error(ex.StackTrace);
+                    //mvxLog.Error(ex.ToString());
+                    //mvxLog.Error(ex.StackTrace);
                 }
             }
             return null;
@@ -385,8 +405,8 @@ namespace BdcMobile.Core.Services.Implementations
                 }
                 catch (Exception ex)
                 {
-                    mvxLog.Error(ex.ToString());
-                    mvxLog.Error(ex.StackTrace);
+                    //mvxLog.Error(ex.ToString());
+                    //mvxLog.Error(ex.StackTrace);
                 }
             }
             return null;
@@ -419,8 +439,8 @@ namespace BdcMobile.Core.Services.Implementations
                 }
                 catch (Exception ex)
                 {
-                    mvxLog.Error(ex.ToString());
-                    mvxLog.Error(ex.StackTrace);
+                    //mvxLog.Error(ex.ToString());
+                    //mvxLog.Error(ex.StackTrace);
                 }
             }
             return null;
