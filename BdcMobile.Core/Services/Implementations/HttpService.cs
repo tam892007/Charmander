@@ -29,7 +29,7 @@ namespace BdcMobile.Core.Services.Implementations
         /// <returns></returns>
         public async Task<User> LoginAsync(User user, CancellationToken token = default)
         {
-            string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.UserLoginAPI, user.AccountName, user.Password);
+            string apiUrl = App.Context.ServerAddress + string.Format(Constants.AppAPI.UserLoginAPI, user.AccountName, user.Password);
             var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "POST", token);
             if (apiResponse.Length > 25)
             {
@@ -47,7 +47,7 @@ namespace BdcMobile.Core.Services.Implementations
         /// <returns></returns>
         public async Task<User> VerifyUserAsync(string token)
         {
-            string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.UserVerifyAPI, token);
+            string apiUrl = App.Context.ServerAddress + string.Format(Constants.AppAPI.UserVerifyAPI, token);
             var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "GET");
             if (apiResponse.Length > 25)
             {
@@ -70,7 +70,7 @@ namespace BdcMobile.Core.Services.Implementations
             //var fromdatestr = fromdate == null ? string.Empty: string.Format("{0:ddMMyyyy}", fromdate);
             //var todatestr = todate == null ? string.Empty : string.Format("{0:ddMMyyyy}", todate);
 
-            string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.GetItemsAPI, currentPage, recpordPerPage, token);
+            string apiUrl = App.Context.ServerAddress + string.Format(Constants.AppAPI.GetItemsAPI, currentPage, recpordPerPage, token);
             var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "GET");
             if (apiResponse.Length > 25)
             {
@@ -93,7 +93,7 @@ namespace BdcMobile.Core.Services.Implementations
             //var fromdatestr = fromdate == null ? string.Empty: string.Format("{0:ddMMyyyy}", fromdate);
             //var todatestr = todate == null ? string.Empty : string.Format("{0:ddMMyyyy}", todate);
 
-            string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.GetItemsAPI, currentPage, recpordPerPage, token);
+            string apiUrl = App.Context.ServerAddress + string.Format(Constants.AppAPI.GetItemsAPI, currentPage, recpordPerPage, token);
             var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "GET", ct);
             if (apiResponse.Length > 25)
             {
@@ -121,7 +121,7 @@ namespace BdcMobile.Core.Services.Implementations
         /// <returns></returns>
         public async Task<List<Event>> SearchEventAsync(string token, string keyword, int page, int record)
         {
-            string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.SearchItemsAPI, token, keyword, page, record);
+            string apiUrl = App.Context.ServerAddress + string.Format(Constants.AppAPI.SearchItemsAPI, token, keyword, page, record);
             var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "GET");
             if (apiResponse.Length > 25)
             {
@@ -148,7 +148,7 @@ namespace BdcMobile.Core.Services.Implementations
         /// <returns></returns>
         public async Task<List<ChatMessage>> QueryChatAsync(string token, int eventID, int type)
         {
-            string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.GetChatAPI, token, eventID, type);
+            string apiUrl = App.Context.ServerAddress + string.Format(Constants.AppAPI.GetChatAPI, token, eventID, type);
             var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "GET");
             if (apiResponse.Length > 25)
             {
@@ -161,7 +161,7 @@ namespace BdcMobile.Core.Services.Implementations
                     {
                         var paths = JsonConvert.DeserializeObject<string[]>(d.FileIndex.Trim('"'));
                         if (paths == null || paths.Length == 0) continue;
-                        d.Files = paths.Select(p => new ChatPicture { FilePath = Constants.AppAPI.IPAPI + p.Replace("\\\\", "/") }).ToList();
+                        d.Files = paths.Select(p => new ChatPicture { FilePath = App.Context.ServerAddress + p.Replace("\\\\", "/") }).ToList();
                     }
 
                     return result.data;
@@ -198,7 +198,7 @@ namespace BdcMobile.Core.Services.Implementations
 
             var api = isNewQuery ? Constants.AppAPI.GetNewChatAPI : Constants.AppAPI.GetOldChatAPI;
 
-            string apiUrl = Constants.AppAPI.IPAPI + string.Format(api, token, eventID, type, createTimestr);
+            string apiUrl = App.Context.ServerAddress + string.Format(api, token, eventID, type, createTimestr);
             var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "GET");
             if (apiResponse.Length > 25)
             {
@@ -211,7 +211,7 @@ namespace BdcMobile.Core.Services.Implementations
                     {
                         var paths = JsonConvert.DeserializeObject<string[]>(d.FileIndex.Trim('"'));
                         if (paths == null || paths.Length == 0) continue;
-                        d.Files = paths.Select(p => new ChatPicture { FilePath = Constants.AppAPI.IPAPI + p.Replace("\\\\", "/") }).ToList();
+                        d.Files = paths.Select(p => new ChatPicture { FilePath = App.Context.ServerAddress + p.Replace("\\\\", "/") }).ToList();
                     }
 
                     return result.data;
@@ -234,7 +234,7 @@ namespace BdcMobile.Core.Services.Implementations
         /// <returns></returns>
         public List<ChatMessage> QueryChat(string token, int eventID, int type)
         {
-            string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.GetChatAPI, token, eventID, type);
+            string apiUrl = App.Context.ServerAddress + string.Format(Constants.AppAPI.GetChatAPI, token, eventID, type);
             var apiResponse = NetWorkUtility.MakeRequestSync(apiUrl, "GET");
             if (apiResponse.Length > 25)
             {
@@ -264,7 +264,7 @@ namespace BdcMobile.Core.Services.Implementations
             var createTimestr = string.Format("{0:yyyy/mm/dd hh:mm:ss}", createTime);
             var api = isNewQuery ? Constants.AppAPI.GetNewChatAPI : Constants.AppAPI.GetOldChatAPI;
 
-            string apiUrl =  Constants.AppAPI.IPAPI + string.Format(api, token, eventID, type, createTimestr);
+            string apiUrl = App.Context.ServerAddress + string.Format(api, token, eventID, type, createTimestr);
             var apiResponse = NetWorkUtility.MakeRequestSync(apiUrl, "GET");
             if (apiResponse.Length > 25)
             {
@@ -294,7 +294,7 @@ namespace BdcMobile.Core.Services.Implementations
         /// <returns></returns>
         public async Task<ChatSentResponse> SendChatAsync(string token, int eventID, int type, string message, int chat, int belongingTo)
         {
-            string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.SendChatAPI, token, eventID, type, message, 0, string.Empty);
+            string apiUrl = App.Context.ServerAddress + string.Format(Constants.AppAPI.SendChatAPI, token, eventID, type, message, 0, string.Empty);
             var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "POST");
             if (apiResponse.Length > 25)
             {
@@ -324,7 +324,7 @@ namespace BdcMobile.Core.Services.Implementations
         /// <returns></returns>
         public async Task<ChatSentResponse> SendChatFileAsync(string token, int eventID, int type, string message, byte[] data, int chat, int belongingTo, string fileName)
         {
-            string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.SendChatAPI, token, eventID, type, message, 0, string.Empty);
+            string apiUrl = App.Context.ServerAddress + string.Format(Constants.AppAPI.SendChatAPI, token, eventID, type, message, 0, string.Empty);
             var apiResponse = await NetWorkUtility.SendFile(apiUrl, new List<byte[]>() { data }, new List<string>() { string.Empty });
             if (apiResponse.Length > 25)
             {
@@ -345,7 +345,7 @@ namespace BdcMobile.Core.Services.Implementations
         public async Task<List<File>> QueryAllFilesAsync(string token, int eventID)
         {
 
-            string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.GetListFileAPI, token, eventID);
+            string apiUrl = App.Context.ServerAddress + string.Format(Constants.AppAPI.GetListFileAPI, token, eventID);
             var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "GET");
             if (apiResponse.Length > 25)
             {
@@ -374,7 +374,7 @@ namespace BdcMobile.Core.Services.Implementations
         /// <returns></returns>
         public async Task<List<Notification>> QueryNotificationAsync(string token, int page, int record)
         {
-            string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.GetNotification, token, page, record);
+            string apiUrl = App.Context.ServerAddress + string.Format(Constants.AppAPI.GetNotification, token, page, record);
             var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "GET");
             if (apiResponse.Length > 25)
             {
@@ -399,7 +399,7 @@ namespace BdcMobile.Core.Services.Implementations
                 message = DateTime.Now.ToShortDateString();
             }
 
-            string apiUrl = Constants.AppAPI.IPAPI + string.Format(Constants.AppAPI.SendChatAPI, token, eventID, type, message, 0, string.Empty);
+            string apiUrl = App.Context.ServerAddress + string.Format(Constants.AppAPI.SendChatAPI, token, eventID, type, message, 0, string.Empty);
 
             List<byte[]> data = new List<byte[]>();
             List<string> fileNames = new List<string>();

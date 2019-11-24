@@ -41,11 +41,11 @@ namespace BdcMobile.Core.Models
                 {
                     // TODO: Remove later
                     //return "http://103.47.192.239:81/public/Uploads/HR/EMPLOYEE_IMAGE/6_MR_2019-04-03_07-54-10.jpg";
-                    return Constants.AppAPI.IPAPI;
+                    return App.Context.ServerAddress;
                 }
                 else
                 {
-                    return Constants.AppAPI.IPAPI + InspectorImage;
+                    return App.Context.ServerAddress + InspectorImage;
                 }
                 
             }
@@ -57,6 +57,8 @@ namespace BdcMobile.Core.Models
         public string CreateTime { get; set; }
         public string DepartmentName { get; set; }
         public string SurveyClosingDate { get; set; }
+
+        public int TabIndex { get; set; }
     }
     public class EventResponseModel
     {        

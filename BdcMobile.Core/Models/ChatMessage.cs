@@ -4,14 +4,11 @@ using FFImageLoading.Transformations;
 using FFImageLoading.Work;
 using MvvmCross;
 using MvvmCross.Commands;
-using MvvmCross.Logging;
-using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BdcMobile.Core.Models
@@ -119,11 +116,11 @@ namespace BdcMobile.Core.Models
                 {
                     // TODO: Remove later
                     //return "http://103.47.192.239:81/public/Uploads/HR/EMPLOYEE_IMAGE/6_MR_2019-04-03_07-54-10.jpg";
-                    return Constants.AppAPI.IPAPI;
+                    return App.Context.ServerAddress;
                 }
                 else
                 {
-                    return Constants.AppAPI.IPAPI + UserImg;
+                    return App.Context.ServerAddress + UserImg;
                 }
 
             }

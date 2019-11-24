@@ -4,6 +4,7 @@ namespace BdcMobile.Core.Services.Interfaces
 {
     public interface IAppContext
     {
+        string ServerAddress { get; set; }
         string UserLoginName { get; set; }
         string UserDisplayName { get; set; }
         bool IsUserAuthenticated { get; set; }
@@ -16,5 +17,7 @@ namespace BdcMobile.Core.Services.Interfaces
         void Reset();
 
         void SyncContextFromUser(User user);
+
+        void SetServerAddress(string address);
     }
 }

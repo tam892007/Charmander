@@ -1,14 +1,16 @@
 ﻿using BdcMobile.Core.Models;
 using BdcMobile.Core.Services.Interfaces;
+using BdcMobile.Core.ViewModels;
+using MvvmCross.Navigation;
 using System.Threading;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 namespace BdcMobile.Core.Services.Implementations
 {
     public class LoginService: ILoginService
     {
         private IHttpService _httpService;
-
         public LoginService (IHttpService httpService)
         {
             _httpService = httpService;
@@ -51,6 +53,12 @@ namespace BdcMobile.Core.Services.Implementations
         {
             var user = await _httpService.VerifyUserAsync(token);
             return user;
+        }
+
+        public void LogOut()
+        {
+            SecureStorage.RemoveAll();
+            App.Context.Reset();
         }
     }
 }

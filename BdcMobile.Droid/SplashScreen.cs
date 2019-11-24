@@ -47,8 +47,9 @@ namespace BdcMobile.Droid
                     var notification = JsonConvert.DeserializeObject<Core.Models.Notification>(intent.GetStringExtra(Constants.AppConfig.FCMExtraName));
                     switch (notification.Type)
                     {
-                        case Core.Models.NotificationType.NewChat:
-                            await mvxNavigationService.Navigate(typeof(EventDetailsViewModel), new BdcMobile.Core.Models.Event { SurveyID = notification.SurveyID });
+                        case Core.Models.NotificationType.InternalChatUpdate:
+                        case Core.Models.NotificationType.ExternalChatUpdate:
+                            await mvxNavigationService.Navigate(typeof(EventDetailsViewModel), new BdcMobile.Core.Models.Event { SurveyID = notification.Object });
                             break;
                         default: break;
                     }

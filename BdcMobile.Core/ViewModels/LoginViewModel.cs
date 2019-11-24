@@ -27,6 +27,8 @@ namespace BdcMobile.Core.ViewModels
         }
         public IMvxAsyncCommand LoginCommand { get; private set; }
 
+        public IMvxAsyncCommand OpenSettingsCommand { get; private set; }
+
         private CancellationTokenSource CancelLoginToken;
         public IMvxCommand CancelLoginCommand { get; private set; }
 
@@ -42,12 +44,13 @@ namespace BdcMobile.Core.ViewModels
             _loginService = loginService;
             LoginCommand = new MvxAsyncCommand(Login);
             CancelLoginCommand = new MvxCommand(() => { CancelLoginToken?.Cancel(); });
+            OpenSettingsCommand = new MvxAsyncCommand(async () => { await NavigationService.Navigate<SettingsViewModel>(); });
         }
 
         public override async Task Initialize()
         {
             ///Auto login if not authenticated yet
-            if (!AppContext.IsUserAuthenticated)
+            if (!App.Context.IsUserAuthenticated)
             {
                 UserName = await SecureStorage.GetAsync(Constants.SecureStorageKey.Username);
                 Password = await SecureStorage.GetAsync(Constants.SecureStorageKey.Password);
@@ -77,7 +80,7 @@ namespace BdcMobile.Core.ViewModels
                     await SecureStorage.SetAsync(Constants.SecureStorageKey.OAuthToken, user.api_token);
                     await SecureStorage.SetAsync(Constants.SecureStorageKey.Username, UserName);
                     await SecureStorage.SetAsync(Constants.SecureStorageKey.Password, Password);
-                    AppContext.SyncContextFromUser(user);
+                    App.Context.SyncContextFromUser(user);
                 }
                 catch
                 {
@@ -90,7 +93,7 @@ namespace BdcMobile.Core.ViewModels
                 }
                 else
                 {
-                    await NavigationService.Navigate<EventListViewModel, Event>(new Event { SurveyID = _notification.SurveyID });
+                    await NavigationService.Navigate<EventListViewModel, Event>(new Event { SurveyID = _notification.Object });
                     _notification = null;
                 }
             } 

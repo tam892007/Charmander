@@ -14,5 +14,7 @@ namespace BdcMobile.Core.Services.Interfaces
         /// <param name="token"></param>
         /// <returns></returns>
         Task<User> VerifyAsync(string token);
+
+        void LogOut();
     }
 }

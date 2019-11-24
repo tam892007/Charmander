@@ -107,7 +107,39 @@ namespace BdcMobile.Core.ViewModels
 
         private async Task OpenNotification(Notification n)
         {
-            _commonService.OpenBrowser(Constants.AppAPI.IPAPI);
+            var url = $"{App.Context.ServerAddress}/quan-ly/vu-viec/{n.Object}";
+            switch (n.Type)
+            {
+                case NotificationType.InternalChatUpdate:
+                    await NavigationService.Navigate<EventDetailsViewModel, Event>(new Event { SurveyID = n.Object, TabIndex = 0 }); return;
+
+                case NotificationType.ExternalChatUpdate:
+                    await NavigationService.Navigate<EventDetailsViewModel, Event>(new Event { SurveyID = n.Object, TabIndex = 1 }); return;
+
+                case NotificationType.EventTypeUpdate:
+                case NotificationType.IncomeDistributing:
+                case NotificationType.EstimatedFeeSummary:
+                    url += "#tai-chinh";break;
+
+                case NotificationType.ReportApproval:
+                case NotificationType.ReportReject:
+                case NotificationType.AssessmentComplete:
+                case NotificationType.FileUpload:
+                    url += "#bao-cao"; break;
+
+                case NotificationType.Complete:
+                case NotificationType.EventComplete:
+                case NotificationType.RequestToComplete:
+                    url += "#tong-hop"; break;
+
+                case NotificationType.AssigneeUpdate:
+                    url += "#phan-cong"; break;
+
+                case NotificationType.ProgressAdding:
+                    url += "#dien-bien"; break;
+            }
+
+            _commonService.OpenBrowser(url);
         }
 
         private async Task LoadMoreNotification()

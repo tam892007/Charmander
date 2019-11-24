@@ -19,6 +19,7 @@ namespace BdcMobile.Core.ViewModels
         public string TOR { get; set; }
         public string Status { get; set; }
         public string ImageURL { get; set; }
+        public int SelectedTabIndex { get; set; }
         public List<ITransformation> CircleTransformation => new List<ITransformation> { new CircleTransformation() };
 
         public IMvxAsyncCommand ShowInitialViewModelsCommand { get; private set; }
@@ -33,7 +34,7 @@ namespace BdcMobile.Core.ViewModels
         {
             var tasks = new List<Task>();
 
-            if (AppContext.UserRole == UserRole.Employee)
+            if (App.Context.UserRole == UserRole.Employee)
             {
                 tasks.Add(NavigationService.Navigate<EventDetailsInternalChatViewModel, int>(SurveyID));
             }
@@ -44,16 +45,22 @@ namespace BdcMobile.Core.ViewModels
             await Task.WhenAll(tasks);
         }
 
+        public override async Task Initialize()
+        {
+
+        }
+
         public override void Prepare(Event parameter)
         {
             SurveyID = parameter.SurveyID;
-            SurveyNo = parameter.SurveyNo;
-            SurveyDescription = parameter.SurveyDescription;
-            TOR = parameter.TOR;
-            Status = parameter.Status;
-            PartnerName = parameter.PartnerName;
-            PlaceOfSurvey = parameter.PlaceOfSurvey;
-            ImageURL = parameter.ImageURL;
+            SelectedTabIndex = parameter.TabIndex;
+            //SurveyNo = parameter.SurveyNo;
+            //SurveyDescription = parameter.SurveyDescription;
+            //TOR = parameter.TOR;
+            //Status = parameter.Status;
+            //PartnerName = parameter.PartnerName;
+            //PlaceOfSurvey = parameter.PlaceOfSurvey;
+            //ImageURL = parameter.ImageURL;
         }
 
         public override void Prepare()

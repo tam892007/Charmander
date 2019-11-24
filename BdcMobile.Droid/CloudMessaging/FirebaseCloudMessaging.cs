@@ -4,6 +4,7 @@ using Android.Content;
 using Android.Graphics;
 using Android.OS;
 using Android.Support.V4.App;
+using BdcMobile.Core;
 using BdcMobile.Core.Commons;
 using BdcMobile.Core.Models;
 using BdcMobile.Core.Services.Interfaces;
@@ -90,8 +91,8 @@ namespace BdcMobile.Droid.CloudMessaging
             {
                 Title = message.Data["title"],
                 Content = message.Data["content"],
-                SurveyID = Convert.ToInt32(message.Data["surveyId"]),
-                Type = System.Enum.Parse<NotificationType>(message.Data["type"]),
+                Object = Convert.ToInt32(message.Data["object"]),
+                Action = message.Data["action"]
             };
         }
 
@@ -100,14 +101,15 @@ namespace BdcMobile.Droid.CloudMessaging
             Intent intent = null;
             switch (notification.Type)
             {
-                case NotificationType.NewChat:
+                case NotificationType.InternalChatUpdate:
+                case NotificationType.ExternalChatUpdate:
                     intent = new Intent(Application.Context, typeof(SplashScreen));
                     intent.AddFlags(ActivityFlags.SingleTop);
                     intent.PutExtra(Constants.AppConfig.FCMExtraName, JsonConvert.SerializeObject(notification));
                     return PendingIntent.GetActivity(Application.Context, 0, intent, PendingIntentFlags.UpdateCurrent);
                 default:
                     intent = new Intent(Intent.ActionView);
-                    intent.SetData(Android.Net.Uri.Parse(Constants.AppAPI.IPAPI));
+                    intent.SetData(Android.Net.Uri.Parse(App.Context.ServerAddress));
                     return PendingIntent.GetActivity(Application.Context, 0, intent, PendingIntentFlags.UpdateCurrent);
             }
         }

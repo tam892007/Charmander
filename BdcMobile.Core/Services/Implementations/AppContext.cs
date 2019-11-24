@@ -17,6 +17,8 @@ namespace BdcMobile.Core.Services.Implementations
         public string AvatarUrl { get; set; }
         public string CloudMessagingToken { get; set; }
 
+        public string ServerAddress { get; set; }
+
         public UserRole UserRole { get; set; }
 
         public void Reset()
@@ -52,6 +54,11 @@ namespace BdcMobile.Core.Services.Implementations
             {
                 UserRole = UserRole.None;
             }
+        }
+
+        public void SetServerAddress(string address)
+        {
+            ServerAddress = address;
         }
     }
 }

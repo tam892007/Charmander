@@ -7,6 +7,7 @@ using Android.Util;
 using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
+using BdcMobile.Core;
 using BdcMobile.Core.Commons;
 using BdcMobile.Core.Models;
 using BdcMobile.Core.ViewModels;
@@ -38,7 +39,7 @@ namespace BdcMobile.Droid.Views
             int tabIdx = 0;
             ImageView tabCustomView;
 
-            if (ViewModel.AppContext.UserRole == UserRole.Employee)
+            if (App.Context.UserRole == UserRole.Employee)
             {
                 tabCustomView = (ImageView)LayoutInflater.Inflate(Resource.Layout.Tab, null);
                 tabCustomView.SetImageResource(Resource.Drawable.chat_selected);
@@ -62,6 +63,8 @@ namespace BdcMobile.Droid.Views
             tabLayout.GetTabAt(tabIdx).SetCustomView(tabCustomView).SetContentDescription("gallery");
 
             tabLayout.AddOnTabSelectedListener(this);
+
+            tabLayout.GetTabAt(ViewModel.SelectedTabIndex).Select();
         }
 
         public void OnTabReselected(Tab tab)
@@ -80,6 +83,8 @@ namespace BdcMobile.Droid.Views
 
             var imageView = tab.CustomView.FindViewById<ImageView>(Resource.Id.tabImg);
             imageView.SetImageResource(iconId);
+
+            ViewModel.SelectedTabIndex = tab.Position;
         }
 
         public void OnTabUnselected(Tab tab)

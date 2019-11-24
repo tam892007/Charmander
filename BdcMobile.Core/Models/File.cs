@@ -27,7 +27,7 @@ namespace BdcMobile.Core.Models
 
         public string PathToDisplay
         {
-            get => Constants.AppAPI.IPAPI + Path.Replace('\\', '/').TrimEnd('/') + '/' + DisguisedName;
+            get => App.Context.ServerAddress + Path.Replace('\\', '/').TrimEnd('/') + '/' + DisguisedName;
         }
 
         public double Downsample => 50d;

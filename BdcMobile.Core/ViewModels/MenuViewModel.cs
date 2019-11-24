@@ -14,7 +14,7 @@ namespace BdcMobile.Core.ViewModels
     public class MenuViewModel : MvxViewModel
     {
         private readonly IMvxNavigationService _navigationService;
-        private readonly IAppContext _appContext;
+        private ILoginService _loginService;
 
         public string UserDisplayName { get; private set; }
         public string UserAvatar { get; private set; }
@@ -22,23 +22,22 @@ namespace BdcMobile.Core.ViewModels
         public double DownsampleWidth => 200d;
         public List<ITransformation> CircleTransformation => new List<ITransformation> { new CircleTransformation() };
 
-        public MenuViewModel(IMvxNavigationService navigationService, IAppContext appContext)
+        public MenuViewModel(IMvxNavigationService navigationService, ILoginService loginService)
         {
             _navigationService = navigationService;
-            _appContext = appContext;
+            _loginService = loginService;
 
-            ShowSettingsCommand = new MvxAsyncCommand(async () => await System.Threading.Tasks.Task.Delay(10000));
+            ShowSettingsCommand = new MvxAsyncCommand(async () => await _navigationService.Navigate<SettingsViewModel>());
             ShowDebugCommand = new MvxAsyncCommand(async () => await _navigationService.Navigate<DebugViewModel>());
             DoLogoutCommand = new MvxAsyncCommand(async () => await DoLogOut());
 
-            UserDisplayName = appContext.UserDisplayName;
-            UserAvatar = Constants.AppAPI.IPAPI + appContext.AvatarUrl;
+            UserDisplayName = App.Context.UserDisplayName;
+            UserAvatar = App.Context.ServerAddress + App.Context.AvatarUrl;
         }
 
         private async Task DoLogOut()
         {
-            SecureStorage.RemoveAll();
-            _appContext.Reset();
+            _loginService.LogOut();
             await _navigationService.Navigate<LoginViewModel>();
         }
 

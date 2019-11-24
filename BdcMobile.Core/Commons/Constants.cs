@@ -8,14 +8,15 @@ namespace BdcMobile.Core.Commons
     {
         public static class AppConfig
         {
-            public static string FCMChannelID = "BDC_Notification_Channel";
-            public static string FCMChannelName = "BDC Notification Channel";
-            public static string FCMChannelDesc = "Channel to send notification for BDC App";
-            public static string FCMExtraName = "BDC_Notification";
+            public const string FCMChannelID = "BDC_Notification_Channel";
+            public const string FCMChannelName = "BDC Notification Channel";
+            public const string FCMChannelDesc = "Channel to send notification for BDC App";
+            public const string FCMExtraName = "BDC_Notification";
 
-            public static string LogTag = "BDC_Mobile";
-            public static int PullMessageTime = 30000;
+            public const string LogTag = "BDC_Mobile";
+            public const int PullMessageTime = 30000;
 
+            public const string ServerAddressKey = "Server-Address";
         }
 
         public static class AppAPI

@@ -3,5 +3,6 @@
     public interface ICommonService
     {
         void OpenBrowser(string url);
+        void ShowToast(string text);
     }
 }

@@ -1,0 +1,69 @@
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/colorPrimary"
+        android:gravity="center_vertical"
+        android:paddingVertical="12dp">
+        <ImageButton
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@drawable/abc_ic_ab_back_material"
+            android:background="@android:color/transparent"
+            android:paddingHorizontal="18dp"
+            android:tint="#fff"
+            app:MvxBind="Click BackCommand"/>
+        <TextView
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textSize="18sp"
+            android:textColor="#fff"
+            android:background="@android:color/transparent"
+            android:text="Cài đặt"/>
+    </LinearLayout>
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/header"
+        android:padding="18dp">
+        <TextView
+            android:text="Địa chỉ dịch vụ: "
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:id="@+id/serverIP"/>
+          <EditText
+              android:id="@+id/serverIPVal"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              app:layout_constraintLeft_toRightOf="@+id/serverIP"
+              app:layout_constraintRight_toRightOf="parent"
+              app:layout_constraintBaseline_toBaselineOf="@+id/serverIP"
+              android:textSize="12dp"
+              android:textIsSelectable="true"
+              android:text="123"
+              app:MvxBind="Text ServerAddress"/>
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lưu"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:MvxBind="Click SaveSettingsCommand"
+            android:textColor="@color/white"
+            android:background="@drawable/blue_fill__rounded_color"
+        />
+    </android.support.constraint.ConstraintLayout>
+</RelativeLayout>

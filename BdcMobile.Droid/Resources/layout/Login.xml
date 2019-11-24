@@ -187,4 +187,18 @@
             local:MvxBind="Text ErrorMessage"
         />
     </LinearLayout>
+
+    <TextView
+        android:drawableLeft="@drawable/settings"
+        android:drawablePadding="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:textSize="12sp"
+        android:gravity="center_vertical"
+        android:clickable="true"
+        local:MvxBind="Click OpenSettingsCommand"
+        android:text="@string/action_settings"/>
 </RelativeLayout>
