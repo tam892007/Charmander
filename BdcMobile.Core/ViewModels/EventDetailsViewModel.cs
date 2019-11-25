@@ -50,18 +50,11 @@ namespace BdcMobile.Core.ViewModels
 
         public override async Task Initialize()
         {
-
-        }
-
-        public override void Prepare(Event parameter)
-        {
-            SurveyID = parameter.SurveyID;
-            SelectedTabIndex = parameter.TabIndex;
-
-            var evt = _networkService.GetEventById(SurveyID);
-            if(evt != null)
+            var token = App.User.api_token;
+            var evt = await _networkService.GetEventById(token, SurveyID);
+            if (evt != null)
             {
-                
+
                 SurveyNo = evt.SurveyNo;
                 SurveyDescription = evt.SurveyDescription;
                 TOR = evt.TOR;
@@ -69,8 +62,20 @@ namespace BdcMobile.Core.ViewModels
                 PartnerName = evt.PartnerName;
                 PlaceOfSurvey = evt.PlaceOfSurvey;
                 ImageURL = evt.ImageURL;
+                await RaisePropertyChanged(nameof(SurveyNo));
+                await RaisePropertyChanged(nameof(SurveyDescription));
+                await RaisePropertyChanged(nameof(TOR));
+                await RaisePropertyChanged(nameof(Status));
+                await RaisePropertyChanged(nameof(PartnerName));
+                await RaisePropertyChanged(nameof(PlaceOfSurvey));
+                await RaisePropertyChanged(nameof(ImageURL));
             }
-            
+        }
+
+        public override void Prepare(Event parameter)
+        {
+            SurveyID = parameter.SurveyID;
+            SelectedTabIndex = parameter.TabIndex;
         }
 
         public override void Prepare()

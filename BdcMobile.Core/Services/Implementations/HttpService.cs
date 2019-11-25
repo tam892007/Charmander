@@ -139,16 +139,31 @@ namespace BdcMobile.Core.Services.Implementations
             return null;
         }
 
-        public Event GetEventById(int id)
+        public async Task<Event> GetEventById(string token, int id)
         {
-            string apiUrl = App.Context.ServerAddress + string.Format(Constants.AppAPI.GetItemByIdAPI, id);
-            var apiResponse = NetWorkUtility.MakeRequestSync(apiUrl, "GET");
+            string apiUrl = App.Context.ServerAddress + string.Format(Constants.AppAPI.GetItemByIdAPI, token, id);
+            var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "GET");
             if (apiResponse.Length > 25)
             {
                 try
                 {
-                    var result = JsonConvert.DeserializeObject<Event>(apiResponse);
-                    return result;
+                    var result = JsonConvert.DeserializeObject<SurveyDetailResponse>(apiResponse);
+                    if (result != null && result.data != null && result.data.Count == 1)
+                    {
+                        var rel = result.data[0];
+                        var evt = new Event()
+                        {
+                            SurveyID = rel.SurveyID,
+                            SurveyNo = rel.SurveyNo,
+                            SurveyDescription = rel.SurveyDescription,
+                            TOR = rel.TOR,
+                            SurveyStatus = rel.SurveyStatus,
+                            PartnerName = rel.PartnerName,
+                            PlaceOfSurvey = rel.PlaceOfSurvey,
+                            //ImageURL = ,
+                        };
+                        return evt;
+                    }                
                 }
                 catch (Exception ex)
                 {

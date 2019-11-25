@@ -51,9 +51,9 @@ namespace BdcMobile.Core.Services.Implementations
             return listEvents;
         }
 
-        public Event GetEventById(int id)
+        public async Task<Event> GetEventById(string token, int id)
         {
-            var evt = _httpService.GetEventById(id);
+            var evt = await _httpService.GetEventById(token, id);
             return evt;
         }
     }
