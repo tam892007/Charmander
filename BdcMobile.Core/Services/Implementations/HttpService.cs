@@ -147,22 +147,10 @@ namespace BdcMobile.Core.Services.Implementations
             {
                 try
                 {
-                    var result = JsonConvert.DeserializeObject<SurveyDetailResponse>(apiResponse);
+                    var result = JsonConvert.DeserializeObject<EventResponseModel>(apiResponse);
                     if (result != null && result.data != null && result.data.Count == 1)
                     {
-                        var rel = result.data[0];
-                        var evt = new Event()
-                        {
-                            SurveyID = rel.SurveyID,
-                            SurveyNo = rel.SurveyNo,
-                            SurveyDescription = rel.SurveyDescription,
-                            TOR = rel.TOR,
-                            SurveyStatus = rel.SurveyStatus,
-                            PartnerName = rel.PartnerName,
-                            PlaceOfSurvey = rel.PlaceOfSurvey,
-                            //ImageURL = ,
-                        };
-                        return evt;
+                        return result.data[0];                        
                     }                
                 }
                 catch (Exception ex)
