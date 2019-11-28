@@ -75,6 +75,11 @@ namespace BdcMobile.Core.ViewModels
 
         public void SaveSetting()
         {
+            if (!ServerAddress.EndsWith("/"))
+            {
+                ServerAddress += "/";
+            } 
+
             _settings.AddOrUpdateValue(Constants.AppConfig.ServerAddressKey, ServerAddress);
             App.Context.SetServerAddress(ServerAddress);
         }
