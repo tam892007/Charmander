@@ -17,12 +17,13 @@ namespace BdcMobile.Core.Commons
             public const int PullMessageTime = 30000;
 
             public const string ServerAddressKey = "Server-Address";
+            public const string UserLoggedIn = "User-Logged-In";
         }
 
         public static class AppAPI
         {
             public static string IPAPI = "http://103.47.192.239:81/";
-            public static string UserLoginAPI = "api/login?accountName={0}&password={1}";
+            public static string UserLoginAPI = "api/login?accountName={0}&password={1}&fcm_token={2}";
             public static string UserVerifyAPI = "api/user?api_token={0}";
             public static string UserInformationAPI = "api/account?api_token={0}&accountID={1}";
 

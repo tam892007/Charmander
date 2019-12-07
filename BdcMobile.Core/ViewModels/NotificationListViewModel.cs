@@ -66,7 +66,7 @@ namespace BdcMobile.Core.ViewModels
 
         public void OnReceiveNotification(Notification notification)
         {
-            Notifications.Add(notification);
+            Notifications.Insert(0, notification);
             RaisePropertyChanged(nameof(Notifications));
         }
 
@@ -107,7 +107,6 @@ namespace BdcMobile.Core.ViewModels
 
         private async Task OpenNotification(Notification n)
         {
-            var url = $"{App.Context.ServerAddress}/quan-ly/vu-viec/{n.Object}";
             switch (n.Type)
             {
                 case NotificationType.InternalChatUpdate:
@@ -116,30 +115,11 @@ namespace BdcMobile.Core.ViewModels
                 case NotificationType.ExternalChatUpdate:
                     await NavigationService.Navigate<EventDetailsViewModel, Event>(new Event { SurveyID = n.Object, TabIndex = 1 }); return;
 
-                case NotificationType.EventTypeUpdate:
-                case NotificationType.IncomeDistributing:
-                case NotificationType.EstimatedFeeSummary:
-                    url += "#tai-chinh";break;
-
-                case NotificationType.ReportApproval:
-                case NotificationType.ReportReject:
-                case NotificationType.AssessmentComplete:
-                case NotificationType.FileUpload:
-                    url += "#bao-cao"; break;
-
-                case NotificationType.Complete:
-                case NotificationType.EventComplete:
-                case NotificationType.RequestToComplete:
-                    url += "#tong-hop"; break;
-
-                case NotificationType.AssigneeUpdate:
-                    url += "#phan-cong"; break;
-
-                case NotificationType.ProgressAdding:
-                    url += "#dien-bien"; break;
+                default:
+                    var url = n.GetWebUrl(App.Context.ServerAddress);
+                    _commonService.OpenBrowser(url);
+                    return;
             }
-
-            _commonService.OpenBrowser(url);
         }
 
         private async Task LoadMoreNotification()

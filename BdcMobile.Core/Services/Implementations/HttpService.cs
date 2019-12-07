@@ -29,7 +29,7 @@ namespace BdcMobile.Core.Services.Implementations
         /// <returns></returns>
         public async Task<User> LoginAsync(User user, CancellationToken token = default)
         {
-            string apiUrl = App.Context.ServerAddress + string.Format(Constants.AppAPI.UserLoginAPI, user.AccountName, user.Password);
+            string apiUrl = App.Context.ServerAddress + string.Format(Constants.AppAPI.UserLoginAPI, user.AccountName, user.Password, user.FCMToken);
             var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "POST", token);
             if (apiResponse.Length > 25)
             {

@@ -1,6 +1,8 @@
-﻿using BdcMobile.Core.Models;
+﻿using BdcMobile.Core.Commons;
+using BdcMobile.Core.Models;
 using BdcMobile.Core.Services.Interfaces;
 using BdcMobile.Core.ViewModels;
+using Cheesebaron.MvxPlugins.Settings;
 using MvvmCross.Navigation;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,9 +13,11 @@ namespace BdcMobile.Core.Services.Implementations
     public class LoginService: ILoginService
     {
         private IHttpService _httpService;
-        public LoginService (IHttpService httpService)
+        private ISettings _settings;
+        public LoginService (IHttpService httpService, ISettings settings)
         {
             _httpService = httpService;
+            _settings = settings;
         }
 
         /// <summary>
@@ -22,17 +26,19 @@ namespace BdcMobile.Core.Services.Implementations
         /// <param name="userName"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public async Task<User> LoginAsync(string userName, string password, CancellationToken token = default)
+        public async Task<User> LoginAsync(string userName, string password, string fcmToken, CancellationToken token = default)
         {
             var user = new User
             {
                 AccountName = userName,
-                Password = password
+                Password = password,
+                FCMToken = fcmToken,
             };
             
             var result = await _httpService.LoginAsync(user, token);
             if (result != null)
             {
+                _settings.AddOrUpdateValue(Constants.AppConfig.UserLoggedIn, true);
                 result.IsAuthenticated = true;
                 App.User = result;
                 return result;
@@ -57,6 +63,7 @@ namespace BdcMobile.Core.Services.Implementations
 
         public void LogOut()
         {
+            _settings.AddOrUpdateValue(Constants.AppConfig.UserLoggedIn, false);
             SecureStorage.RemoveAll();
             App.Context.Reset();
         }

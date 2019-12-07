@@ -3,11 +3,13 @@ using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.OS;
+using Android.Preferences;
 using Android.Support.V4.App;
 using BdcMobile.Core;
 using BdcMobile.Core.Commons;
 using BdcMobile.Core.Models;
 using BdcMobile.Core.Services.Interfaces;
+using BdcMobile.Droid.Services;
 using Firebase.Iid;
 using Firebase.Messaging;
 using MvvmCross;
@@ -24,8 +26,8 @@ namespace BdcMobile.Droid.CloudMessaging
     public class FirebaseCloudMessaging : FirebaseMessagingService, ICloudMessaging
     {
         private static IMvxMessenger _messenger;
-
         private static Dictionary<Guid, MvxSubscriptionToken> _subscriptionToken;
+        private const string PREFERENCE_LAST_NOTIF_ID = "PREFERENCE_LAST_NOTIF_ID";
 
         public FirebaseCloudMessaging() : base()
         {
@@ -66,6 +68,12 @@ namespace BdcMobile.Droid.CloudMessaging
         {
             base.OnMessageReceived(remoteMessage);
 
+            var userLoggedIn = CommonService.GetFromSharedPreferences<bool>(Application.Context, Constants.AppConfig.UserLoggedIn);
+            if (!userLoggedIn)
+            {
+                return;
+            }
+
             var notification = GetNotification(remoteMessage);
 
             var droidNotification =
@@ -80,7 +88,7 @@ namespace BdcMobile.Droid.CloudMessaging
                 .Build();
 
             var notificationManager = NotificationManagerCompat.From(Application.Context);
-            notificationManager.Notify(1, droidNotification);
+            notificationManager.Notify(GetNextNotifId(Application.Context), droidNotification);
 
             Publish(notification);
         }
@@ -91,8 +99,9 @@ namespace BdcMobile.Droid.CloudMessaging
             {
                 Title = message.Data["title"],
                 Content = message.Data["content"],
-                Object = Convert.ToInt32(message.Data["object"]),
-                Action = message.Data["action"]
+                Object = Convert.ToInt32(message.Data["surveyID"]),
+                Action = message.Data["action"],
+                Created_at = message.Data["notificationDate"]
             };
         }
 
@@ -109,7 +118,7 @@ namespace BdcMobile.Droid.CloudMessaging
                     return PendingIntent.GetActivity(Application.Context, 0, intent, PendingIntentFlags.UpdateCurrent);
                 default:
                     intent = new Intent(Intent.ActionView);
-                    intent.SetData(Android.Net.Uri.Parse(App.Context.ServerAddress));
+                    intent.SetData(Android.Net.Uri.Parse(notification.GetWebUrl(GetBaseWebUrl(Application.Context))));
                     return PendingIntent.GetActivity(Application.Context, 0, intent, PendingIntentFlags.UpdateCurrent);
             }
         }
@@ -146,6 +155,31 @@ namespace BdcMobile.Droid.CloudMessaging
         public string GetCloudMessagingToken()
         {
             return FirebaseInstanceId.Instance.Token;
+        }
+
+        private static int GetNextNotifId(Context context)
+        {
+            int id = CommonService.GetFromSharedPreferences<int>(context, PREFERENCE_LAST_NOTIF_ID) + 1;
+            if (id == int.MaxValue) { id = 0; }
+            CommonService.PutToSharedPreferences<int>(context, PREFERENCE_LAST_NOTIF_ID, id);
+            return id;
+        }
+
+        private static string GetBaseWebUrl(Context context)
+        {
+            if (App.Context != null) return App.Context.ServerAddress;
+            else
+            {
+                var baseUrl = CommonService.GetFromSharedPreferences<string>(context, Constants.AppConfig.ServerAddressKey);
+                if (!string.IsNullOrEmpty(baseUrl))
+                {
+                    return baseUrl;
+                }
+                else
+                {
+                    return Constants.AppAPI.IPAPI;
+                } 
+            }
         }
     }
 }

@@ -10,4 +10,29 @@
 	local:itemTextColor="@color/darker_gray"
 	local:itemIconTint="@color/darker_gray"
 	local:headerLayout="@layout/navigationheader"
-	local:menu="@menu/navigation_drawer" />
+	local:menu="@menu/navigation_drawer">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView 
+            android:id="@+id/devlogo"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:src="@drawable/sympleit"
+            android:layout_gravity="bottom"/>
+        <TextView
+            android:translationX="10dp"
+            android:textSize="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Designed and built by"
+            android:layout_toLeftOf="@+id/devlogo"
+            android:layout_alignTop="@+id/devlogo"
+            android:layout_alignBottom="@+id/devlogo"
+            android:gravity="center_vertical"
+            android:textStyle="italic"
+            />
+    </RelativeLayout>
+</android.support.design.widget.NavigationView>

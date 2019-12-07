@@ -48,8 +48,11 @@ namespace BdcMobile.Droid
                     switch (notification.Type)
                     {
                         case Core.Models.NotificationType.InternalChatUpdate:
+                            await mvxNavigationService.Navigate(typeof(EventDetailsViewModel), new BdcMobile.Core.Models.Event { SurveyID = notification.Object, TabIndex = 0 });
+                            break;
+
                         case Core.Models.NotificationType.ExternalChatUpdate:
-                            await mvxNavigationService.Navigate(typeof(EventDetailsViewModel), new BdcMobile.Core.Models.Event { SurveyID = notification.Object });
+                            await mvxNavigationService.Navigate(typeof(EventDetailsViewModel), new BdcMobile.Core.Models.Event { SurveyID = notification.Object, TabIndex = 1 });
                             break;
                         default: break;
                     }

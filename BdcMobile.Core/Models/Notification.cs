@@ -55,6 +55,43 @@ namespace BdcMobile.Core.Models
                 default: return NotificationType.EventCreated;
             }
         }
+
+        public string GetWebUrl(string baseWebUrl)
+        {
+            var url = $"{baseWebUrl}/quan-ly/vu-viec/{Object}";
+            switch (Type)
+            {
+                case NotificationType.InternalChatUpdate:
+                    url += "#thao-luan-noi-bo";break;
+
+                case NotificationType.ExternalChatUpdate:
+                    url += "#thao-luan-voi-khach-hang"; break;
+
+                case NotificationType.EventTypeUpdate:
+                case NotificationType.IncomeDistributing:
+                case NotificationType.EstimatedFeeSummary:
+                    url += "#tai-chinh"; break;
+
+                case NotificationType.ReportApproval:
+                case NotificationType.ReportReject:
+                case NotificationType.AssessmentComplete:
+                case NotificationType.FileUpload:
+                    url += "#bao-cao"; break;
+
+                case NotificationType.Complete:
+                case NotificationType.EventComplete:
+                case NotificationType.RequestToComplete:
+                    url += "#tong-hop"; break;
+
+                case NotificationType.AssigneeUpdate:
+                    url += "#phan-cong"; break;
+
+                case NotificationType.ProgressAdding:
+                    url += "#dien-bien"; break;
+            }
+
+            return url;
+        }
     }
 
     public enum NotificationType

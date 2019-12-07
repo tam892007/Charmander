@@ -6,7 +6,7 @@ namespace BdcMobile.Core.Services.Interfaces
 {
     public interface ILoginService
     {
-        Task<User> LoginAsync(string userName, string password, CancellationToken token);
+        Task<User> LoginAsync(string userName, string password, string fcmToken, CancellationToken token);
 
         /// <summary>
         /// Verify user with token string

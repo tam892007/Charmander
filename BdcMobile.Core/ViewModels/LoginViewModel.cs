@@ -1,6 +1,7 @@
 ﻿using BdcMobile.Core.Commons;
 using BdcMobile.Core.Models;
 using BdcMobile.Core.Services.Interfaces;
+using Cheesebaron.MvxPlugins.Settings;
 using MvvmCross.Commands;
 using MvvmCross.Logging;
 using MvvmCross.Navigation;
@@ -16,6 +17,7 @@ namespace BdcMobile.Core.ViewModels
     {
         private Notification _notification; 
         private readonly ILoginService _loginService;
+        private readonly ICloudMessaging _cloudMessaging;
         public string UserName { get; set; }
         public string Password { get; set; }
 
@@ -39,9 +41,10 @@ namespace BdcMobile.Core.ViewModels
             private set => SetProperty(ref _isCallingLogin, value);
         }
 
-        public LoginViewModel(ILoginService loginService, IMvxLogProvider logProvider, IMvxNavigationService navigationService) : base(logProvider, navigationService)
+        public LoginViewModel(ILoginService loginService, ICloudMessaging cloudMessaging, IMvxLogProvider logProvider, IMvxNavigationService navigationService) : base(logProvider, navigationService)
         {
             _loginService = loginService;
+            _cloudMessaging = cloudMessaging;
             LoginCommand = new MvxAsyncCommand(Login);
             CancelLoginCommand = new MvxCommand(() => { CancelLoginToken?.Cancel(); });
             OpenSettingsCommand = new MvxAsyncCommand(async () => { await NavigationService.Navigate<SettingsViewModel>(); });
@@ -72,7 +75,7 @@ namespace BdcMobile.Core.ViewModels
 
             IsCallingLogin = true;
             CancelLoginToken = new CancellationTokenSource();
-            var user = await _loginService.LoginAsync(UserName, Password, CancelLoginToken.Token);
+            var user = await _loginService.LoginAsync(UserName, Password, _cloudMessaging.GetCloudMessagingToken(), CancelLoginToken.Token);
             if (user.IsAuthenticated)
             {
                 try
@@ -93,7 +96,13 @@ namespace BdcMobile.Core.ViewModels
                 }
                 else
                 {
-                    await NavigationService.Navigate<EventListViewModel, Event>(new Event { SurveyID = _notification.Object });
+                    int tabIndex = 0;
+                    if (_notification.Type == NotificationType.ExternalChatUpdate)
+                    {
+                        tabIndex = 1;
+                    }
+
+                    await NavigationService.Navigate<EventListViewModel, Event>(new Event { SurveyID = _notification.Object, TabIndex = tabIndex });
                     _notification = null;
                 }
             } 
