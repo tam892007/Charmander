@@ -48,7 +48,7 @@ namespace BdcMobile.Core.Services.Interfaces
         /// <param name="record"></param>
         /// <returns></returns>
         Task<List<Event>> SearchEventAsync(string token, string keyword, int page, int record);
-
+        Task<List<Event>> SearchEventAsync(string token, string keyword, int page, int record, CancellationToken ct);
 
         Task<Event> GetEventById(string token, int id);
 

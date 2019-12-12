@@ -51,6 +51,12 @@ namespace BdcMobile.Core.Services.Implementations
             return listEvents;
         }
 
+        public async Task<List<Event>> SearchEventAsync(string token, string keyword, int page, int record, CancellationToken ct)
+        {
+            var listEvents = await _httpService.SearchEventAsync(token, keyword, page, record, ct);
+            return listEvents;
+        }
+
         public async Task<Event> GetEventById(string token, int id)
         {
             var evt = await _httpService.GetEventById(token, id);

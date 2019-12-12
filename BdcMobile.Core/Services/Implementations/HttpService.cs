@@ -30,11 +30,17 @@ namespace BdcMobile.Core.Services.Implementations
         public async Task<User> LoginAsync(User user, CancellationToken token = default)
         {
             string apiUrl = App.Context.ServerAddress + string.Format(Constants.AppAPI.UserLoginAPI, user.AccountName, user.Password, user.FCMToken);
-            var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "POST", token);
-            if (apiResponse.Length > 25)
+            try
             {
-                var result = JsonConvert.DeserializeObject<LoginResponseModel>(apiResponse);
-                return result.user;
+                var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "POST", token);
+                if (apiResponse.Length > 25)
+                {
+                    var result = JsonConvert.DeserializeObject<LoginResponseModel>(apiResponse);
+                    return result.user;
+                }
+            }
+            catch (Exception ex)
+            {
             }
             return null;
         }
@@ -104,23 +110,29 @@ namespace BdcMobile.Core.Services.Implementations
         {
             //var fromdatestr = fromdate == null ? string.Empty: string.Format("{0:ddMMyyyy}", fromdate);
             //var todatestr = todate == null ? string.Empty : string.Format("{0:ddMMyyyy}", todate);
-
-            string apiUrl = App.Context.ServerAddress + string.Format(Constants.AppAPI.GetItemsAPI, currentPage, recpordPerPage, token);
-            var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "GET", ct);
-            if (apiResponse.Length > 25)
+            try
             {
-                try
+                string apiUrl = App.Context.ServerAddress + string.Format(Constants.AppAPI.GetItemsAPI, currentPage, recpordPerPage, token);
+                var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "GET", ct);
+                if (apiResponse.Length > 25)
                 {
-                    var result = JsonConvert.DeserializeObject<EventResponseModel>(apiResponse);
-                    return result.data;
+                    try
+                    {
+                        var result = JsonConvert.DeserializeObject<EventResponseModel>(apiResponse);
+                        return result.data;
+                    }
+                    catch (Exception ex)
+                    {
+                        //mvxLog.Error(ex.ToString());
+                        //mvxLog.Error(ex.StackTrace);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    //mvxLog.Error(ex.ToString());
-                    //mvxLog.Error(ex.StackTrace);
-                }
+                return null;
             }
-            return null;
+            catch (OperationCanceledException ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -150,6 +162,43 @@ namespace BdcMobile.Core.Services.Implementations
             }
             return null;
         }
+
+        /// <summary>
+        /// Search vu viec
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="keyword"></param>
+        /// <param name="page"></param>
+        /// <param name="record"></param>
+        /// <returns></returns>
+        public async Task<List<Event>> SearchEventAsync(string token, string keyword, int page, int record, CancellationToken ct)
+        {
+            try
+            {
+                string apiUrl = App.Context.ServerAddress + string.Format(Constants.AppAPI.SearchItemsAPI, token, keyword, page, record);
+                var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "GET", ct);
+                if (apiResponse.Length > 25)
+                {
+                    try
+                    {
+                        var result = JsonConvert.DeserializeObject<EventResponseModel>(apiResponse);
+                        return result.data;
+                    }
+                    catch (Exception ex)
+                    {
+                        //mvxLog.Error(ex.ToString());
+                        //mvxLog.Error(ex.StackTrace);
+                    }
+                }
+                return null;
+            }
+            catch (OperationCanceledException ex)
+            {
+                throw ex;
+            }
+            
+        }
+
 
         public async Task<Event> GetEventById(string token, int id)
         {

@@ -40,7 +40,7 @@ namespace BdcMobile.Droid.Views
             var editText = this.FindViewById<EditText>(Resource.Id.searchtextbox);
             if(editText != null)
             {
-                editText.OnTextChangeListener(() => ViewModel.SearchTask, () => ViewModel.SearchCommand, ViewModel.cts);
+                editText.OnTextChangeListener(() => ViewModel.SearchTask, () => ViewModel.SearchCommand, () => ViewModel.CancelLoadDataCommand);
             }
 
             DrawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);

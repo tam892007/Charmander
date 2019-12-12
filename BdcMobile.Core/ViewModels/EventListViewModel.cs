@@ -20,16 +20,16 @@ namespace BdcMobile.Core.ViewModels
         public string SearchText { get; set; }
         private readonly IEventService _eventService;
         //private readonly IMvxLog _mvxLog;
-        public CancellationTokenSource cts { get; set; }
+        public CancellationTokenSource LoadDatacts { get; set; }
 
         public EventListViewModel(IEventService eventService, IMvxNavigationService mvxNavigationService, IMvxLogProvider mvxLogProvider) : base(mvxLogProvider, mvxNavigationService)
         {
             _eventService = eventService;
 
             //_mvxLog = mvxLogProvider.GetLogFor(Constants.AppConfig.LogTag);
-
-            cts = new CancellationTokenSource();
-
+            CancelLoadDataCommand = new MvxCommand(()=> {                 
+                LoadDatacts?.Cancel(); 
+            });
             LoadMoreCommand = new MvxCommand(
                 () =>
                 {
@@ -46,9 +46,9 @@ namespace BdcMobile.Core.ViewModels
             {
                 await NavigateToEventDetails(e);
             });
-            SearchCommand = new MvxAsyncCommand(async (e) =>
+            SearchCommand = new MvxAsyncCommand(async () =>
             {
-                SearchTask = MvxNotifyTask.Create(SearchData(e));
+                SearchTask = MvxNotifyTask.Create(SearchData());
                 
                 //await SearchData(e);
             });
@@ -73,6 +73,7 @@ namespace BdcMobile.Core.ViewModels
 
         public IMvxCommand LoadMoreCommand { get; private set; }
         public MvxNotifyTask LoadMoreTask { get; private set; }
+        public IMvxCommand CancelLoadDataCommand { get; private set; }
 
         public IMvxAsyncCommand RefreshCommand { get; private set; }
         public IMvxAsyncCommand SearchCommand { get; private set; }
@@ -182,8 +183,37 @@ namespace BdcMobile.Core.ViewModels
             await NavigationService.Navigate<NotificationListViewModel>();
         }
 
+        //private async Task SearchData()
+        //{
+
+        //    IsBusy = true;
+        //    var token = App.User.api_token;
+
+        //    //_mvxLog.Info("Start Search: " + SearchText);
+        //    var text = SearchText;
+        //    List<Event> newEvents;
+        //    if (!string.IsNullOrWhiteSpace(text))
+        //    {
+        //        newEvents = await _eventService.SearchEventAsync(token, text, 1, RecordPerPage);
+        //    }
+        //    else
+        //    {
+        //        newEvents = await _eventService.QueryEventAsync(token, null, null, 1, RecordPerPage);
+        //    }
+
+        //    Events = new MvxObservableCollection<Event>();
+        //    if (newEvents != null)
+        //    {
+        //        Events.AddRange(newEvents);
+        //    }
+        //    //_mvxLog.Info("End Search: " + text);
+        //    await this.RaisePropertyChanged("Events");
+        //    IsBusy = false;
+
+        //}
         private async Task SearchData()
         {
+            //LoadDatacts = new CancellationTokenSource();           
 
             IsBusy = true;
             var token = App.User.api_token;
@@ -191,54 +221,32 @@ namespace BdcMobile.Core.ViewModels
             //_mvxLog.Info("Start Search: " + SearchText);
             var text = SearchText;
             List<Event> newEvents;
-            if (!string.IsNullOrWhiteSpace(text))
+            try
             {
-                newEvents = await _eventService.SearchEventAsync(token, text, 1, RecordPerPage);
+                if (!string.IsNullOrWhiteSpace(text))
+                {
+                    newEvents = await _eventService.SearchEventAsync(token, text, 1, RecordPerPage);
+                }
+                else
+                {
+
+                    newEvents = await _eventService.QueryEventAsync(token, null, null, 1, RecordPerPage);
+
+                }
+                Events = new MvxObservableCollection<Event>();
+                if (newEvents != null)
+                {
+                    Events.AddRange(newEvents);
+                }
+                //_mvxLog.Info("End Search: " + text);
+                await this.RaisePropertyChanged("Events");
+                IsBusy = false;
             }
-            else
+            catch (OperationCanceledException ex)
             {
-                newEvents = await _eventService.QueryEventAsync(token, null, null, 1, RecordPerPage);
-            }
-
-            Events = new MvxObservableCollection<Event>();
-            if (newEvents != null)
-            {
-                Events.AddRange(newEvents);
-            }
-            //_mvxLog.Info("End Search: " + text);
-            await this.RaisePropertyChanged("Events");
-            IsBusy = false;
-
-
-        }
-        private async Task SearchData(CancellationToken ct)
-        {
-            ct = cts.Token;            
-
-            IsBusy = true;
-            var token = App.User.api_token;
-
-            //_mvxLog.Info("Start Search: " + SearchText);
-            var text = SearchText;
-            List<Event> newEvents;
-            if (!string.IsNullOrWhiteSpace(text))
-            {
-                newEvents = await _eventService.SearchEventAsync(token, text, 1, RecordPerPage);
-            }
-            else
-            {
-                newEvents = await _eventService.QueryEventAsync(token, null, null, 1, RecordPerPage, ct);
-            }
-
-            Events = new MvxObservableCollection<Event>();
-            if (newEvents != null)
-            {
-                Events.AddRange(newEvents);
-            }
-            //_mvxLog.Info("End Search: " + text);
-            await this.RaisePropertyChanged("Events");
-            IsBusy = false;
-            
+                await SearchData();
+                return;
+            }    
         }
 
 

@@ -64,7 +64,7 @@ namespace BdcMobile.Core.Commons
         public static async Task<string> MakeRequestAsync(string url, string method, CancellationToken ct)
         {
             var ilog = Mvx.IoCProvider.Resolve<IMvxLogProvider>();
-            //var log = ilog.GetLogFor(Constants.AppConfig.LogTag);
+            var log = ilog.GetLogFor(Constants.AppConfig.LogTag);
             //log.Info(method + ": " + url);
             var content = string.Empty;
 
@@ -84,6 +84,13 @@ namespace BdcMobile.Core.Commons
                 }
 
                 //log.Info("Finish: " + method + ": " + url);
+            }
+            catch(OperationCanceledException ex)
+            {
+                log.Error(ex.ToString());
+                log.Error(ex.StackTrace);
+                log.Error(method + ": " + url);
+                throw ex;
             }
             catch (Exception ex)
             {

@@ -20,7 +20,7 @@ namespace BdcMobile.Droid.Extensions
 {
     public static class MvxTextEditorExtensions
     {
-        public static void OnTextChangeListener(this EditText editText, Func<MvxNotifyTask> onTextChangedNotify, Func<IMvxAsyncCommand> searchCommand, CancellationTokenSource cts)
+        public static void OnTextChangeListener(this EditText editText, Func<MvxNotifyTask> onTextChangedNotify, Func<IMvxAsyncCommand> searchCommand, Func<IMvxCommand> cancelSearchCommand)
         {
             var customTextWatcher = new BDCTextWatcher();
             editText.AddTextChangedListener(customTextWatcher);
@@ -30,8 +30,8 @@ namespace BdcMobile.Droid.Extensions
                 
                 if (isTaskNotifycompleted != null && isTaskNotifycompleted.IsNotCompleted)
                 {
-                    IMvxAsyncCommand scommand = searchCommand?.Invoke();
-                    cts.Cancel();
+                    IMvxCommand cancelCommand = cancelSearchCommand?.Invoke();
+                    cancelCommand.Execute();
                 }
 
                 if (isTaskNotifycompleted == null || !isTaskNotifycompleted.IsNotCompleted)
