@@ -25,7 +25,7 @@ namespace BdcMobile.Core.ViewModels
         public List<ITransformation> CircleTransformation => new List<ITransformation> { new CircleTransformation() };
 
         public IMvxAsyncCommand ShowInitialViewModelsCommand { get; private set; }
-        
+
 
         public EventDetailsViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService, IHttpService networkService) : base(logProvider, navigationService)
         {
@@ -51,24 +51,28 @@ namespace BdcMobile.Core.ViewModels
         public override async Task Initialize()
         {
             var token = App.User.api_token;
-            var evt = await _networkService.GetEventById(token, SurveyID);
-            if (evt != null)
-            {
 
-                SurveyNo = evt.SurveyNo;
-                SurveyDescription = evt.SurveyDescription;
-                TOR = evt.TOR;
-                Status = evt.Status;
-                PartnerName = evt.PartnerName;
-                PlaceOfSurvey = evt.PlaceOfSurvey;
-                ImageURL = evt.ImageURL;
-                await RaisePropertyChanged(nameof(SurveyNo));
-                await RaisePropertyChanged(nameof(SurveyDescription));
-                await RaisePropertyChanged(nameof(TOR));
-                await RaisePropertyChanged(nameof(Status));
-                await RaisePropertyChanged(nameof(PartnerName));
-                await RaisePropertyChanged(nameof(PlaceOfSurvey));
-                await RaisePropertyChanged(nameof(ImageURL));
+            ///check if content available. if not, pull from server.
+            if (string.IsNullOrEmpty(SurveyDescription) && string.IsNullOrEmpty(Status))
+            {
+                var evt = await _networkService.GetEventById(token, SurveyID);
+                if (evt != null)
+                {
+                    SurveyNo = evt.SurveyNo;
+                    SurveyDescription = evt.SurveyDescription;
+                    TOR = evt.TOR;
+                    Status = evt.Status;
+                    PartnerName = evt.PartnerName;
+                    PlaceOfSurvey = evt.PlaceOfSurvey;
+                    ImageURL = evt.ImageURL;
+                    await RaisePropertyChanged(nameof(SurveyNo));
+                    await RaisePropertyChanged(nameof(SurveyDescription));
+                    await RaisePropertyChanged(nameof(TOR));
+                    await RaisePropertyChanged(nameof(Status));
+                    await RaisePropertyChanged(nameof(PartnerName));
+                    await RaisePropertyChanged(nameof(PlaceOfSurvey));
+                    await RaisePropertyChanged(nameof(ImageURL));
+                }
             }
         }
 
@@ -76,6 +80,13 @@ namespace BdcMobile.Core.ViewModels
         {
             SurveyID = parameter.SurveyID;
             SelectedTabIndex = parameter.TabIndex;
+            SurveyNo = parameter.SurveyNo;
+            SurveyDescription = parameter.SurveyDescription;
+            TOR = parameter.TOR;
+            Status = parameter.Status;
+            PartnerName = parameter.PartnerName;
+            PlaceOfSurvey = parameter.PlaceOfSurvey;
+            ImageURL = parameter.ImageURL;
         }
 
         public override void Prepare()

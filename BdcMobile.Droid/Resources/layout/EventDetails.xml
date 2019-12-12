@@ -52,7 +52,7 @@
             android:layout_alignParentRight="true"
             android:src="@drawable/boss"
             android:padding="7dp"
-            app:MvxBind="LoadingPlaceholderImagePath 'boss.svg'; ErrorPlaceholderImagePath 'boss.svg'; Transformations CircleTransformation; DownsampleWidth DownsampleWidth;ImagePath ImageURL" />
+            app:MvxBind="LoadingPlaceholderImagePath 'boss.svg'; ErrorPlaceholderImagePath 'boss.svg'; Transformations CircleTransformation;ImagePath ImageURL" />
         
     </RelativeLayout>
 
