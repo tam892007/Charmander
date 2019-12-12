@@ -92,7 +92,6 @@
                         android:maxLines="1"
                         android:inputType="textPassword"
                         android:paddingBottom="15dp"
-                        android:maxLength="10"
                         android:textCursorDrawable="@drawable/cursor_color"
                         android:background="@android:color/transparent"
                         android:layout_width="match_parent"

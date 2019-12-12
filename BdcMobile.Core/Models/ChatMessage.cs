@@ -136,6 +136,8 @@ namespace BdcMobile.Core.Models
 
         private MvxAsyncCommand _resendCommand;
 
+        public bool MessageVisible => !string.IsNullOrEmpty(Content);
+
 
         public MvxAsyncCommand ResendCommand
         {

@@ -63,6 +63,10 @@ namespace BdcMobile.Core.Services.Implementations
 
         public void LogOut()
         {
+            ///Fire & Forget. Call API to delete FCM token
+            Task.Run(() => { _httpService.Logout(App.Context.ApiToken); });
+
+            ///Local data removal
             _settings.AddOrUpdateValue(Constants.AppConfig.UserLoggedIn, false);
             SecureStorage.RemoveAll();
             App.Context.Reset();

@@ -22,10 +22,13 @@ namespace BdcMobile.Core.Commons
 
         public static class AppAPI
         {
-            public static string IPAPI = "http://103.47.192.239:81/";
+            //PROD: http://iis.badinco.com.vn/
+            //UAT: http://103.47.192.239:81/
+            public static string IPAPI = "http://iis.badinco.com.vn/";
             public static string UserLoginAPI = "api/login?accountName={0}&password={1}&fcm_token={2}";
             public static string UserVerifyAPI = "api/user?api_token={0}";
             public static string UserInformationAPI = "api/account?api_token={0}&accountID={1}";
+            public static string UserLogoutAPI = "api/logout?api_token={0}";
 
             public static string GetItemByIdAPI = "api/get-survey-info?api_token={0}&surveyID={1}";
             public static string GetItemsAPI = "api/vu-viec?fromDay=&toDay=&page={0}&record={1}&api_token={2}";

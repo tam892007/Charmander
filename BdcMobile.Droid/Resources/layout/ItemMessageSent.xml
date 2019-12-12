@@ -15,7 +15,7 @@
         >
         <TextView
             android:id="@+id/text_message_body"
-            app:MvxBind="Text Content; Visible !String.IsNullOrEmpty(Content);"
+            app:MvxBind="Text Content; Visible MessageVisible"
             android:maxWidth="240dp"
             android:text="123"
             android:background="@drawable/rounded_rectangle_blue"

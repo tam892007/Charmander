@@ -24,6 +24,13 @@ namespace BdcMobile.Core.Services.Interfaces
         Task<User> VerifyUserAsync(string token);
 
         /// <summary>
+        /// Logout
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        bool Logout(string apiToken);
+
+        /// <summary>
         /// Query all event in duration
         /// </summary>
         /// <param name="token"></param>

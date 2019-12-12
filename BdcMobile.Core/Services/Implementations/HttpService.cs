@@ -39,6 +39,18 @@ namespace BdcMobile.Core.Services.Implementations
             return null;
         }
 
+        public bool Logout(string apiToken)
+        {
+            string apiUrl = App.Context.ServerAddress + string.Format(Constants.AppAPI.UserLogoutAPI, apiToken);
+            var apiResponse = NetWorkUtility.MakeRequestSync(apiUrl, "GET");
+            var result = JsonConvert.DeserializeObject<LoginResponseModel>(apiResponse);
+            if (bool.TryParse(result.data, out bool v))
+            {
+                return v;
+            }
+
+            return false;
+        }
 
         /// <summary>
         /// Verify user login by token
