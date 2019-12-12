@@ -194,17 +194,26 @@ namespace BdcMobile.Core.Services.Implementations
                     ///parse list file
                     foreach (var d in result.data)
                     {
-                        var paths = JsonConvert.DeserializeObject<string[]>(d.FileIndex.Trim('"'));
-                        if (paths == null || paths.Length == 0) continue;
-                        d.Files = paths.Select(p => new ChatPicture { FilePath = App.Context.ServerAddress + p.Replace("\\\\", "/") }).ToList();
+                        try
+                        {
+                            var paths = JsonConvert.DeserializeObject<string[]>(d.FileIndex.Trim('"'));
+                            if (paths == null || paths.Length == 0) continue;
+                            d.Files = paths.Select(p => new ChatPicture { FilePath = App.Context.ServerAddress + p.Replace("\\\\", "/") }).ToList();
+                        }
+                        catch (Exception ex)
+                        {
+                            ///Cannot deserialize. API response is not normalized
+                            Console.WriteLine(ex);
+                            continue;
+                        }
                     }
 
                     return result.data;
                 }
                 catch (Exception ex)
                 {
-                    //mvxLog.Error(ex.ToString());
-                    //mvxLog.Error(ex.StackTrace);
+                    ///Cannot deserialize. API response is not normalized
+                    Console.WriteLine(ex);
                 }
             }
             return null;
