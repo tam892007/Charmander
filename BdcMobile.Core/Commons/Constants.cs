@@ -14,7 +14,7 @@ namespace BdcMobile.Core.Commons
             public const string FCMExtraName = "BDC_Notification";
 
             public const string LogTag = "BDC_Mobile";
-            public const int PullMessageTime = 30000;
+            public const int PullMessageTime = 20000;
 
             public const string ServerAddressKey = "Server-Address";
             public const string UserLoggedIn = "User-Logged-In";
