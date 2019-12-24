@@ -47,8 +47,10 @@ namespace BdcMobile.Core
         {
             var settings = Mvx.IoCProvider.Resolve<ISettings>();
             var serverAddress = settings.GetValue<string>(Constants.AppConfig.ServerAddressKey, Constants.AppAPI.IPAPI);
+            var pullMessageTime = settings.GetValue<int>(Constants.AppConfig.PullMessageTimeKey, Constants.AppConfig.PullMessageTime);
             Context = Mvx.IoCProvider.Resolve<IAppContext>();
             Context.SetServerAddress(serverAddress);
+            Context.SetPullMessageTime(pullMessageTime);
         }
     }
 }

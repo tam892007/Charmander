@@ -18,6 +18,7 @@ namespace BdcMobile.Core.Services.Implementations
         public string CloudMessagingToken { get; set; }
 
         public string ServerAddress { get; set; }
+        public int PullMessageTime { get; set; }
 
         public UserRole UserRole { get; set; }
 
@@ -59,6 +60,10 @@ namespace BdcMobile.Core.Services.Implementations
         public void SetServerAddress(string address)
         {
             ServerAddress = address;
+        }
+        public void SetPullMessageTime(int pullMessageTime)
+        {
+            PullMessageTime = pullMessageTime;
         }
     }
 }

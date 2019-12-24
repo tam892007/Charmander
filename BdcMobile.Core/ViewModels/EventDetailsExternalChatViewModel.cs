@@ -66,7 +66,7 @@ namespace BdcMobile.Core.ViewModels
             BeginTime = EndTime = DateTime.Now;
             if (timer == null)
             {
-                timer = new Timer(Constants.AppConfig.PullMessageTime);
+                timer = new Timer(App.Context.PullMessageTime * 1000);
                 timer.Elapsed += async (sender, e) =>
                 {
                     if (LoadNewMessageTask == null || LoadNewMessageTask.IsCompleted)

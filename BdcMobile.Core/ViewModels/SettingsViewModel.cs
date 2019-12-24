@@ -21,6 +21,7 @@ namespace BdcMobile.Core.ViewModels
 
         public IMvxCommand SaveSettingsCommand { get; private set; }
         public string ServerAddress { get;set; }
+        public int PullMessageTime { get; set; }
         public SettingsViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService, ISettings settings, ILoginService loginService, ICommonService commonService) 
             : base(logProvider, navigationService)
         {
@@ -34,6 +35,7 @@ namespace BdcMobile.Core.ViewModels
         public override async Task Initialize()
         {
             ServerAddress = App.Context.ServerAddress;
+            PullMessageTime = App.Context.PullMessageTime;
             await base.Initialize();
         }
 
@@ -81,7 +83,10 @@ namespace BdcMobile.Core.ViewModels
             } 
 
             _settings.AddOrUpdateValue(Constants.AppConfig.ServerAddressKey, ServerAddress);
+            _settings.AddOrUpdateValue(Constants.AppConfig.PullMessageTimeKey, PullMessageTime);
+
             App.Context.SetServerAddress(ServerAddress);
+            App.Context.PullMessageTime = PullMessageTime;
         }
 
         public override async Task BackCommandTask()

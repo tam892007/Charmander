@@ -5,6 +5,7 @@ namespace BdcMobile.Core.Services.Interfaces
     public interface IAppContext
     {
         string ServerAddress { get; set; }
+        int PullMessageTime { get; set; }
         string UserLoginName { get; set; }
         string UserDisplayName { get; set; }
         bool IsUserAuthenticated { get; set; }
@@ -19,5 +20,6 @@ namespace BdcMobile.Core.Services.Interfaces
         void SyncContextFromUser(User user);
 
         void SetServerAddress(string address);
+        void SetPullMessageTime(int pullMessageTime);
     }
 }
