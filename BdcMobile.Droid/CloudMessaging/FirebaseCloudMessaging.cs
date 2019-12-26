@@ -88,7 +88,7 @@ namespace BdcMobile.Droid.CloudMessaging
                 .Build();
 
             var notificationManager = NotificationManagerCompat.From(Application.Context);
-            notificationManager.Notify(GetNextNotifId(Application.Context), droidNotification);
+            notificationManager.Notify(DateTime.Now.Millisecond, droidNotification);
 
             Publish(notification);
         }
@@ -125,7 +125,7 @@ namespace BdcMobile.Droid.CloudMessaging
 
         public void Publish(Notification notification)
         {
-            _messenger.Publish(new NotificationMessage(this, notification));
+            _messenger?.Publish(new NotificationMessage(this, notification));
         }
 
         public Guid Subscribe(Action<Notification> OnReceiveNotification, string tag)
