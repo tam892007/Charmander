@@ -36,6 +36,9 @@ namespace BdcMobile.Droid.CloudMessaging
 
         public void Initialize()
         {
+            _messenger = _messenger ?? Mvx.IoCProvider.Resolve<IMvxMessenger>();
+            _subscriptionToken = new Dictionary<Guid, MvxSubscriptionToken>();
+
             if (Build.VERSION.SdkInt < BuildVersionCodes.O)
             {
                 // Notification channels are new in API 26 (and not a part of the
@@ -54,9 +57,6 @@ namespace BdcMobile.Droid.CloudMessaging
 
             var notificationManager = (NotificationManager)Application.Context.GetSystemService(NotificationService);
             notificationManager.CreateNotificationChannel(channel);
-
-            _messenger = _messenger ?? Mvx.IoCProvider.Resolve<IMvxMessenger>();
-            _subscriptionToken = new Dictionary<Guid, MvxSubscriptionToken>();
         }
 
         public override void OnNewToken(string p0)

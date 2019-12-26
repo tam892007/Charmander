@@ -56,9 +56,6 @@ namespace BdcMobile.Droid.Views
 
         private async Task Navigate(int itemId)
         {
-            ((EventListView)Activity).DrawerLayout.CloseDrawers();
-            await Task.Delay(TimeSpan.FromMilliseconds(250));
-
             switch (itemId)
             {
                 case Resource.Id.nav_settings:
@@ -71,6 +68,8 @@ namespace BdcMobile.Droid.Views
                     await ViewModel.DoLogoutCommand.ExecuteAsync(null);
                     break;
             }
+
+            ((EventListView)Activity).DrawerLayout.CloseDrawers();
         }
     }
 }
