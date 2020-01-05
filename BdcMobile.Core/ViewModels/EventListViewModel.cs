@@ -124,7 +124,7 @@ namespace BdcMobile.Core.ViewModels
             }
             else
             {
-                newEvents = await _eventService.QueryEventAsync(token, null, null, 1, RecordPerPage);
+                newEvents = await _eventService.QueryEventAsync(token, App.Context.FromDate, App.Context.ToDate, 1, RecordPerPage);
             }
             //_mvxLog.Info("End Refresh: " + SearchText);
 
@@ -158,7 +158,7 @@ namespace BdcMobile.Core.ViewModels
             }
             else
             {
-                newEvents = await _eventService.QueryEventAsync(token, null, null, nextpage, RecordPerPage);
+                newEvents = await _eventService.QueryEventAsync(token, App.Context.FromDate, App.Context.ToDate, nextpage, RecordPerPage);
             }
             //_mvxLog.Info("End LoadMore: " + SearchText);
             if (newEvents != null)
@@ -230,7 +230,7 @@ namespace BdcMobile.Core.ViewModels
                 else
                 {
 
-                    newEvents = await _eventService.QueryEventAsync(token, null, null, 1, RecordPerPage);
+                    newEvents = await _eventService.QueryEventAsync(token, App.Context.FromDate, App.Context.ToDate, 1, RecordPerPage);
 
                 }
                 Events = new MvxObservableCollection<Event>();

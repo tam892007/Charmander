@@ -20,6 +20,10 @@ namespace BdcMobile.Core.Services.Implementations
         public string ServerAddress { get; set; }
         public int PullMessageTime { get; set; }
 
+        public DateTime FromDate { get; set; }
+
+        public DateTime ToDate { get; set; }
+
         public UserRole UserRole { get; set; }
 
         public void Reset()
@@ -57,13 +61,12 @@ namespace BdcMobile.Core.Services.Implementations
             }
         }
 
-        public void SetServerAddress(string address)
+        public void SaveSettings(string address, int refreshTime, DateTime fromDate, DateTime toDate)
         {
             ServerAddress = address;
-        }
-        public void SetPullMessageTime(int pullMessageTime)
-        {
-            PullMessageTime = pullMessageTime;
+            PullMessageTime = refreshTime;
+            FromDate = fromDate;
+            ToDate = toDate;
         }
     }
 }

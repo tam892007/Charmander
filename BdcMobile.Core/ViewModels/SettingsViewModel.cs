@@ -6,6 +6,7 @@ using MvvmCross.Commands;
 using MvvmCross.Logging;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
+using System;
 using System.Threading.Tasks;
 
 namespace BdcMobile.Core.ViewModels
@@ -22,6 +23,8 @@ namespace BdcMobile.Core.ViewModels
         public IMvxCommand SaveSettingsCommand { get; private set; }
         public string ServerAddress { get;set; }
         public int PullMessageTime { get; set; }
+        public string FromDate { get; set; }
+        public string ToDate { get; set; }
         public SettingsViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService, ISettings settings, ILoginService loginService, ICommonService commonService) 
             : base(logProvider, navigationService)
         {
@@ -36,6 +39,8 @@ namespace BdcMobile.Core.ViewModels
         {
             ServerAddress = App.Context.ServerAddress;
             PullMessageTime = App.Context.PullMessageTime;
+            FromDate = App.Context.FromDate.ToString(Constants.DateTimeFormat.DateOnlyFormat);
+            ToDate = App.Context.ToDate.ToString(Constants.DateTimeFormat.DateOnlyFormat);
             await base.Initialize();
         }
 
@@ -85,8 +90,13 @@ namespace BdcMobile.Core.ViewModels
             _settings.AddOrUpdateValue(Constants.AppConfig.ServerAddressKey, ServerAddress);
             _settings.AddOrUpdateValue(Constants.AppConfig.PullMessageTimeKey, PullMessageTime);
 
-            App.Context.SetServerAddress(ServerAddress);
-            App.Context.PullMessageTime = PullMessageTime;
+            var fromDate = DateTime.ParseExact(FromDate, Constants.DateTimeFormat.DateOnlyFormat, System.Globalization.CultureInfo.CurrentCulture);
+            var toDate = DateTime.ParseExact(ToDate, Constants.DateTimeFormat.DateOnlyFormat, System.Globalization.CultureInfo.CurrentCulture);
+            
+            _settings.AddOrUpdateValue(Constants.AppConfig.DataFromDate, fromDate);
+            _settings.AddOrUpdateValue(Constants.AppConfig.DataToDate, toDate);
+
+            App.Context.SaveSettings(ServerAddress, PullMessageTime, fromDate, toDate);
         }
 
         public override async Task BackCommandTask()

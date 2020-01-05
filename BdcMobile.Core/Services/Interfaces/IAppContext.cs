@@ -1,4 +1,5 @@
 ﻿using BdcMobile.Core.Models;
+using System;
 
 namespace BdcMobile.Core.Services.Interfaces
 {
@@ -13,13 +14,16 @@ namespace BdcMobile.Core.Services.Interfaces
         string AvatarUrl { get; set; }
         string CloudMessagingToken { get; set; }
 
+        DateTime FromDate { get; set; }
+
+        DateTime ToDate { get; set; }
+
         UserRole UserRole { get; set; }
 
         void Reset();
 
         void SyncContextFromUser(User user);
 
-        void SetServerAddress(string address);
-        void SetPullMessageTime(int pullMessageTime);
+        void SaveSettings(string address, int refreshTime, DateTime fromDate, DateTime toDate);
     }
 }

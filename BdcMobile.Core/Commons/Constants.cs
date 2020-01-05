@@ -19,6 +19,8 @@ namespace BdcMobile.Core.Commons
             public const string ServerAddressKey = "Server-Address";
             public const string PullMessageTimeKey = "Pull-Message-Time";
             public const string UserLoggedIn = "User-Logged-In";
+            public const string DataFromDate = "Data-From-Date";
+            public const string DataToDate = "Data-To-Date";
         }
 
         public static class AppAPI
@@ -32,7 +34,7 @@ namespace BdcMobile.Core.Commons
             public static string UserLogoutAPI = "api/logout?api_token={0}";
 
             public static string GetItemByIdAPI = "api/get-survey-info?api_token={0}&surveyID={1}";
-            public static string GetItemsAPI = "api/vu-viec?fromDay=&toDay=&page={0}&record={1}&api_token={2}";
+            public static string GetItemsAPI = "api/vu-viec?fromDay={3}&toDay={4}&page={0}&record={1}&api_token={2}";
             public static string SearchItemsAPI = "api/tim-kiem-vu-viec?api_token={0}&keyWord={1}&page={2}&record={3}";
 
             public static string GetChatAPI = "api/get-chat?api_token={0}&surveyID={1}&type={2}";

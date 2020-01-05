@@ -88,7 +88,9 @@ namespace BdcMobile.Core.Services.Implementations
             //var fromdatestr = fromdate == null ? string.Empty: string.Format("{0:ddMMyyyy}", fromdate);
             //var todatestr = todate == null ? string.Empty : string.Format("{0:ddMMyyyy}", todate);
 
-            string apiUrl = App.Context.ServerAddress + string.Format(Constants.AppAPI.GetItemsAPI, currentPage, recpordPerPage, token);
+            string apiUrl = App.Context.ServerAddress + string.Format(Constants.AppAPI.GetItemsAPI, currentPage, recpordPerPage, token,
+                    fromdate?.ToString(Constants.DateTimeFormat.DateOnlyFormat),
+                    todate?.ToString(Constants.DateTimeFormat.DateOnlyFormat));
             var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "GET");
             if (apiResponse.Length > 25)
             {
@@ -112,7 +114,9 @@ namespace BdcMobile.Core.Services.Implementations
             //var todatestr = todate == null ? string.Empty : string.Format("{0:ddMMyyyy}", todate);
             try
             {
-                string apiUrl = App.Context.ServerAddress + string.Format(Constants.AppAPI.GetItemsAPI, currentPage, recpordPerPage, token);
+                string apiUrl = App.Context.ServerAddress + string.Format(Constants.AppAPI.GetItemsAPI, currentPage, recpordPerPage, token, 
+                    fromdate?.ToString(Constants.DateTimeFormat.DateOnlyFormat),
+                    todate?.ToString(Constants.DateTimeFormat.DateOnlyFormat));
                 var apiResponse = await NetWorkUtility.MakeRequestAsync(apiUrl, "GET", ct);
                 if (apiResponse.Length > 25)
                 {
